@@ -18,11 +18,11 @@ function LoginPage() {
             await login(email, password);
             navigate("/");
         } catch (err) {
-            setError("Credenciales incorrectas");
-        }
+            setError(err.message);
+        }  
     };
 
-  return (
+    return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <form
                 onSubmit={handleSubmit}
