@@ -9,6 +9,8 @@ export function AuthProvider({ children }) {
     });
 
     const login = async (email, password) => {
+        // TODO: Simulacion de autenticación (reemplazar con lógica real)
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simula un retraso de 1 segundos
         if (email === "test@test.com" && password === "1234") {
             setIsAuthenticated(true);
             localStorage.setItem("isAuthenticated", "true");
