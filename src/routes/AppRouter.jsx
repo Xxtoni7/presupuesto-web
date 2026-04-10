@@ -5,6 +5,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 import CompaniesPage from "../pages/CompaniesPage";
 import BudgetsPage from "../pages/BudgetsPage";
+import SettingsPage from "../pages/SettingsPage";
 
 function AppRouter() {
     return (
@@ -40,6 +41,16 @@ function AppRouter() {
                         <ProtectedRoute>
                         <MainLayout>
                             <BudgetsPage />
+                        </MainLayout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/settings"
+                    element={
+                        <ProtectedRoute>
+                        <MainLayout>
+                            <SettingsPage />
                         </MainLayout>
                         </ProtectedRoute>
                     }
