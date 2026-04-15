@@ -13,7 +13,7 @@ function CompanyCard({ company, onEdit, onDelete, onViewBudgets }) {
     const companyId = company.idCompany ?? company.id;
 
     return (
-        <div className="rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-lg">
+        <div className="flex flex-col h-full rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-lg">
             <div className="p-6">
                 <div className="flex items-start gap-4">
                     {company.logoUrl ? (
@@ -63,7 +63,7 @@ function CompanyCard({ company, onEdit, onDelete, onViewBudgets }) {
                 </div>
             </div>
 
-            <div className="flex gap-2 border-t border-gray-200 p-4">
+            <div className="mt-auto flex gap-2 border-t border-gray-200 p-4">
                 <button
                 type="button"
                 onClick={() => onViewBudgets(companyId)}

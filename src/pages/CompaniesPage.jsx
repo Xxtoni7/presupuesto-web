@@ -4,6 +4,7 @@ import { Plus, Grid, List, Building2, X } from "lucide-react";
 import CompanyCard from "../components/company/CompanyCard";
 import { useCompanies } from "../hooks/useCompanies";
 import CompanyForm from "../components/company/CompanyForm";
+import { createPortal } from "react-dom";
 
 function CompaniesPage() {
     const navigate = useNavigate();
@@ -163,32 +164,36 @@ function CompaniesPage() {
 
             {content}
 
-            {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-                    <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl bg-white shadow-xl">
-                        <div className="flex items-center justify-between border-b border-[#e5e7eb] px-6 py-4">
-                            <h2 className="text-lg font-semibold text-[#111111]">
-                                {editingCompany ? "Editar empresa" : "Nueva empresa"}
-                            </h2>
+            {isModalOpen &&
+            createPortal(
+                <div className="fixed inset-0 z-[9999] bg-black/80">
+                    <div className="flex min-h-screen items-center justify-center px-4 py-6">
+                        <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl bg-white shadow-2xl">
+                            <div className="flex items-center justify-between border-b border-[#e5e7eb] px-6 py-4">
+                                <h2 className="text-lg font-semibold text-[#111111]">
+                                    {editingCompany ? "Editar empresa" : "Nueva empresa"}
+                                </h2>
 
-                            <button
-                            type="button"
-                            onClick={handleCloseModal}
-                            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-gray-100"
-                            >
-                                <X className="h-4 w-4" />
-                            </button>
-                        </div>
+                                <button
+                                type="button"
+                                onClick={handleCloseModal}
+                                className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-gray-100"
+                                >
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
 
-                        <div className="p-6">
-                            <CompanyForm
-                            company={editingCompany}
-                            onSuccess={handleSuccess}
-                            onCancel={handleCloseModal}
-                            />
+                            <div className="p-6">
+                                <CompanyForm
+                                company={editingCompany}
+                                onSuccess={handleSuccess}
+                                onCancel={handleCloseModal}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
