@@ -8,6 +8,7 @@ import {
     Trash2,
     FileText,
 } from "lucide-react";
+import { API_BASE_URL } from "../../utils/constants";
 
 function CompanyCard({ company, onEdit, onDelete, onViewBudgets }) {
     const companyId = company.idCompany ?? company.id;
@@ -18,7 +19,7 @@ function CompanyCard({ company, onEdit, onDelete, onViewBudgets }) {
                 <div className="flex items-start gap-4">
                     {company.logoUrl ? (
                         <img
-                        src={company.logoUrl}
+                        src={`${API_BASE_URL}${company.logoUrl}`}
                         alt={company.name}
                         className="h-16 w-16 rounded-lg border border-gray-200 object-contain"
                         />

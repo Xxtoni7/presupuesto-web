@@ -1,7 +1,7 @@
 export const INDUSTRY_OPTIONS = [
     "Tecnología",
     "Construcción",
-    "Regefaciones",
+    "Refaciones",
     "Salud",
     "Plomería",
     "Inmobiliaria",
