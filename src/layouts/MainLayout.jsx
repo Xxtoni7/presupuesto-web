@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
+import { useSearch } from "../context/SearchContext";
 
 function MainLayout({ children }) {
     const { logout } = useAuth();
@@ -30,6 +31,8 @@ function MainLayout({ children }) {
         logout();
         navigate("/login");
     };
+
+    const { searchTerm, setSearchTerm } = useSearch();
 
     return (
         <div className="min-h-screen bg-[#f8f8f8]">
@@ -71,6 +74,8 @@ function MainLayout({ children }) {
                             <input
                                 type="text"
                                 placeholder="Buscar presupuestos, empresas..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full h-10 rounded-xl border border-[#d1d5db] bg-white pl-10 pr-4 text-[14px] text-[#111111] placeholder:text-[#6b7280] shadow-sm outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/10"
                             />
                         </div>

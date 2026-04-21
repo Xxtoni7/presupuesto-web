@@ -5,6 +5,7 @@ import CompanyCard from "../components/company/CompanyCard";
 import { useCompanies } from "../hooks/useCompanies";
 import CompanyForm from "../components/company/CompanyForm";
 import { createPortal } from "react-dom";
+import { useSearch } from "../context/SearchContext";
 
 function CompaniesPage() {
     const navigate = useNavigate();
@@ -13,6 +14,8 @@ function CompaniesPage() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCompany, setEditingCompany] = useState(null);         
+
+    const { searchTerm } = useSearch();
 
     const handleCreate = () => {
         setEditingCompany(null);
@@ -43,6 +46,26 @@ function CompaniesPage() {
         navigate(`/companies/${companyId}/budgets`);
     };
 
+    const normalizeText = (text) =>
+        text
+            ?.toLowerCase()
+            .normalize("NFD")
+            .replaceAll(/[\u0300-\u036f]/g, "");
+
+    const filteredCompanies = companies.filter((company) => {
+        const term = normalizeText(searchTerm.trim());
+
+        if (!term) return true;
+
+        return (
+            normalizeText(company.name)?.includes(term) ||
+            normalizeText(company.industry)?.includes(term) ||
+            normalizeText(company.email)?.includes(term) ||
+            normalizeText(company.phone)?.includes(term) ||
+            normalizeText(company.address)?.includes(term)
+        );
+    });
+
     let content;
 
     if (loading) {
@@ -52,7 +75,7 @@ function CompaniesPage() {
             <p className="text-gray-500">Cargando empresas...</p>
         </div>
         );
-    } else if (companies.length === 0) {
+    } else if (filteredCompanies.length === 0) {
         content = (
         <div className="py-20 text-center">
             <Building2 className="mx-auto mb-4 h-16 w-16 text-[#9ca3af]" />
@@ -75,7 +98,7 @@ function CompaniesPage() {
     } else if (viewMode === "grid") {
         content = (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {companies.map((company) => (
+            {filteredCompanies.map((company) => (
             <CompanyCard
                 key={company.idCompany ?? company.id}
                 company={company}
