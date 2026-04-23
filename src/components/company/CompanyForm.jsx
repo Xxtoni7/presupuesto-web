@@ -116,7 +116,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
             <div className="space-y-4">
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-[#111111]">
-                        Nombre de la empresa *
+                        Nombre de la empresa
                     </label>
                     <input
                         id="name"
@@ -269,7 +269,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-[#111111]">
-                            Teléfono
+                            Teléfono empresa
                         </label>
                         <input
                         id="phone"
@@ -283,7 +283,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-[#111111]">
-                        Email
+                        Email empresa
                     </label>
                     <input
                     id="email"
@@ -298,7 +298,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                 <div>
                     <label htmlFor="address" className="block text-sm font-medium text-[#111111]">
-                        Dirección
+                        Dirección empresa
                     </label>
                     <input
                         id="address"
