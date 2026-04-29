@@ -4,8 +4,10 @@ import DashboardPage from "../pages/DashboardPage";
 import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 import CompaniesPage from "../pages/CompaniesPage";
-import BudgetsPage from "../pages/BudgetsPage";
+import PresupuestosPage from "../pages/PresupuestosPage";
 import SettingsPage from "../pages/SettingsPage";
+import CompanyPresupuestosPage from "../pages/CompanyPresupuestosPage";
+import PresupuestoFormPage from "../pages/PresupuestoFormPage";
 
 function AppRouter() {
     return (
@@ -23,7 +25,6 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 />
-
                 <Route
                     path="/companies"
                     element={
@@ -34,13 +35,42 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 />
-                
+                <Route
+                    path="/companies/:companyId/budgets"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout>
+                                <CompanyPresupuestosPage />
+                            </MainLayout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/companies/:companyId/budgets/new"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout>
+                                <PresupuestoFormPage />
+                            </MainLayout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/companies/:companyId/budgets/:presupuestoId/edit"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout>
+                                <PresupuestoFormPage />
+                            </MainLayout>
+                        </ProtectedRoute>
+                    }
+                />
                 <Route
                     path="/budgets"
                     element={
                         <ProtectedRoute>
                         <MainLayout>
-                            <BudgetsPage />
+                            <PresupuestosPage />
                         </MainLayout>
                         </ProtectedRoute>
                     }
