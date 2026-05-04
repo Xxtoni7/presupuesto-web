@@ -6,6 +6,11 @@ import { useSearch } from "../context/SearchContext";
 import { usePresupuestos } from "../hooks/usePresupuestos";
 import PresupuestoCard from "../components/presupuesto/PresupuestoCard";
 import PresupuestoTable from "../components/presupuesto/PresupuestoTable";
+import PresupuestoPreview from "../components/presupuesto/PresupuestoPreview";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";
+import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
+import { getCompanyById } from "../api/companyApi";
+import { duplicatePresupuesto } from "../services/presupuestoService";
 
 function normalizeText(text) {
     return text
@@ -17,8 +22,12 @@ function normalizeText(text) {
 function PresupuestosPage() {
     const navigate = useNavigate();
     const { searchTerm } = useSearch();
-    const { presupuestos, loading, error, removePresupuesto } = usePresupuestos();
+    const { presupuestos, loading, error, removePresupuesto, fetchPresupuestos } = usePresupuestos();
     const [viewMode, setViewMode] = useState("grid");
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [selectedPresupuesto, setSelectedPresupuesto] = useState(null);
+    const [previewItems, setPreviewItems] = useState([]);
+    const [previewCompany, setPreviewCompany] = useState(null);
 
     const filteredPresupuestos = useMemo(() => {
         const term = normalizeText(searchTerm.trim());
@@ -53,12 +62,30 @@ function PresupuestosPage() {
         }
     };
 
-    const handleDuplicate = () => {
-        // TODO: implementar duplicado de presupuesto junto con sus ítems
+    const handleDuplicate = async (presupuesto) => {
+        try {
+            await duplicatePresupuesto(presupuesto);
+
+            await fetchPresupuestos();
+        } catch (error) {
+            alert(error.message || "Error al duplicar el presupuesto");
+        }
     };
 
-    const handlePreview = () => {
-        // TODO: implementar vista previa del presupuesto
+    const handlePreview = async (presupuesto) => {
+        try {
+            const [items, company] = await Promise.all([
+                getItemsByPresupuesto(presupuesto.idPresupuesto),
+                getCompanyById(presupuesto.idCompany),
+            ]);
+
+            setSelectedPresupuesto(presupuesto);
+            setPreviewItems(items);
+            setPreviewCompany(company);
+            setPreviewOpen(true);
+        } catch {
+            alert("No se pudo abrir la vista previa");
+        }
     };
 
     const handleDownload = () => {
@@ -168,6 +195,24 @@ function PresupuestosPage() {
             </div>
 
             {content}
+
+            <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+                <DialogContent className="max-h-[90vh] max-w-6xl overflow-y-auto p-0">
+                    <DialogHeader className="sr-only">
+                        <DialogTitle>Vista previa del presupuesto</DialogTitle>
+                        <DialogDescription>
+                            Visualización completa del presupuesto seleccionado.
+                        </DialogDescription>
+                    </DialogHeader>
+                    {selectedPresupuesto && (
+                        <PresupuestoPreview
+                            presupuesto={selectedPresupuesto}
+                            company={previewCompany}
+                            items={previewItems}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

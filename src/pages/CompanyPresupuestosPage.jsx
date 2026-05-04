@@ -10,6 +10,7 @@ import PresupuestoPreview from "../components/presupuesto/PresupuestoPreview";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";
 import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
+import { duplicatePresupuesto } from "../services/presupuestoService";
 
 function normalizeText(text) {
     return text
@@ -22,7 +23,7 @@ function CompanyPresupuestosPage() {
     const { companyId } = useParams();
     const navigate = useNavigate();
     const { searchTerm } = useSearch();
-    const { presupuestos, loading, error, removePresupuesto } = useCompanyPresupuestos(companyId);
+    const { presupuestos, loading, error, removePresupuesto, fetchCompanyPresupuestos } = useCompanyPresupuestos(companyId);
     const [viewMode, setViewMode] = useState("grid");
     const [previewOpen, setPreviewOpen] = useState(false);
     const [selectedPresupuesto, setSelectedPresupuesto] = useState(null);
@@ -73,8 +74,16 @@ function CompanyPresupuestosPage() {
         }
     };
 
-    const handleDuplicate = () => {
-        // TODO: implementar duplicado de presupuesto junto con sus ítems
+    const handleDuplicate = async (presupuesto) => {
+        try {
+            await duplicatePresupuesto(presupuesto);
+
+            await fetchCompanyPresupuestos();
+
+            alert("Presupuesto duplicado correctamente"); 
+        } catch (error) {
+            alert(error.message || "Error al duplicar el presupuesto");
+        }
     };
 
     const handlePreview = async (presupuesto) => {
