@@ -193,7 +193,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                                 id="colorMain"
                                 name="colorMain"
                                 type="color"
-                                value={formData.colorMain || "#000000"}
+                                value={formData.colorMain || "#c90000"}
                                 onChange={handleChange}
                                 className="absolute inset-0 h-10 w-full cursor-pointer opacity-0"
                             />

@@ -67,7 +67,7 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
                             onChange={(e) =>
                                 handleItemChange(index, "description", e.target.value)
                             }
-                            placeholder="Ej: Pintura roja para paredes"
+                            placeholder="Ej: Revestimiento de paredes"
                             required
                         />
 
