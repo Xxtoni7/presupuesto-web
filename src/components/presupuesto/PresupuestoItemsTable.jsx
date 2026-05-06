@@ -67,10 +67,9 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
                             onChange={(e) =>
                                 handleItemChange(index, "description", e.target.value)
                             }
-                            placeholder="Ej: Revestimiento de paredes"
+                            placeholder="Ej: Revestimiento de paredes en living"
                             required
                         />
-
                         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
                             <div>
                                 <Label className="text-xs">Materiales</Label>

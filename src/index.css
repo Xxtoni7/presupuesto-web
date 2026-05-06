@@ -7,3 +7,29 @@
 body {
     font-family: 'Inter', sans-serif;
 }
+
+.rich-text-preview {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+}
+
+.rich-text-preview * {
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+}
+
+.rich-text-preview p {
+    margin: 0.35rem 0;
+    line-height: 1.5;
+}
+
+.rich-text-preview p:empty {
+    min-height: 0.75rem;
+}

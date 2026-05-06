@@ -12,6 +12,8 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import { getTodayDateInputValue, toDateInputValue } from "../../utils/dateHelpers";
 import { createPresupuesto, updatePresupuesto} from "../../api/presupuestoApi";
 import { createPresupuestoItem, updatePresupuestoItem, deletePresupuestoItem, getItemsByPresupuesto} from "../../api/presupuestoItemApi";
+import RichTextEditor from "../ui/RichTextEditor";
+
 
 function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel }) {
     const [formData, setFormData] = useState({
@@ -250,15 +252,18 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
 
             <div>
                 <Label htmlFor="jobDescription">Descripción del trabajo</Label>
-                <Textarea
-                    id="jobDescription"
-                    name="jobDescription"
-                    value={formData.jobDescription}
-                    onChange={handleChange}
-                    placeholder="Descripción general del trabajo a realizar..."
-                    rows={3}
-                    className="mt-1.5"
-                />
+                <div className="mt-1.5">
+                    <RichTextEditor
+                        value={formData.jobDescription}
+                        onChange={(value) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                jobDescription: value,
+                            }))
+                        }
+                        placeholder="Descripción general del trabajo a realizar..."
+                    />
+                </div>
             </div>
 
             <PresupuestoItemsTable
@@ -296,14 +301,15 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
 
                 <div>
                     <Label htmlFor="paymentTerms">Condiciones de pago</Label>
-                    <Input
-                        id="paymentTerms"
-                        name="paymentTerms"
-                        value={formData.paymentTerms}
-                        onChange={handleChange}
-                        placeholder="Ej: 50% adelanto, 50% contra entrega"
-                        className="mt-1.5"
-                    />
+                    <Textarea
+                            id="paymentTerms"
+                            name="paymentTerms"
+                            value={formData.paymentTerms}
+                            onChange={handleChange}
+                            placeholder={`Ej: 50% anticipo para inicio de obra, 50% restante al finalizar`}
+                            rows={1}
+                            className="mt-1.5 min-h-[30px] resize-y"
+                        />
                 </div>
             </div>
 

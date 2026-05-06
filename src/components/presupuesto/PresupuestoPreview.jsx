@@ -16,6 +16,14 @@ function formatDate(dateValue) {
     }).format(date);
 }
 
+function normalizeRichTextHtml(html) {
+    if (!html) return "";
+
+    return html
+        .replaceAll("&nbsp;", " ")
+        .replaceAll("\u00A0", " ");
+}
+
 function PresupuestoPreview({ presupuesto, company, items }) {
     const primaryColor = company?.colorMain || "#ef4444";
     const secondaryColor = company?.colorSecondary || "#fee2e2";
@@ -25,6 +33,10 @@ function PresupuestoPreview({ presupuesto, company, items }) {
     const logoSrc = company?.logoUrl
         ? `${API_URL}${company.logoUrl}`
         : null;
+
+    const normalizedJobDescription = normalizeRichTextHtml(
+        presupuesto.jobDescription
+    );
 
     const isLightColor = (hex) => {
         if (!hex) return false;
@@ -43,7 +55,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
         : "#ffffff";
 
     return (
-        <div className="mx-auto w-full max-w-4xl bg-white p-8 text-black">
+        <div className="mx-auto w-full max-w-4xl min-w-0 overflow-x-hidden bg-white p-8 text-black">
             <div
                 className="border-b-2 pb-6"
                 style={{ borderColor: primaryColor }}
@@ -131,11 +143,37 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                 {presupuesto.jobDescription && (
                     <div>
                         <h3 className="mb-2 font-semibold text-gray-900">
-                            Descripción del trabajo
+                            Descripción del trabajo:
                         </h3>
-                        <p className={`${textWrapClass} text-gray-700`}>
-                            {presupuesto.jobDescription}
-                        </p>
+                        <div
+                            className="
+                                rich-text-preview
+                                text-gray-700
+
+                                [&_p]:my-2
+                                [&_p]:leading-6
+
+                                [&_ul]:my-2
+                                [&_ul]:list-disc
+                                [&_ul]:pl-5
+
+                                [&_ol]:my-2
+                                [&_ol]:list-decimal
+                                [&_ol]:pl-5
+
+                                [&_li]:my-1
+                                [&_li]:leading-6
+                                [&_li]:pl-1
+
+                                [&_strong]:font-bold
+                                [&_strong]:text-[#111111]
+
+                                [&_u]:underline
+                            "
+                            dangerouslySetInnerHTML={{
+                                __html: normalizedJobDescription,
+                            }}
+                        />
                     </div>
                 )}
 
@@ -239,7 +277,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                         {presupuesto.estimatedTime && (
                             <div>
                                 <h3 className="mb-2 font-semibold text-gray-900">
-                                    Tiempo estimado
+                                    Tiempo estimado:
                                 </h3>
                                 <p className={`${textWrapClass} text-gray-700`}>
                                     {presupuesto.estimatedTime}
@@ -250,7 +288,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                         {presupuesto.paymentTerms && (
                             <div>
                                 <h3 className="mb-2 font-semibold text-gray-900">
-                                    Condiciones de pago
+                                    Condiciones de pago:
                                 </h3>
                                 <p className={`${textWrapClass} text-gray-700`}>
                                     {presupuesto.paymentTerms}
@@ -263,7 +301,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                 {presupuesto.observations && (
                     <div className="pt-4">
                         <h3 className="mb-2 font-semibold text-gray-900">
-                            Observaciones
+                            Observaciones:
                         </h3>
                         <p className={`${textWrapClass} text-gray-700`}>
                             {presupuesto.observations}
