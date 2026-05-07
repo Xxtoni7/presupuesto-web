@@ -182,39 +182,41 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                         Detalle del presupuesto
                     </h3>
 
-                    <div className="overflow-hidden rounded-lg border border-gray-200">
-                        <table className="w-full">
+                    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+                        <table className="w-full min-w-[720px]">
                             <thead
                                 className="border-b border-gray-200"
-                                style={{ backgroundColor: secondaryColor }}
+                                style={{
+                                    backgroundColor: `${secondaryColor}CC`,
+                                }}
                             >
                                 <tr>
                                     <th
-                                        className="w-[40%] px-4 py-3 text-left text-sm font-semibold"
+                                        className="w-[40%] px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide"
                                         style={{ color: headerTextColor }}
                                     >
                                         Descripción
                                     </th>
                                     <th
-                                        className="px-4 py-3 text-right text-sm font-semibold"
+                                        className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
                                         style={{ color: headerTextColor }}
                                     >
                                         Materiales
                                     </th>
                                     <th
-                                        className="px-4 py-3 text-right text-sm font-semibold"
+                                        className="min-w-[140px] px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
                                         style={{ color: headerTextColor }}
                                     >
                                         Mano de obra
                                     </th>
                                     <th
-                                        className="px-4 py-3 text-right text-sm font-semibold"
+                                        className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
                                         style={{ color: headerTextColor }}
                                     >
                                         Cantidad
                                     </th>
                                     <th
-                                        className="px-4 py-3 text-right text-sm font-semibold"
+                                        className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
                                         style={{ color: headerTextColor }}
                                     >
                                         Subtotal
@@ -222,46 +224,45 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                                 </tr>
                             </thead>
 
-                            <tbody className="divide-y divide-gray-200">
+                            <tbody className="divide-y divide-gray-100 bg-white">
                                 {items.map((item) => (
                                     <tr key={item.idItem}>
-                                        <td className="w-[40%] px-4 py-3 text-sm text-gray-700">
-                                            <p className="font-medium break-words">{item.description}</p>
+                                        <td className="w-[40%] px-5 py-4 align-top">
+                                            <p className="break-words text-[15px] leading-6 text-gray-800">
+                                                {item.description}
+                                            </p>
                                         </td>
 
-                                        <td className="px-4 py-3 text-right text-sm text-gray-700">
+                                        <td className="px-5 py-4 text-right text-sm text-gray-500">
                                             {formatCurrency(item.materials || 0)}
                                         </td>
 
-                                        <td className="px-4 py-3 text-right text-sm text-gray-700">
+                                        <td className="px-5 py-4 text-right text-sm text-gray-500">
                                             {formatCurrency(item.labor || 0)}
                                         </td>
 
-                                        <td className="px-4 py-3 text-right text-sm text-gray-700">
+                                        <td className="px-5 py-4 text-right text-sm font-medium text-gray-600">
                                             {item.quantity}
                                         </td>
 
-                                        <td className="px-4 py-3 text-right text-sm font-medium text-gray-900">
+                                        <td className="px-5 py-4 text-right text-[15px] font-semibold text-gray-900">
                                             {formatCurrency(item.subtotal || 0)}
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
 
-                            <tfoot
-                                className="border-t border-gray-200"
-                                style={{ backgroundColor: secondaryColor }}
-                            >
-                                <tr>
+                            <tfoot className="border-t-2" style={{ borderColor: primaryColor }}>
+                                <tr className="bg-gray-50">
                                     <td
                                         colSpan="4"
-                                        className="px-4 py-4 text-right text-lg font-bold"
-                                        style={{ color: headerTextColor }}
+                                        className="px-5 py-5 text-right text-sm font-semibold uppercase tracking-wide text-gray-500"
                                     >
-                                        TOTAL
+                                        Total
                                     </td>
+
                                     <td
-                                        className="px-4 py-4 text-right text-2xl font-bold"
+                                        className="px-5 py-5 text-right text-3xl font-bold"
                                         style={{ color: primaryColor }}
                                     >
                                         {formatCurrency(presupuesto.total || 0)}
