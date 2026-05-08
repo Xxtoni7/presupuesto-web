@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } 
 import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
 import { duplicatePresupuesto } from "../services/presupuestoService";
+import { generatePresupuestoPdf } from "../utils/pdf/presupuestoPdf/generatePresupuestoPdf";
+
 
 function normalizeText(text) {
     return text
@@ -100,8 +102,14 @@ function CompanyPresupuestosPage() {
         }
     };
 
-    const handleDownload = () => {
-        // TODO: implementar descarga PDF del presupuesto
+    const handleDownload = async (presupuesto) => {
+        try {
+            const items = await getItemsByPresupuesto(presupuesto.idPresupuesto);
+
+            await generatePresupuestoPdf(presupuesto, companyData, items);
+        } catch {
+            alert("No se pudo generar el PDF");
+        }
     };
 
     let content;
