@@ -11,10 +11,12 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
 
     const primaryColor = hexToRgb(company?.colorMain);
     const logoImage = await loadImageElement(getImageUrl(company?.logoUrl));
-    const headerIcons = {
+    const pdfIcons = {
         phone: await loadSvgAsPngDataUrl("/icons/pdf/phone.svg", 24),
         mail: await loadSvgAsPngDataUrl("/icons/pdf/mail.svg", 24),
         calendar: await loadSvgAsPngDataUrl("/icons/pdf/calendar.svg", 24),
+        user: await loadSvgAsPngDataUrl("/icons/pdf/user.svg", 24),
+        mapPin: await loadSvgAsPngDataUrl("/icons/pdf/map-pin.svg", 24),
     };
     const secondaryColor = hexToRgb(company?.colorSecondary, [254, 226, 226]);
 
@@ -28,10 +30,10 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
         presupuesto,
         primaryColor,
         logoImage,
-        headerIcons
+        pdfIcons
     );
 
-    let currentY = drawClientInfo(doc, presupuesto);
+    let currentY = drawClientInfo(doc, presupuesto, pdfIcons);
 
     currentY = drawJobDescription(doc, presupuesto, currentY);
 

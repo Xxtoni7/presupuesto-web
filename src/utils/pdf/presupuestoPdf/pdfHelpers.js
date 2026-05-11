@@ -107,3 +107,137 @@ export async function loadSvgAsPngDataUrl(path, size = 24) {
         return null;
     }
 }
+
+export function parseRichTextHtml(html) {
+    if (!html) return [];
+
+    const parser = new DOMParser();
+    const document = parser.parseFromString(html, "text/html");
+
+    const blocks = [];
+
+    const parseInlineNodes = (nodes, activeStyles = {}) => {
+        const segments = [];
+
+        nodes.forEach((node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.textContent
+                    .replaceAll("\u00A0", " ")
+                    .replaceAll("&nbsp;", " ");
+
+                if (text) {
+                    segments.push({
+                        text,
+                        bold: Boolean(activeStyles.bold),
+                        underline: Boolean(activeStyles.underline),
+                    });
+                }
+
+                return;
+            }
+
+            if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+            const tagName = node.tagName.toLowerCase();
+
+            if (tagName === "br") {
+                segments.push({
+                    text: "\n",
+                    bold: Boolean(activeStyles.bold),
+                    underline: Boolean(activeStyles.underline),
+                });
+
+                return;
+            }
+
+            const nextStyles = {
+                ...activeStyles,
+                bold:
+                    activeStyles.bold ||
+                    tagName === "strong" ||
+                    tagName === "b",
+                underline:
+                    activeStyles.underline ||
+                    tagName === "u",
+            };
+
+            segments.push(
+                ...parseInlineNodes(
+                    Array.from(node.childNodes),
+                    nextStyles
+                )
+            );
+        });
+
+        return segments;
+    };
+
+    const addParagraph = (element) => {
+        const segments = parseInlineNodes(Array.from(element.childNodes));
+
+        const hasContent = segments.some((segment) =>
+            segment.text.trim()
+        );
+
+        if (!hasContent) return;
+
+        blocks.push({
+            type: "paragraph",
+            segments,
+        });
+    };
+
+    Array.from(document.body.childNodes).forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent.trim();
+
+            if (text) {
+                blocks.push({
+                    type: "paragraph",
+                    segments: [
+                        {
+                            text,
+                            bold: false,
+                            underline: false,
+                        },
+                    ],
+                });
+            }
+
+            return;
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+        const tagName = node.tagName.toLowerCase();
+
+        if (tagName === "p") {
+            addParagraph(node);
+            return;
+        }
+
+        if (tagName === "ul" || tagName === "ol") {
+            const listItems = Array.from(node.children).filter(
+                (child) => child.tagName.toLowerCase() === "li"
+            );
+
+            listItems.forEach((item, index) => {
+                const segments = parseInlineNodes(
+                    Array.from(item.childNodes)
+                );
+
+                blocks.push({
+                    type: tagName === "ul" ? "bullet" : "ordered",
+                    number: index + 1,
+                    segments,
+                });
+            });
+
+            return;
+        }
+
+        addParagraph(node);
+    });
+
+    return blocks;
+}

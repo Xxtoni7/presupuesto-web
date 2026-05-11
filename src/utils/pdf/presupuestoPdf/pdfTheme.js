@@ -20,6 +20,16 @@ export const pdfTheme = {
         tableHeader: 10,
     },
 
+    main: {
+        sectionGap: 10,
+        titleSize: 13,
+        valueSize: 12.3,
+        lineHeight: 6.2,
+        titleColor: [17, 24, 39],
+        valueColor: [55, 65, 81],
+        iconColor: [156, 163, 175],
+    },
+
     spacing: {
         xs: 4,
         sm: 8,

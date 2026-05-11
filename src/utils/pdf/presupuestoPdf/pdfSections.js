@@ -1,5 +1,5 @@
 import { pdfTheme } from "./pdfTheme";
-import { formatPdfDate } from "./pdfHelpers";
+import { formatPdfDate, parseRichTextHtml } from "./pdfHelpers";
 
 function getContainedImageSize(image, maxWidth, maxHeight) {
     const imageWidth = image?.naturalWidth || image?.width || maxWidth;
@@ -246,78 +246,257 @@ export function drawHeader(doc, company, presupuesto, primaryColor, logoImage, h
     );
 }
 
-export function drawClientInfo(doc, presupuesto) {
-    let currentY = 68;
+export function drawClientInfo(doc, presupuesto, pdfIcons) {
+    let currentY = 62;
 
-    doc.setFont("Inter", "bold");
-    doc.setFontSize(pdfTheme.font.subtitle);
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const marginX = pdfTheme.page.marginX;
+    const columnGap = 14;
+    const columnWidth = (pageWidth - marginX * 2 - columnGap) / 2;
+
+    const leftX = marginX;
+    const rightX = marginX + columnWidth + columnGap;
+
+    const clientInfoY = currentY + 8;
+    const valueLineHeight = 5;
+
+    // CLIENTE
+    doc.setFont("Inter", "semibold");
+    doc.setFontSize(13);
     doc.setTextColor(...pdfTheme.colors.text);
 
     doc.text(
         "Cliente",
-        pdfTheme.page.marginX,
+        leftX,
         currentY
     );
-
-    currentY += 10;
 
     doc.setFont("Inter", "normal");
-    doc.setFontSize(pdfTheme.font.body);
-    doc.setTextColor(...pdfTheme.colors.text);
+    doc.setFontSize(12.3);
+    doc.setTextColor(55, 65, 81);
 
-    doc.text(
-        `Nombre: ${presupuesto?.clientName || "-"}`,
-        pdfTheme.page.marginX,
-        currentY
+    if (pdfIcons?.user) {
+        doc.addImage(
+            pdfIcons.user,
+            "PNG",
+            leftX,
+            clientInfoY - 4.5,
+            5.2,
+            5.2
+        );
+    }
+
+    const clientNameLines = doc.splitTextToSize(
+        presupuesto?.clientName || "-",
+        columnWidth - 8
     );
 
-    currentY += 8;
+    doc.text(
+        clientNameLines,
+        leftX + 7,
+        clientInfoY
+    );
+
+    const clientHeight = clientNameLines.length * valueLineHeight;
+
+    // DIRECCIÓN DE LA OBRA
+    let addressHeight = 0;
 
     if (presupuesto?.workAddress) {
+        doc.setFont("Inter", "semibold");
+        doc.setFontSize(13);
+        doc.setTextColor(...pdfTheme.colors.text);
+
         doc.text(
-            `Dirección: ${presupuesto.workAddress}`,
-            pdfTheme.page.marginX,
+            "Dirección de la obra",
+            rightX,
             currentY
         );
 
-        currentY += 8;
+        doc.setFont("Inter", "normal");
+        doc.setFontSize(12.3);
+        doc.setTextColor(55, 65, 81);
+
+        if (pdfIcons?.mapPin) {
+            doc.addImage(
+                pdfIcons.mapPin,
+                "PNG",
+                rightX,
+                clientInfoY - 4.5,
+                5.2,
+                5.2
+            );
+        }
+
+        const addressLines = doc.splitTextToSize(
+            presupuesto.workAddress,
+            columnWidth - 8
+        );
+
+        doc.text(
+            addressLines,
+            rightX + 7,
+            clientInfoY
+        );
+
+        addressHeight = addressLines.length * valueLineHeight;
     }
 
-    return currentY;
+    const sectionHeight = Math.max(
+        clientHeight,
+        addressHeight,
+        3
+    );
+
+    return clientInfoY + sectionHeight;
+}
+
+// Job Description with Rich Text (supports basic formatting and lists)
+function getSegmentFontStyle(segment) {
+    return segment.bold ? "bold" : "normal";
+}
+
+function drawTextWithStyle(doc, text, x, y, segment) {
+    doc.setFont("Inter", getSegmentFontStyle(segment));
+    doc.setFontSize(pdfTheme.main.valueSize);
+
+    const textColor = segment.bold
+        ? pdfTheme.main.titleColor
+        : pdfTheme.main.valueColor;
+
+    doc.setTextColor(...textColor);
+    doc.text(text, x, y);
+
+    if (segment.underline) {
+        const textWidth = doc.getTextWidth(text);
+
+        doc.setDrawColor(...textColor);
+        doc.setLineWidth(0.25);
+        doc.line(
+            x,
+            y + 0.8,
+            x + textWidth,
+            y + 0.8
+        );
+    }
+}
+
+function drawInlineSegments(doc, segments, startX, startY, maxWidth) {
+    let currentX = startX;
+    let currentY = startY;
+
+    const lineHeight = pdfTheme.main.lineHeight;
+    const endX = startX + maxWidth;
+
+    segments.forEach((segment) => {
+        const parts = segment.text
+            .replaceAll("\n", " \n ")
+            .split(/(\s+)/);
+
+        parts.forEach((part) => {
+            if (!part) return;
+
+            if (part === "\n") {
+                currentX = startX;
+                currentY += lineHeight;
+                return;
+            }
+
+            doc.setFont("Inter", getSegmentFontStyle(segment));
+            doc.setFontSize(pdfTheme.main.valueSize);
+
+            const partWidth = doc.getTextWidth(part);
+            const isOnlySpace = part.trim() === "";
+
+            if (!isOnlySpace && currentX + partWidth > endX) {
+                currentX = startX;
+                currentY += lineHeight;
+            }
+
+            if (isOnlySpace && currentX === startX) return;
+
+            drawTextWithStyle(
+                doc,
+                part,
+                currentX,
+                currentY,
+                segment
+            );
+
+            currentX += partWidth;
+        });
+    });
+
+    return currentY + lineHeight;
+}
+
+function drawRichTextBlock(doc, block, startX, startY, maxWidth) {
+    let contentX = startX;
+    let contentWidth = maxWidth;
+
+    doc.setFont("Inter", "normal");
+    doc.setFontSize(pdfTheme.main.valueSize);
+    doc.setTextColor(...pdfTheme.main.valueColor);
+
+    if (block.type === "bullet") {
+        doc.text("•", startX + 1, startY);
+
+        contentX = startX + 8;
+        contentWidth = maxWidth - 8;
+    }
+
+    if (block.type === "ordered") {
+        const prefix = `${block.number}.`;
+
+        doc.text(prefix, startX, startY);
+
+        contentX = startX + 8;
+        contentWidth = maxWidth - 8;
+    }
+
+    return drawInlineSegments(
+        doc,
+        block.segments,
+        contentX,
+        startY,
+        contentWidth
+    );
 }
 
 export function drawJobDescription(doc, presupuesto, startY) {
     if (!presupuesto?.jobDescription) return startY;
 
     const pageWidth = doc.internal.pageSize.getWidth();
-    const maxWidth = pageWidth - pdfTheme.page.marginX * 2;
+    const marginX = pdfTheme.page.marginX;
+    const maxWidth = pageWidth - marginX * 2;
 
-    let currentY = startY + 10;
+    let currentY = startY + pdfTheme.main.sectionGap;
 
-    doc.setFont("Inter", "bold");
-    doc.setFontSize(pdfTheme.font.body);
-    doc.setTextColor(...pdfTheme.colors.text);
+    doc.setFont("Inter", "semibold");
+    doc.setFontSize(pdfTheme.main.titleSize);
+    doc.setTextColor(...pdfTheme.main.titleColor);
 
     doc.text(
         "Descripción del trabajo:",
-        pdfTheme.page.marginX,
+        marginX,
         currentY
     );
 
-    currentY += 7;
+    currentY += 8;
 
-    doc.setFont("Inter", "normal");
-    doc.setFontSize(pdfTheme.font.body);
-    doc.setTextColor(...pdfTheme.colors.text);
+    const blocks = parseRichTextHtml(presupuesto.jobDescription);
 
-    const plainText = presupuesto.jobDescription
-        .replaceAll(/<[^>]+>/g, "")
-        .replaceAll("&nbsp;", " ")
-        .trim();
+    blocks.forEach((block) => {
+        currentY = drawRichTextBlock(
+            doc,
+            block,
+            marginX,
+            currentY,
+            maxWidth
+        );
 
-    const lines = doc.splitTextToSize(plainText, maxWidth);
+        currentY += 2;
+    });
 
-    doc.text(lines, pdfTheme.page.marginX, currentY);
-
-    return currentY + lines.length * 6;
+    return currentY + pdfTheme.main.sectionGap;
 }
