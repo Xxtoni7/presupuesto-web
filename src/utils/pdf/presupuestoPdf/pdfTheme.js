@@ -3,6 +3,8 @@ export const pdfTheme = {
         marginX: 20,
         marginTop: 20,
         marginBottom: 20,
+        footerReservedSpace: 24,
+        contentTopAfterHeader: 62,
     },
 
     colors: {

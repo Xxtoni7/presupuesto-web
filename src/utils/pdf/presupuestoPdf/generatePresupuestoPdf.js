@@ -24,18 +24,22 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
         Math.round(channel * 0.8 + 255 * 0.2)
     );
 
-    drawHeader(
-        doc,
-        company,
-        presupuesto,
-        primaryColor,
-        logoImage,
-        pdfIcons
-    );
+    const drawPageHeader = () => {
+        drawHeader(
+            doc,
+            company,
+            presupuesto,
+            primaryColor,
+            logoImage,
+            pdfIcons
+        );
+    };  
+
+    drawPageHeader();
 
     let currentY = drawClientInfo(doc, presupuesto, pdfIcons);
 
-    currentY = drawJobDescription(doc, presupuesto, currentY);
+    currentY = drawJobDescription(doc, presupuesto, currentY, drawPageHeader);
 
     autoTable(doc, {
         startY: currentY + 12,

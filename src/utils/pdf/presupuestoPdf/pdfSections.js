@@ -138,6 +138,11 @@ export function drawHeader(doc, company, presupuesto, primaryColor, logoImage, h
         companyInfoY += 5;
     }
 
+    const rightSectionLimitX = pageWidth - marginX - 72;
+    const emailExtraWidth = 15;
+    const companyInfoMaxWidth = rightSectionLimitX - infoTextX + emailExtraWidth;
+    const companyInfoLineHeight = 4.8;
+
     // Phone
     if (company?.phone) {
         if (headerIcons?.phone) {
@@ -173,11 +178,17 @@ export function drawHeader(doc, company, presupuesto, primaryColor, logoImage, h
             );
         }
 
-        doc.text(
-            company.email,
-            infoTextX,
-            companyInfoY
-        );
+        const emailLines = doc
+            .splitTextToSize(company.email, companyInfoMaxWidth)
+            .slice(0, 2);
+
+        emailLines.forEach((line, index) => {
+            doc.text(
+                line,
+                infoTextX,
+                companyInfoY + index * companyInfoLineHeight
+            );
+        });
     }
 
     // Presupuesto Title
@@ -413,8 +424,6 @@ function drawInlineSegments(doc, segments, startX, startY, maxWidth) {
                 currentY += lineHeight;
             }
 
-            if (isOnlySpace && currentX === startX) return;
-
             drawTextWithStyle(
                 doc,
                 part,
@@ -431,6 +440,10 @@ function drawInlineSegments(doc, segments, startX, startY, maxWidth) {
 }
 
 function drawRichTextBlock(doc, block, startX, startY, maxWidth) {
+    if (block.type === "empty") {
+        return startY + pdfTheme.main.lineHeight;
+    }
+    
     let contentX = startX;
     let contentWidth = maxWidth;
 
@@ -463,7 +476,26 @@ function drawRichTextBlock(doc, block, startX, startY, maxWidth) {
     );
 }
 
-export function drawJobDescription(doc, presupuesto, startY) {
+function ensurePageSpace(doc, currentY, neededHeight, onNewPage) {
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    const maxContentY =
+        pageHeight - pdfTheme.page.footerReservedSpace;
+
+    if (currentY + neededHeight <= maxContentY) {
+        return currentY;
+    }
+
+    doc.addPage();
+
+    if (onNewPage) {
+        onNewPage();
+    }
+
+    return pdfTheme.page.contentTopAfterHeader;
+}
+
+export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
     if (!presupuesto?.jobDescription) return startY;
 
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -471,6 +503,13 @@ export function drawJobDescription(doc, presupuesto, startY) {
     const maxWidth = pageWidth - marginX * 2;
 
     let currentY = startY + pdfTheme.main.sectionGap;
+
+    currentY = ensurePageSpace(
+        doc,
+        currentY,
+        16,
+        onNewPage
+    );
 
     doc.setFont("Inter", "semibold");
     doc.setFontSize(pdfTheme.main.titleSize);
@@ -487,6 +526,13 @@ export function drawJobDescription(doc, presupuesto, startY) {
     const blocks = parseRichTextHtml(presupuesto.jobDescription);
 
     blocks.forEach((block) => {
+        currentY = ensurePageSpace(
+            doc,
+            currentY,
+            pdfTheme.main.lineHeight + 4,
+            onNewPage
+        );
+
         currentY = drawRichTextBlock(
             doc,
             block,

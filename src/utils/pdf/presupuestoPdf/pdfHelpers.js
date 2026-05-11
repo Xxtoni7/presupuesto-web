@@ -179,7 +179,14 @@ export function parseRichTextHtml(html) {
             segment.text.trim()
         );
 
-        if (!hasContent) return;
+        if (!hasContent) {
+            blocks.push({
+                type: "empty",
+                segments: [],
+            });
+
+            return;
+        }
 
         blocks.push({
             type: "paragraph",
