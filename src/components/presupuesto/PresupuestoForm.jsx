@@ -289,13 +289,14 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                     <Label htmlFor="estimatedTime">Tiempo estimado</Label>
-                    <Input
+                    <Textarea
                         id="estimatedTime"
                         name="estimatedTime"
                         value={formData.estimatedTime}
                         onChange={handleChange}
                         placeholder="Ej: 15 días hábiles"
-                        className="mt-1.5"
+                        rows={1}
+                        className="mt-1.5 min-h-[30px] resize-y"
                     />
                 </div>
 
