@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import { registerInterFonts } from "./pdfFonts";
 import { getImageUrl, hexToRgb, loadImageElement, loadSvgAsPngDataUrl, sanitizeFileName } from "./pdfHelpers";
-import { drawBudgetItemsSection, drawClientInfo, drawHeader, drawJobDescription, drawTimeAndPaymentSection, drawObservationsSection, } from "./pdfSections";
+import { drawBudgetItemsSection, drawClientInfo, drawHeader, drawJobDescription, drawTimeAndPaymentSection, drawObservationsSection, drawFooter } from "./pdfSections";
 
 export async function generatePresupuestoPdf(presupuesto, company, items) {
     const doc = new jsPDF();
@@ -67,6 +67,21 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
         currentY,
         drawPageHeader
     );
+
+    const totalPages = doc.internal.getNumberOfPages();
+
+    for (let pageNumber = 1; pageNumber <= totalPages; pageNumber += 1) {
+        doc.setPage(pageNumber);
+
+        drawFooter(
+            doc,
+            presupuesto,
+            company,
+            primaryColor,
+            pageNumber,
+            totalPages
+        );
+    }
 
     const fileName = `Presupuesto_${sanitizeFileName(
         presupuesto.clientName

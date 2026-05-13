@@ -1058,3 +1058,97 @@ export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
 
     return currentY;
 }
+
+export function drawFooter(doc, presupuesto, company, primaryColor, pageNumber, totalPages) {
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const marginX = pdfTheme.page.marginX;
+
+    const footerY = pageHeight - 13;
+    const lineY = footerY - 7;
+    const isLastPage = pageNumber === totalPages;
+
+    doc.setDrawColor(229, 231, 235);
+    doc.setLineWidth(0.25);
+
+    doc.line(
+        marginX,
+        lineY,
+        pageWidth - marginX,
+        lineY
+    );
+
+    if (!isLastPage) {
+        doc.setDrawColor(...primaryColor);
+        doc.setLineWidth(0.7);
+
+        doc.line(
+            marginX,
+            lineY,
+            marginX + 18,
+            lineY
+        );
+    }
+
+    doc.setFont("Inter", "normal");
+    doc.setFontSize(9.3);
+    doc.setTextColor(107, 114, 128);
+
+    if (isLastPage) {
+        const labelText = "Presupuesto válido hasta:";
+        const expirationDateText = formatPdfDate(presupuesto?.fechaVencimiento);
+        const gap = 2.5;
+
+        doc.setFont("Inter", "normal");
+        doc.setFontSize(9.3);
+
+        const labelWidth = doc.getTextWidth(labelText);
+
+        doc.setFont("Inter", "semibold");
+        const dateWidth = doc.getTextWidth(expirationDateText);
+
+        const totalTextWidth = labelWidth + gap + dateWidth;
+        const startX = pageWidth / 2 - totalTextWidth / 2;
+
+        doc.setFont("Inter", "normal");
+        doc.setTextColor(107, 114, 128);
+
+        doc.text(
+            labelText,
+            startX,
+            footerY
+        );
+
+        doc.setFont("Inter", "semibold");
+        doc.setTextColor(55, 65, 81);
+
+        doc.text(
+            expirationDateText,
+            startX + labelWidth + gap,
+            footerY
+        );
+
+        return;
+    }
+
+    doc.text(
+        `Presupuesto ${presupuesto?.budgetNumber || "-"}`,
+        marginX,
+        footerY
+    );
+
+    doc.setFont("Inter", "semibold");
+    doc.setTextColor(55, 65, 81);
+
+    const companyName = company?.name || "Empresa";
+    const companyNameLines = doc
+        .splitTextToSize(companyName, 75)
+        .slice(0, 1);
+
+    doc.text(
+        companyNameLines[0],
+        pageWidth - marginX,
+        footerY,
+        { align: "right" }
+    );
+}
