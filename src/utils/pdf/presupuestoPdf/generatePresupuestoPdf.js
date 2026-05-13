@@ -61,7 +61,7 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
         drawPageHeader
     );
 
-    currentY = drawObservationsSection(
+    drawObservationsSection(
         doc,
         presupuesto,
         currentY,
