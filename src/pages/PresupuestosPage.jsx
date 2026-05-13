@@ -10,6 +10,8 @@ import PresupuestoPreview from "../components/presupuesto/PresupuestoPreview";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";
 import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
+import { toast } from "sonner";
+import { generatePresupuestoPdf } from "../utils/pdf/presupuestoPdf/generatePresupuestoPdf";
 import { duplicatePresupuesto } from "../services/presupuestoService";
 
 function normalizeText(text) {
@@ -63,12 +65,28 @@ function PresupuestosPage() {
     };
 
     const handleDuplicate = async (presupuesto) => {
+        const toastId = toast.loading("Duplicando presupuesto...", {
+            description: "Estamos creando una copia del presupuesto.",
+        });
+
         try {
             await duplicatePresupuesto(presupuesto);
 
             await fetchPresupuestos();
+
+            toast.success("Presupuesto duplicado correctamente", {
+                id: toastId,
+                description: `Se creó una copia de ${
+                    presupuesto.budgetNumber || presupuesto.title || "este presupuesto"
+                }.`,
+                duration: 3500,
+            });
         } catch (error) {
-            alert(error.message || "Error al duplicar el presupuesto");
+            toast.error("No se pudo duplicar el presupuesto", {
+                id: toastId,
+                description: error.message || "Intentá nuevamente en unos segundos.",
+                duration: 4500,
+            });
         }
     };
 
@@ -88,8 +106,35 @@ function PresupuestosPage() {
         }
     };
 
-    const handleDownload = () => {
-        // TODO: implementar descarga PDF del presupuesto
+    const handleDownload = async (presupuesto) => {
+        const toastId = toast.loading("Generando PDF...", {
+            description: "Estamos preparando el presupuesto para descargar.",
+        });
+
+        try {
+            const [items, company] = await Promise.all([
+                getItemsByPresupuesto(presupuesto.idPresupuesto),
+                getCompanyById(presupuesto.idCompany),
+            ]);
+
+            await generatePresupuestoPdf(
+                presupuesto,
+                company,
+                items
+            );
+
+            toast.success("PDF generado correctamente", {
+                id: toastId,
+                description: `Se descargó ${presupuesto.budgetNumber || "el presupuesto"}.`,
+                duration: 3500,
+            });
+        } catch {
+            toast.error("No se pudo generar el PDF", {
+                id: toastId,
+                description: "No se encontró la empresa o los ítems del presupuesto.",
+                duration: 4500,
+            });
+        }
     };
 
     let content;

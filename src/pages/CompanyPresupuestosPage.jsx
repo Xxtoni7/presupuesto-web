@@ -12,6 +12,7 @@ import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
 import { duplicatePresupuesto } from "../services/presupuestoService";
 import { generatePresupuestoPdf } from "../utils/pdf/presupuestoPdf/generatePresupuestoPdf";
+import { toast } from "sonner";
 
 
 function normalizeText(text) {
@@ -77,14 +78,28 @@ function CompanyPresupuestosPage() {
     };
 
     const handleDuplicate = async (presupuesto) => {
+        const toastId = toast.loading("Duplicando presupuesto...", {
+            description: "Estamos creando una copia del presupuesto.",
+        });
+
         try {
             await duplicatePresupuesto(presupuesto);
 
             await fetchCompanyPresupuestos();
 
-            alert("Presupuesto duplicado correctamente"); 
+            toast.success("Presupuesto duplicado correctamente", {
+                id: toastId,
+                description: `Se creó una copia de ${
+                    presupuesto.budgetNumber || presupuesto.title || "este presupuesto"
+                }.`,
+                duration: 3500,
+            });
         } catch (error) {
-            alert(error.message || "Error al duplicar el presupuesto");
+            toast.error("No se pudo duplicar el presupuesto", {
+                id: toastId,
+                description: error.message || "Intentá nuevamente en unos segundos.",
+                duration: 4500,
+            });
         }
     };
 
@@ -103,12 +118,30 @@ function CompanyPresupuestosPage() {
     };
 
     const handleDownload = async (presupuesto) => {
+        const toastId = toast.loading("Generando PDF...", {
+            description: "Estamos preparando el presupuesto para descargar.",
+        });
+
         try {
             const items = await getItemsByPresupuesto(presupuesto.idPresupuesto);
 
-            await generatePresupuestoPdf(presupuesto, companyData, items);
+            await generatePresupuestoPdf(
+                presupuesto,
+                companyData,
+                items
+            );
+
+            toast.success("PDF generado correctamente", {
+                id: toastId,
+                description: `Se descargó ${presupuesto.budgetNumber || "el presupuesto"}.`,
+                duration: 3500,
+            });
         } catch {
-            alert("No se pudo generar el PDF");
+            toast.error("No se pudo generar el PDF", {
+                id: toastId,
+                description: "Intentá nuevamente en unos segundos.",
+                duration: 4500,
+            });
         }
     };
 
