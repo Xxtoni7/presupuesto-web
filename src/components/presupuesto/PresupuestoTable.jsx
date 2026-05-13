@@ -1,22 +1,7 @@
 import PropTypes from "prop-types";
-import {
-    Calendar,
-    User,
-    Edit,
-    Trash2,
-    Copy,
-    Eye,
-    Download,
-} from "lucide-react";
+import { Calendar, User, Edit, Trash2, Copy, Eye, Download } from "lucide-react";
 import { Button } from "../ui/button";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "../ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 function formatDate(dateString) {

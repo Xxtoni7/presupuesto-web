@@ -1,13 +1,5 @@
 import PropTypes from "prop-types";
-import {
-    Building2,
-    Mail,
-    Phone,
-    MapPin,
-    Edit,
-    Trash2,
-    FileText,
-} from "lucide-react";
+import { Building2, Mail, Phone, MapPin, Edit, Trash2, FileText } from "lucide-react";
 import { API_BASE_URL } from "../../utils/constants";
 
 function CompanyCard({ company, onEdit, onDelete, onViewBudgets }) {

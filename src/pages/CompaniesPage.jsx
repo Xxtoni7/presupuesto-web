@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Grid, List, Building2, X } from "lucide-react";
 import CompanyCard from "../components/company/CompanyCard";
+import CompanyTable from "../components/company/CompanyTable";
 import { useCompanies } from "../hooks/useCompanies";
 import CompanyForm from "../components/company/CompanyForm";
 import { createPortal } from "react-dom";
@@ -111,17 +112,12 @@ function CompaniesPage() {
         );
     } else {
         content = (
-        <div className="space-y-4">
-            {companies.map((company) => (
-            <CompanyCard
-                key={company.idCompany ?? company.id}
-                company={company}
+            <CompanyTable
+                companies={filteredCompanies}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onViewBudgets={handleViewBudgets}
             />
-            ))}
-        </div>
         );
     }
 
