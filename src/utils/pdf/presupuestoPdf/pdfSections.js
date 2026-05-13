@@ -540,6 +540,10 @@ function drawPlainTextLines(doc, lines, startX, startY, lineHeight, onNewPage) {
             onNewPage
         );
 
+        doc.setFont("Inter", "normal");
+        doc.setFontSize(pdfTheme.main.valueSize);
+        doc.setTextColor(...pdfTheme.main.valueColor);
+
         if (line !== "") {
             doc.text(
                 line,
@@ -1021,13 +1025,10 @@ export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
         maxWidth
     );
 
-    const estimatedSectionHeight =
-        8 + observationLines.length * pdfTheme.main.lineHeight;
-
     currentY = ensurePageSpace(
         doc,
         currentY,
-        estimatedSectionHeight,
+        8 + pdfTheme.main.lineHeight,
         onNewPage
     );
 
