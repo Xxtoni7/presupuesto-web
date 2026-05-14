@@ -70,7 +70,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                 logoUrl: result.url,
             }));
 
-            setLogoPreview(`${API_BASE_URL}${result.url}`);
+            setLogoPreview(URL.createObjectURL(file));
         } catch (err) {
             alert(err.message || "Error al subir el logo");
         } finally {
