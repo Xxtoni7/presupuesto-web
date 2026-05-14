@@ -1,4 +1,7 @@
-const BASE_URL = "https://localhost:7277/api/company";
+import { API_BASE_URL } from "../utils/constants";
+
+const BASE_URL = `${API_BASE_URL}/api/company`;
+//const BASE_URL = "https://localhost:7277/api/company";
 
 export async function getCompanies() {
     const response = await fetch(BASE_URL);

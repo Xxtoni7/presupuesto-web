@@ -1,4 +1,7 @@
-const BASE_URL = "https://localhost:7277/api/upload";
+import { API_BASE_URL } from "../utils/constants";
+
+const BASE_URL = `${API_BASE_URL}/api/upload`;
+//const BASE_URL = "https://localhost:7277/api/upload";
 
 export async function uploadCompanyLogo(file, oldLogoUrl = "") {
     const formData = new FormData();
