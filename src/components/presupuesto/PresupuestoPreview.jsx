@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import DOMPurify from "dompurify";
 import { Building2, Calendar, Mail, MapPin, Phone, User } from "lucide-react";
 import { formatCurrency } from "../../utils/formatCurrency";
 
@@ -37,6 +38,10 @@ function PresupuestoPreview({ presupuesto, company, items }) {
     const normalizedJobDescription = normalizeRichTextHtml(
         presupuesto.jobDescription
     );
+    const safeJobDescription = DOMPurify.sanitize(normalizedJobDescription, {
+        ALLOWED_TAGS: ["p", "br", "strong", "b", "u", "ul", "ol", "li"],
+        ALLOWED_ATTR: [],
+    });
 
     const isLightColor = (hex) => {
         if (!hex) return false;
@@ -171,7 +176,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                                 [&_u]:underline
                             "
                             dangerouslySetInnerHTML={{
-                                __html: normalizedJobDescription,
+                                __html: safeJobDescription,
                             }}
                         />
                     </div>
