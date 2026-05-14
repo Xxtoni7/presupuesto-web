@@ -62,6 +62,8 @@ function CompanyForm({ company, onSuccess, onCancel }) {
             setLoading(true);
 
             const result = await uploadCompanyLogo(file, formData.logoUrl);
+            console.log("Resultado upload:", result);
+            console.log("URL final logo:", `${API_BASE_URL}${result.url}`);
 
             setFormData((prev) => ({
                 ...prev,
