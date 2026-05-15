@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { createCompany, updateCompany } from "../../api/companyApi";
 import { uploadCompanyLogo } from "../../api/uploadApi";
-import { API_BASE_URL } from "../../utils/constants";
 import { Upload } from "lucide-react";
 
 function CompanyForm({ company, onSuccess, onCancel }) {
@@ -42,7 +41,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
             idUser: company.idUser ?? 1,
         });
 
-        setLogoPreview(company.logoUrl ? `${API_BASE_URL}${company.logoUrl}` : "");
+        setLogoPreview(company.logoUrl || "");
     }, [company]);
 
     const handleChange = (e) => {

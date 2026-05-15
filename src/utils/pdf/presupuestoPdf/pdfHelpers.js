@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "../../constants";
+
 
 export function hexToRgb(hex, fallback = [239, 68, 68]) {
     if (!hex) return fallback;
@@ -33,7 +33,7 @@ export function getImageUrl(logoUrl) {
 
     if (logoUrl.startsWith("http")) return logoUrl;
 
-    return `${API_BASE_URL}${logoUrl}`;
+    return logoUrl;
 }
 
 export function loadImageElement(url) {
