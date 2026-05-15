@@ -29,11 +29,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
     const primaryColor = company?.colorMain || "#ef4444";
     const secondaryColor = company?.colorSecondary || "#fee2e2";
     const textWrapClass = "whitespace-pre-wrap break-words overflow-wrap-anywhere";
-    const API_URL = import.meta.env.VITE_API_URL;
-
-    const logoSrc = company?.logoUrl
-        ? `${API_URL}${company.logoUrl}`
-        : null;
+    const logoSrc = company?.logoUrl || null;
 
     const normalizedJobDescription = normalizeRichTextHtml(
         presupuesto.jobDescription
