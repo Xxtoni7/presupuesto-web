@@ -8,7 +8,6 @@ function getCompanyId(company) {
 }
 
 function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
-    const API_URL = import.meta.env.VITE_API_URL;
 
     return (
         <Table>
@@ -25,9 +24,7 @@ function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
             <TableBody>
                 {companies.map((company) => {
                     const companyId = getCompanyId(company);
-                    const logoSrc = company?.logoUrl
-                        ? `${API_URL}${company.logoUrl}`
-                        : null;
+                    const logoSrc = company?.logoUrl || null;
 
                     return (
                         <TableRow key={companyId}>
