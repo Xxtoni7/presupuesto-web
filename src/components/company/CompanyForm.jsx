@@ -115,7 +115,8 @@ function CompanyForm({ company, onSuccess, onCancel }) {
             <div className="space-y-4">
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-[#111111]">
-                        Nombre de la empresa
+                        Nombre de la empresa{" "}
+                        <span className="ml-1 text-red-500">*</span>
                     </label>
                     <input
                         id="name"
@@ -240,7 +241,10 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                 <div>
                     <label htmlFor="industry" className="block text-sm font-medium text-[#111111]">
-                        Rubro / Industria
+                        Rubro / Industria{" "}
+                        <span className="ml-1 text-xs font-normal text-gray-400">
+                            (Opcional)
+                        </span>
                     </label>
                     <select
                         id="industry"
@@ -268,7 +272,10 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-[#111111]">
-                            Teléfono empresa
+                            Teléfono empresa{" "}
+                            <span className="ml-1 text-xs font-normal text-gray-400">
+                                (Opcional)
+                            </span>
                         </label>
                         <input
                         id="phone"
@@ -282,7 +289,10 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-[#111111]">
-                        Email empresa
+                        Email empresa{" "}
+                        <span className="ml-1 text-xs font-normal text-gray-400">
+                            (Opcional)
+                        </span>
                     </label>
                     <input
                     id="email"
@@ -297,7 +307,10 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                 <div>
                     <label htmlFor="address" className="block text-sm font-medium text-[#111111]">
-                        Dirección empresa
+                        Dirección empresa{" "}
+                        <span className="ml-1 text-xs font-normal text-gray-400">
+                            (Opcional)
+                        </span>
                     </label>
                     <input
                         id="address"
