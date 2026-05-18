@@ -185,7 +185,10 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <Label htmlFor="title">Título del presupuesto</Label>
+                    <Label htmlFor="title">
+                        Título del presupuesto{" "}
+                        <span className="ml-1 text-red-500">*</span>
+                    </Label>
                     <Input
                         id="title"
                         name="title"
@@ -198,7 +201,10 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 </div>
 
                 <div>
-                    <Label htmlFor="clientName">Nombre del cliente</Label>
+                    <Label htmlFor="clientName">
+                        Nombre del cliente{" "}
+                        <span className="ml-1 text-red-500">*</span>
+                    </Label>
                     <Input
                         id="clientName"
                         name="clientName"
@@ -225,7 +231,10 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 </div>
 
                 <div>
-                    <Label htmlFor="fechaVencimiento">Fecha vencimiento del presupuesto</Label>
+                    <Label htmlFor="fechaVencimiento">
+                        Fecha vencimiento del presupuesto{" "}
+                        <span className="ml-1 text-red-500">*</span>
+                    </Label>
                     <Input
                         id="fechaVencimiento"
                         name="fechaVencimiento"
@@ -239,7 +248,12 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             </div>
 
             <div>
-                <Label htmlFor="workAddress">Dirección de la obra</Label>
+                <Label htmlFor="workAddress">
+                    Dirección de la obra{" "}
+                    <span className="ml-1 text-xs font-normal text-gray-400">
+                        (Opcional)
+                    </span>
+                </Label>
                 <Input
                     id="workAddress"
                     name="workAddress"
@@ -251,7 +265,12 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             </div>
 
             <div>
-                <Label htmlFor="jobDescription">Descripción del trabajo</Label>
+                <Label htmlFor="jobDescription">
+                    Descripción del trabajo{" "}
+                    <span className="ml-1 text-xs font-normal text-gray-400">
+                        (Opcional)
+                    </span>
+                </Label>
                 <div className="mt-1.5">
                     <RichTextEditor
                         value={formData.jobDescription}
@@ -288,7 +307,12 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <Label htmlFor="estimatedTime">Tiempo estimado</Label>
+                    <Label htmlFor="estimatedTime">
+                        Tiempo estimado{" "}
+                        <span className="ml-1 text-xs font-normal text-gray-400">
+                            (Opcional)
+                        </span>
+                    </Label>
                     <Textarea
                         id="estimatedTime"
                         name="estimatedTime"
@@ -301,7 +325,12 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 </div>
 
                 <div>
-                    <Label htmlFor="paymentTerms">Condiciones de pago</Label>
+                    <Label htmlFor="paymentTerms">
+                        Condiciones de pago{" "}
+                        <span className="ml-1 text-xs font-normal text-gray-400">
+                            (Opcional)
+                        </span>
+                    </Label>
                     <Textarea
                             id="paymentTerms"
                             name="paymentTerms"
@@ -315,7 +344,12 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             </div>
 
             <div>
-                <Label htmlFor="observations">Observaciones finales</Label>
+                <Label htmlFor="observations">
+                    Aclaraciones finales{" "}
+                    <span className="ml-1 text-xs font-normal text-gray-400">
+                        (Opcional)
+                    </span>
+                </Label>
                 <Textarea
                     id="observations"
                     name="observations"

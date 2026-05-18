@@ -46,7 +46,7 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
         <div className="space-y-4 rounded-xl border border-[#e5e7eb] p-6">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-[#111111]">
-                    Ítems del presupuesto
+                    Detalle del presupuesto
                 </h3>
 
                 <Button type="button" size="sm" onClick={handleAddItem}>
@@ -61,13 +61,16 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
                         key={item.idItem ?? index}
                         className="space-y-3 rounded-lg border border-[#e5e7eb] p-4"
                     >
-                        <Label className="text-xs">Descripción</Label>
+                        <Label className="text-xs">
+                            Trabajo a realizar{" "}
+                            <span className="ml-1 text-red-500">*</span>
+                        </Label>
                         <Input
                             value={item.description}
                             onChange={(e) =>
                                 handleItemChange(index, "description", e.target.value)
                             }
-                            placeholder="Ej: Revestimiento de paredes en living"
+                            placeholder="Ej: Instalación, reparación, mantenimiento o servicio a realizar"
                             required
                         />
                         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
