@@ -248,3 +248,27 @@ export function parseRichTextHtml(html) {
 
     return blocks;
 }
+
+export function normalizeTextValue(value) {
+    return value
+        ?.replaceAll("&nbsp;", " ")
+        .replaceAll("\u00A0", " ")
+        .trim() || "";
+}
+
+export function hasPlainText(value) {
+    return normalizeTextValue(value).length > 0;
+}
+
+export function hasRichTextContent(html) {
+    if (!html) return false;
+
+    const normalizedHtml = html
+        .replaceAll("&nbsp;", " ")
+        .replaceAll("\u00A0", " ");
+
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = normalizedHtml;
+
+    return Boolean(tempElement.textContent?.trim());
+}

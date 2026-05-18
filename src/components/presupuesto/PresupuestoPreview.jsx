@@ -25,11 +25,33 @@ function normalizeRichTextHtml(html) {
         .replaceAll("\u00A0", " ");
 }
 
+function hasText(value) {
+    return Boolean(value?.trim());
+}
+
+function hasRichTextContent(html) {
+    if (!html) return false;
+
+    const normalizedHtml = normalizeRichTextHtml(html);
+
+    const plainText = DOMPurify.sanitize(normalizedHtml, {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+    });
+
+    return Boolean(plainText.trim());
+}
+
 function PresupuestoPreview({ presupuesto, company, items }) {
     const primaryColor = company?.colorMain || "#ef4444";
     const secondaryColor = company?.colorSecondary || "#fee2e2";
     const textWrapClass = "whitespace-pre-wrap break-words overflow-wrap-anywhere";
     const logoSrc = company?.logoUrl || null;
+    const hasWorkAddress = hasText(presupuesto.workAddress);
+    const hasJobDescription = hasRichTextContent(presupuesto.jobDescription);
+    const hasEstimatedTime = hasText(presupuesto.estimatedTime);
+    const hasPaymentTerms = hasText(presupuesto.paymentTerms);
+    const hasObservations = hasText(presupuesto.observations);
 
     const normalizedJobDescription = normalizeRichTextHtml(
         presupuesto.jobDescription
@@ -128,20 +150,20 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                         </div>
                     </div>
 
-                    {presupuesto.workAddress && (
+                    {hasWorkAddress && (
                         <div>
                             <h3 className="mb-2 font-semibold text-gray-900">
                                 Dirección de la obra
                             </h3>
                             <div className="flex items-start gap-2">
                                 <MapPin className="mt-0.5 h-4 w-4 text-gray-400" />
-                                <p className="text-gray-700">{presupuesto.workAddress}</p>
+                                <p className="text-gray-700">{presupuesto.workAddress.trim()}</p>
                             </div>
                         </div>
                     )}
                 </div>
 
-                {presupuesto.jobDescription && (
+                {hasJobDescription && (
                     <div>
                         <h3 className="mb-2 font-semibold text-gray-900">
                             Descripción del trabajo:
@@ -274,39 +296,39 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                     </div>
                 </div>
 
-                {(presupuesto.estimatedTime || presupuesto.paymentTerms) && (
+                {(hasEstimatedTime || hasPaymentTerms) && (
                     <div className="grid grid-cols-1 gap-6 pt-4 md:grid-cols-2">
-                        {presupuesto.estimatedTime && (
+                        {hasEstimatedTime && (
                             <div>
                                 <h3 className="mb-2 font-semibold text-gray-900">
                                     Tiempo estimado:
                                 </h3>
                                 <p className={`${textWrapClass} text-gray-700`}>
-                                    {presupuesto.estimatedTime}
+                                    {presupuesto.estimatedTime.trim()}
                                 </p>
                             </div>
                         )}
 
-                        {presupuesto.paymentTerms && (
+                        {hasPaymentTerms && (
                             <div>
                                 <h3 className="mb-2 font-semibold text-gray-900">
                                     Condiciones de pago:
                                 </h3>
                                 <p className={`${textWrapClass} text-gray-700`}>
-                                    {presupuesto.paymentTerms}
+                                    {presupuesto.paymentTerms.trim()}
                                 </p>
                             </div>
                         )}
                     </div>
                 )}
 
-                {presupuesto.observations && (
+                {hasObservations && (
                     <div className="pt-4">
                         <h3 className="mb-2 font-semibold text-gray-900">
-                            Observaciones:
+                            Aclaraciones:
                         </h3>
                         <p className={`${textWrapClass} text-gray-700`}>
-                            {presupuesto.observations}
+                            {presupuesto.observations.trim()}
                         </p>
                     </div>
                 )}

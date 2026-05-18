@@ -2,7 +2,7 @@ import autoTable from "jspdf-autotable";
 
 import { formatCurrency } from "../../formatCurrency";
 import { pdfTheme } from "./pdfTheme";
-import { formatPdfDate, parseRichTextHtml } from "./pdfHelpers";
+import { formatPdfDate, parseRichTextHtml, hasPlainText, hasRichTextContent, normalizeTextValue } from "./pdfHelpers";
 
 function getContainedImageSize(image, maxWidth, maxHeight) {
     const imageWidth = image?.naturalWidth || image?.width || maxWidth;
@@ -559,7 +559,9 @@ function drawPlainTextLines(doc, lines, startX, startY, lineHeight, onNewPage) {
 }
 
 export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
-    if (!presupuesto?.jobDescription) return startY;
+    if (!hasRichTextContent(presupuesto?.jobDescription)) {
+        return startY;
+    }
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const marginX = pdfTheme.page.marginX;
@@ -578,11 +580,7 @@ export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
     doc.setFontSize(pdfTheme.main.titleSize);
     doc.setTextColor(...pdfTheme.main.titleColor);
 
-    doc.text(
-        "Descripción del trabajo:",
-        marginX,
-        currentY
-    );
+    doc.text("Descripción del trabajo:", marginX, currentY);
 
     currentY += 8;
 
@@ -921,7 +919,10 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
 }
 
 export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
-    if (!presupuesto?.estimatedTime && !presupuesto?.paymentTerms) {
+    const hasEstimatedTime = Boolean(presupuesto?.estimatedTime?.trim());
+    const hasPaymentTerms = Boolean(presupuesto?.paymentTerms?.trim());
+
+    if (!hasEstimatedTime && !hasPaymentTerms) {
         return startY;
     }
 
@@ -936,72 +937,78 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
     const titleY = startY + pdfTheme.main.sectionGap;
     const valueLineHeight = 6;
 
-    const estimatedTimeLines = presupuesto?.estimatedTime
+    const isTwoColumns = hasEstimatedTime && hasPaymentTerms;
+
+    const estimatedTimeLines = hasEstimatedTime
         ? doc.splitTextToSize(presupuesto.estimatedTime, columnWidth)
         : [];
 
-    const paymentTermsLines = presupuesto?.paymentTerms
+    const paymentTermsLines = hasPaymentTerms
         ? doc.splitTextToSize(presupuesto.paymentTerms, columnWidth)
         : [];
 
-    const maxLines = Math.max(
-        estimatedTimeLines.length,
-        paymentTermsLines.length,
-        1
-    );
+    const singleColumnLength = hasEstimatedTime ? estimatedTimeLines.length : paymentTermsLines.length;
 
-    const estimatedSectionHeight = 8 + maxLines * valueLineHeight + 4;
+    const maxLines = isTwoColumns
+        ? Math.max(estimatedTimeLines.length, paymentTermsLines.length, 1)
+        : Math.max(singleColumnLength, 1);
+
+    const sectionHeight = 8 + maxLines * valueLineHeight + 4;
 
     let currentY = ensurePageSpace(
         doc,
         titleY,
-        estimatedSectionHeight,
+        sectionHeight,
         onNewPage
     );
 
     const currentValueY = currentY + 8;
 
-    if (presupuesto?.estimatedTime) {
+    const drawTextBlock = (title, lines, x) => {
         doc.setFont("Inter", "semibold");
         doc.setFontSize(pdfTheme.main.titleSize);
         doc.setTextColor(...pdfTheme.main.titleColor);
 
         doc.text(
+            title,
+            x,
+            currentY
+        );
+
+        doc.setFont("Inter", "normal");
+        doc.setFontSize(pdfTheme.main.valueSize);
+        doc.setTextColor(...pdfTheme.main.valueColor);
+
+        doc.text(
+            lines,
+            x,
+            currentValueY
+        );
+    };
+
+    if (isTwoColumns) {
+        drawTextBlock(
             "Tiempo estimado:",
-            leftX,
-            currentY
-        );
-
-        doc.setFont("Inter", "normal");
-        doc.setFontSize(pdfTheme.main.valueSize);
-        doc.setTextColor(...pdfTheme.main.valueColor);
-
-        doc.text(
             estimatedTimeLines,
-            leftX,
-            currentValueY
+            leftX
         );
-    }
 
-    if (presupuesto?.paymentTerms) {
-        doc.setFont("Inter", "semibold");
-        doc.setFontSize(pdfTheme.main.titleSize);
-        doc.setTextColor(...pdfTheme.main.titleColor);
-
-        doc.text(
+        drawTextBlock(
             "Condiciones de pago:",
-            rightX,
-            currentY
-        );
-
-        doc.setFont("Inter", "normal");
-        doc.setFontSize(pdfTheme.main.valueSize);
-        doc.setTextColor(...pdfTheme.main.valueColor);
-
-        doc.text(
             paymentTermsLines,
-            rightX,
-            currentValueY
+            rightX
+        );
+    } else if (hasEstimatedTime) {
+        drawTextBlock(
+            "Tiempo estimado:",
+            estimatedTimeLines,
+            leftX
+        );
+    } else if (hasPaymentTerms) {
+        drawTextBlock(
+            "Condiciones de pago:",
+            paymentTermsLines,
+            leftX
         );
     }
 
@@ -1009,7 +1016,7 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
 }
 
 export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
-    if (!presupuesto?.observations) {
+    if (!hasPlainText(presupuesto?.observations)) {
         return startY;
     }
 
@@ -1019,9 +1026,11 @@ export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
 
     let currentY = startY + pdfTheme.main.sectionGap;
 
+    const cleanObservations = normalizeTextValue(presupuesto.observations);
+
     const observationLines = splitPlainTextToLines(
         doc,
-        presupuesto.observations,
+        cleanObservations,
         maxWidth
     );
 
@@ -1036,11 +1045,7 @@ export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
     doc.setFontSize(pdfTheme.main.titleSize);
     doc.setTextColor(...pdfTheme.main.titleColor);
 
-    doc.text(
-        "Observaciones:",
-        marginX,
-        currentY
-    );
+    doc.text("Aclaraciones:", marginX, currentY);
 
     currentY += 8;
 
