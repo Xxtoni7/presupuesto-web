@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, FileText, Grid, List, Plus } from "lucide-react";
+import { ArrowLeft, FileText, Grid, List, Plus, Trash2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import PresupuestoCard from "../components/presupuesto/PresupuestoCard";
 import PresupuestoTable from "../components/presupuesto/PresupuestoTable";
@@ -32,6 +33,8 @@ function CompanyPresupuestosPage() {
     const [selectedPresupuesto, setSelectedPresupuesto] = useState(null);
     const [previewItems, setPreviewItems] = useState([]);
     const [companyData, setCompanyData] = useState(null);
+    const [presupuestoToDelete, setPresupuestoToDelete] = useState(null);
+    const [isDeletingPresupuesto, setIsDeletingPresupuesto] = useState(false);
     
     useEffect(() => {
         const loadCompany = async () => {
@@ -63,17 +66,39 @@ function CompanyPresupuestosPage() {
         navigate(`/companies/${companyId}/budgets/${presupuesto.idPresupuesto}/edit`);
     };
 
-    const handleDelete = async (presupuesto) => {
-        const confirmed = globalThis.confirm(
-            `¿Está seguro de eliminar el presupuesto "${presupuesto.title || presupuesto.budgetNumber}"?`
-        );
+    const handleDelete = (presupuesto) => {
+        setPresupuestoToDelete(presupuesto);
+    };
 
-        if (!confirmed) return;
+    const handleCancelDelete = () => {
+        setPresupuestoToDelete(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!presupuestoToDelete) return;
 
         try {
-            await removePresupuesto(presupuesto.idPresupuesto);
+            setIsDeletingPresupuesto(true);
+
+            await removePresupuesto(presupuestoToDelete.idPresupuesto);
+
+            setPresupuestoToDelete(null);
+
+            toast.success("Presupuesto eliminado correctamente", {
+                description: `${
+                    presupuestoToDelete.budgetNumber ||
+                    presupuestoToDelete.title ||
+                    "El presupuesto"
+                } fue eliminado.`,
+                duration: 2000,
+            });
         } catch (err) {
-            alert(err.message || "Error al eliminar el presupuesto");
+            toast.error("No se pudo eliminar el presupuesto", {
+                description: err.message || "Intentá nuevamente en unos segundos.",
+                duration: 3500,
+            });
+        } finally {
+            setIsDeletingPresupuesto(false);
         }
     };
 
@@ -277,6 +302,65 @@ function CompanyPresupuestosPage() {
                     )}
                 </DialogContent>
             </Dialog>
+
+            {presupuestoToDelete &&
+                createPortal(
+                    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 px-4">
+                        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+                            <div className="mb-4 flex items-center gap-3">
+                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-red-100">
+                                    <Trash2 className="h-5 w-5 text-red-500" />
+                                </div>
+
+                                <div>
+                                    <h2 className="text-lg font-semibold text-gray-900">
+                                        Eliminar presupuesto
+                                    </h2>
+                                    <p className="text-sm text-gray-500">
+                                        Esta acción no se puede deshacer.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p className="text-sm leading-6 text-gray-600">
+                                ¿Seguro que querés eliminar{" "}
+                                <span className="font-semibold text-gray-900">
+                                    “{presupuestoToDelete.title ||
+                                        presupuestoToDelete.budgetNumber ||
+                                        "este presupuesto"}”
+                                </span>?
+                            </p>
+
+                            <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                                Se eliminará este presupuesto.
+                            </div>
+
+                            <div className="mt-6 flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={handleCancelDelete}
+                                    disabled={isDeletingPresupuesto}
+                                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+                                >
+                                    Cancelar
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={handleConfirmDelete}
+                                    disabled={isDeletingPresupuesto}
+                                    className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-600 disabled:opacity-60"
+                                >
+                                    {isDeletingPresupuesto
+                                        ? "Eliminando..."
+                                        : "Eliminar presupuesto"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>,
+                    document.body
+                )
+            }
         </div>
     );
 }

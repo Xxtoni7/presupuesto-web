@@ -1,22 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Grid, List, Building2, X } from "lucide-react";
+import { Plus, Grid, List, Building2, X, Trash2 } from "lucide-react";
 import CompanyCard from "../components/company/CompanyCard";
 import CompanyTable from "../components/company/CompanyTable";
 import { useCompanies } from "../hooks/useCompanies";
 import CompanyForm from "../components/company/CompanyForm";
 import { createPortal } from "react-dom";
 import { useSearch } from "../context/SearchContext";
+import { toast } from "sonner";
 
 function CompaniesPage() {
     const navigate = useNavigate();
     const { companies, loading, error, deleteCompany, fetchCompanies } = useCompanies();
     const [viewMode, setViewMode] = useState("grid");
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCompany, setEditingCompany] = useState(null);         
-
     const { searchTerm } = useSearch();
+    const [companyToDelete, setCompanyToDelete] = useState(null);
+    const [isDeletingCompany, setIsDeletingCompany] = useState(false);
 
     const handleCreate = () => {
         setEditingCompany(null);
@@ -28,18 +29,36 @@ function CompaniesPage() {
         setIsModalOpen(true);
     };
 
-    const handleDelete = async (company) => {
-        const companyId = company.idCompany ?? company.id;
-        const confirmed = globalThis.confirm(
-            `¿Está seguro de eliminar la empresa "${company.name}"?`
-        );
+    const handleDelete = (company) => {
+        setCompanyToDelete(company);
+    };
 
-        if (!confirmed) return;
+    const handleCancelDelete = () => {
+        setCompanyToDelete(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!companyToDelete) return;
+
+        const companyId = companyToDelete.idCompany ?? companyToDelete.id;
 
         try {
+            setIsDeletingCompany(true);
+
             await deleteCompany(companyId);
+
+            setCompanyToDelete(null);
+
+            toast.success("Empresa eliminada correctamente", {
+                duration: 2000,
+            });
         } catch {
+            toast.error("Error al eliminar la empresa", {
+                duration: 2000,
+            });
             // el error ya lo maneja el hook
+        } finally {
+            setIsDeletingCompany(false);
         }
     };
 
@@ -214,6 +233,61 @@ function CompaniesPage() {
                 </div>,
                 document.body
             )}
+
+            {companyToDelete &&
+                createPortal(
+                    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 px-4">
+                        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+                            <div className="mb-4 flex items-center gap-3">
+                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-red-100">
+                                    <Trash2 className="h-5 w-5 text-red-500" />
+                                </div>
+
+                                <div>
+                                    <h2 className="text-lg font-semibold text-gray-900">
+                                        Eliminar empresa
+                                    </h2>
+                                    <p className="text-sm text-gray-500">
+                                        Esta acción no se puede deshacer.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p className="text-sm leading-6 text-gray-600">
+                                ¿Seguro que querés eliminar{" "}
+                                <span className="font-semibold text-gray-900">
+                                    “{companyToDelete.name}”
+                                </span>?
+                            </p>
+
+                            <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                                También se eliminarán los presupuestos asociados a esta empresa.
+                            </div>
+
+                            <div className="mt-6 flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={handleCancelDelete}
+                                    disabled={isDeletingCompany}
+                                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+                                >
+                                    Cancelar
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={handleConfirmDelete}
+                                    disabled={isDeletingCompany}
+                                    className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-600 disabled:opacity-60"
+                                >
+                                    {isDeletingCompany ? "Eliminando..." : "Eliminar empresa"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>,
+                    document.body
+                )
+            }
         </div>
     );
 }
