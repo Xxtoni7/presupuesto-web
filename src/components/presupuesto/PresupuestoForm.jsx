@@ -10,10 +10,15 @@ import { emptyPresupuesto } from "../../types/presupuesto";
 import { emptyPresupuestoItem } from "../../types/presupuestoItem";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { getTodayDateInputValue, toDateInputValue } from "../../utils/dateHelpers";
-import { createPresupuesto, updatePresupuesto} from "../../api/presupuestoApi";
-import { createPresupuestoItem, updatePresupuestoItem, deletePresupuestoItem, getItemsByPresupuesto} from "../../api/presupuestoItemApi";
+import { createPresupuesto, updatePresupuesto } from "../../api/presupuestoApi";
+import { createPresupuestoItem, updatePresupuestoItem, deletePresupuestoItem, getItemsByPresupuesto } from "../../api/presupuestoItemApi";
 import RichTextEditor from "../ui/RichTextEditor";
 
+function normalizeRichTextForEditor(html) {
+    if (!html) return "";
+
+    return html.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+}
 
 function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel }) {
     const [formData, setFormData] = useState({
@@ -37,10 +42,10 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             fechaPresupuesto: toDateInputValue(presupuesto.fechaPresupuesto),
             fechaVencimiento: toDateInputValue(presupuesto.fechaVencimiento),
             workAddress: presupuesto.workAddress || "",
-            jobDescription: presupuesto.jobDescription || "",
+            jobDescription: normalizeRichTextForEditor(presupuesto.jobDescription),
             estimatedTime: presupuesto.estimatedTime || "",
             paymentTerms: presupuesto.paymentTerms || "",
-            observations: presupuesto.observations || "",
+            observations: normalizeRichTextForEditor(presupuesto.observations),
             idCompany: presupuesto.idCompany || companyId,
         });
     }, [presupuesto, companyId]);
@@ -332,14 +337,14 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                         </span>
                     </Label>
                     <Textarea
-                            id="paymentTerms"
-                            name="paymentTerms"
-                            value={formData.paymentTerms}
-                            onChange={handleChange}
-                            placeholder={`Ej: 50% anticipo para inicio de obra, 50% restante al finalizar`}
-                            rows={1}
-                            className="mt-1.5 min-h-[30px] resize-y"
-                        />
+                        id="paymentTerms"
+                        name="paymentTerms"
+                        value={formData.paymentTerms}
+                        onChange={handleChange}
+                        placeholder="Ej: 50% anticipo para inicio de obra, 50% restante al finalizar"
+                        rows={1}
+                        className="mt-1.5 min-h-[30px] resize-y"
+                    />
                 </div>
             </div>
 
@@ -350,15 +355,19 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                         (Opcional)
                     </span>
                 </Label>
-                <Textarea
-                    id="observations"
-                    name="observations"
-                    value={formData.observations}
-                    onChange={handleChange}
-                    placeholder="Notas adicionales, garantías, condiciones especiales..."
-                    rows={3}
-                    className="mt-1.5"
-                />
+
+                <div className="mt-1.5">
+                    <RichTextEditor
+                        value={formData.observations}
+                        onChange={(value) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                observations: value,
+                            }))
+                        }
+                        placeholder="Notas adicionales, garantías, condiciones especiales..."
+                    />
+                </div>
             </div>
 
             <div className="flex gap-3 border-t border-[#e5e7eb] pt-4">

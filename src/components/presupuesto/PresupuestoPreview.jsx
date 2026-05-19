@@ -22,7 +22,40 @@ function normalizeRichTextHtml(html) {
 
     return html
         .replaceAll("&nbsp;", " ")
-        .replaceAll("\u00A0", " ");
+        .replaceAll("\u00A0", " ")
+        .replaceAll("\t", "    ");
+}
+
+function applyOrderedListStartValues(html) {
+    if (!html) return "";
+
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html;
+
+    let nextOrderedNumber = 1;
+
+    Array.from(wrapper.children).forEach((element) => {
+        const tagName = element.tagName.toLowerCase();
+
+        if (tagName === "ol") {
+            element.setAttribute("start", String(nextOrderedNumber));
+
+            const directItems = Array.from(element.children).filter(
+                (child) => child.tagName.toLowerCase() === "li"
+            );
+
+            nextOrderedNumber += directItems.length;
+            return;
+        }
+
+        if (tagName === "ul") {
+            return;
+        }
+
+        nextOrderedNumber = 1;
+    });
+
+    return wrapper.innerHTML;
 }
 
 function hasText(value) {
@@ -42,23 +75,42 @@ function hasRichTextContent(html) {
     return Boolean(plainText.trim());
 }
 
+
 function PresupuestoPreview({ presupuesto, company, items }) {
     const primaryColor = company?.colorMain || "#ef4444";
-    const secondaryColor = company?.colorSecondary || "#fee2e2";
+    const secondaryColor = company?.colorSecondary || "#000000";
     const textWrapClass = "whitespace-pre-wrap break-words overflow-wrap-anywhere";
     const logoSrc = company?.logoUrl || null;
     const hasWorkAddress = hasText(presupuesto.workAddress);
     const hasJobDescription = hasRichTextContent(presupuesto.jobDescription);
     const hasEstimatedTime = hasText(presupuesto.estimatedTime);
     const hasPaymentTerms = hasText(presupuesto.paymentTerms);
-    const hasObservations = hasText(presupuesto.observations);
+    const hasObservations = hasRichTextContent(presupuesto.observations);
 
     const normalizedJobDescription = normalizeRichTextHtml(
         presupuesto.jobDescription
     );
-    const safeJobDescription = DOMPurify.sanitize(normalizedJobDescription, {
+
+    const formattedJobDescription = applyOrderedListStartValues(
+        normalizedJobDescription
+    );
+
+    const safeJobDescription = DOMPurify.sanitize(formattedJobDescription, {
         ALLOWED_TAGS: ["p", "br", "strong", "b", "u", "ul", "ol", "li"],
-        ALLOWED_ATTR: [],
+        ALLOWED_ATTR: ["start"],
+    });
+
+    const normalizedObservations = normalizeRichTextHtml(
+        presupuesto.observations
+    );
+
+    const formattedObservations = applyOrderedListStartValues(
+        normalizedObservations
+    );
+
+    const safeObservations = DOMPurify.sanitize(formattedObservations, {
+        ALLOWED_TAGS: ["p", "br", "strong", "b", "u", "ul", "ol", "li"],
+        ALLOWED_ATTR: ["start"],
     });
 
     const isLightColor = (hex) => {
@@ -171,6 +223,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                         <div
                             className="
                                 rich-text-preview
+                                whitespace-pre-wrap
                                 text-gray-700
 
                                 [&_p]:my-2
@@ -181,7 +234,6 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                                 [&_ul]:pl-5
 
                                 [&_ol]:my-2
-                                [&_ol]:list-decimal
                                 [&_ol]:pl-5
 
                                 [&_li]:my-1
@@ -325,11 +377,37 @@ function PresupuestoPreview({ presupuesto, company, items }) {
                 {hasObservations && (
                     <div className="pt-4">
                         <h3 className="mb-2 font-semibold text-gray-900">
-                            Aclaraciones:
+                            Aclaraciones finales:
                         </h3>
-                        <p className={`${textWrapClass} text-gray-700`}>
-                            {presupuesto.observations.trim()}
-                        </p>
+                        <div
+                            className="
+                                rich-text-preview
+                                whitespace-pre-wrap
+                                text-gray-700
+
+                                [&_p]:my-2
+                                [&_p]:leading-6
+
+                                [&_ul]:my-2
+                                [&_ul]:list-disc
+                                [&_ul]:pl-5
+
+                                [&_ol]:my-2
+                                [&_ol]:pl-5
+
+                                [&_li]:my-1
+                                [&_li]:leading-6
+                                [&_li]:pl-1
+
+                                [&_strong]:font-bold
+                                [&_strong]:text-[#111111]
+
+                                [&_u]:underline
+                            "
+                            dangerouslySetInnerHTML={{
+                                __html: safeObservations,
+                            }}
+                        />
                     </div>
                 )}
 
