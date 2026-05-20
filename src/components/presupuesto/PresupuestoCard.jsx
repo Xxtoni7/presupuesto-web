@@ -1,13 +1,5 @@
 import PropTypes from "prop-types";
-import {
-    Calendar,
-    User,
-    Edit,
-    Trash2,
-    Copy,
-    Eye,
-    Download,
-} from "lucide-react";
+import { Calendar, User, Edit, Trash2, Copy, Eye, Download } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -70,38 +62,46 @@ function PresupuestoCard({presupuesto, onEdit, onDelete, onDuplicate, onPreview,
                 </div>
             </CardContent>
 
-            <CardFooter className="flex flex-wrap gap-2 border-t border-[#e5e7eb] pt-4">
-                <Button variant="outline" size="sm" onClick={() => onPreview(presupuesto)}>
-                    <Eye className="mr-2 h-4 w-4" />
-                    Ver
-                </Button>
-
-                <Button variant="outline" size="sm" onClick={() => onEdit(presupuesto)}>
-                    <Edit className="mr-2 h-4 w-4" />
-                    Editar
-                </Button>
-
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onDuplicate(presupuesto)}
-                >
-                    <Copy className="mr-2 h-4 w-4" />
-                    Duplicar
-                </Button>
-
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onDownload(presupuesto)}
-                >
-                    <Download className="mr-2 h-4 w-4" />
-                    PDF
-                </Button>
-
-                    <Button variant="outline" size="sm" onClick={() => onDelete(presupuesto)}>
-                    <Trash2 className="h-4 w-4 text-red-500" />
+            <CardFooter className="flex flex-col items-center justify-center gap-2 border-t border-[#e5e7eb]">
+                <div className="flex items-center justify-center gap-2">
+                    <Button variant="outline" size="sm" onClick={() => onPreview(presupuesto)}>
+                        <Eye className="mr-2 h-4 w-4" />
+                        Ver
                     </Button>
+
+                    <Button variant="outline" size="sm" onClick={() => onEdit(presupuesto)}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Editar
+                    </Button>
+
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => onDownload(presupuesto)}
+                    >
+                        <Download className="mr-2 h-4 w-4" />
+                        PDF
+                    </Button>
+                </div>
+
+                <div className="flex items-center justify-center gap-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => onDuplicate(presupuesto)}
+                    >
+                        <Copy className="mr-2 h-4 w-4" />
+                        Duplicar
+                    </Button>
+
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => onDelete(presupuesto)}
+                    >
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                </div>
             </CardFooter>
         </Card>
     );

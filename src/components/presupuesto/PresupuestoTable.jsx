@@ -91,17 +91,17 @@ function PresupuestoTable({ presupuestos, onEdit, onDelete, onDuplicate, onPrevi
                                 <Button
                                     variant="outline"
                                     size="icon"
-                                    onClick={() => onDuplicate(presupuesto)}
-                                >
-                                    <Copy className="h-4 w-4" />
-                                </Button>
-
-                                <Button
-                                    variant="outline"
-                                    size="icon"
                                     onClick={() => onDownload(presupuesto)}
                                 >
                                     <Download className="h-4 w-4" />
+                                </Button>
+                                
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => onDuplicate(presupuesto)}
+                                >
+                                    <Copy className="h-4 w-4" />
                                 </Button>
 
                                 <Button
