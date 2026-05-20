@@ -115,6 +115,7 @@ export function parseRichTextHtml(html) {
     const document = parser.parseFromString(html, "text/html");
 
     const blocks = [];
+    let nextOrderedNumber = 1;
 
     const parseInlineNodes = (nodes, activeStyles = {}) => {
         const segments = [];
@@ -220,9 +221,10 @@ export function parseRichTextHtml(html) {
 
         if (tagName === "p") {
             addParagraph(node);
+            nextOrderedNumber = 1;
             return;
         }
-
+        
         if (tagName === "ul" || tagName === "ol") {
             const listItems = Array.from(node.children).filter(
                 (child) => child.tagName.toLowerCase() === "li"
@@ -233,31 +235,28 @@ export function parseRichTextHtml(html) {
                     Array.from(item.childNodes)
                 );
 
+                const isOrderedList = tagName === "ol";
+
                 blocks.push({
-                    type: tagName === "ul" ? "bullet" : "ordered",
-                    number: index + 1,
+                    type: isOrderedList ? "ordered" : "bullet",
+                    number: isOrderedList
+                        ? nextOrderedNumber + index
+                        : undefined,
                     segments,
                 });
             });
 
+            if (tagName === "ol") {
+                nextOrderedNumber += listItems.length;
+            }
+
             return;
         }
-
         addParagraph(node);
+        nextOrderedNumber = 1;
     });
 
     return blocks;
-}
-
-export function normalizeTextValue(value) {
-    return value
-        ?.replaceAll("&nbsp;", " ")
-        .replaceAll("\u00A0", " ")
-        .trim() || "";
-}
-
-export function hasPlainText(value) {
-    return normalizeTextValue(value).length > 0;
 }
 
 export function hasRichTextContent(html) {

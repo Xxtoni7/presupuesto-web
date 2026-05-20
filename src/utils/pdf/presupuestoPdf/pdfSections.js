@@ -1,8 +1,7 @@
 import autoTable from "jspdf-autotable";
-
 import { formatCurrency } from "../../formatCurrency";
 import { pdfTheme } from "./pdfTheme";
-import { formatPdfDate, parseRichTextHtml, hasPlainText, hasRichTextContent, normalizeTextValue } from "./pdfHelpers";
+import { formatPdfDate, parseRichTextHtml, hasRichTextContent } from "./pdfHelpers";
 
 function getContainedImageSize(image, maxWidth, maxHeight) {
     const imageWidth = image?.naturalWidth || image?.width || maxWidth;
@@ -1016,7 +1015,7 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
 }
 
 export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
-    if (!hasPlainText(presupuesto?.observations)) {
+    if (!hasRichTextContent(presupuesto?.observations)) {
         return startY;
     }
 
@@ -1025,14 +1024,6 @@ export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
     const maxWidth = pageWidth - marginX * 2;
 
     let currentY = startY + pdfTheme.main.sectionGap;
-
-    const cleanObservations = normalizeTextValue(presupuesto.observations);
-
-    const observationLines = splitPlainTextToLines(
-        doc,
-        cleanObservations,
-        maxWidth
-    );
 
     currentY = ensurePageSpace(
         doc,
@@ -1045,22 +1036,30 @@ export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
     doc.setFontSize(pdfTheme.main.titleSize);
     doc.setTextColor(...pdfTheme.main.titleColor);
 
-    doc.text("Aclaraciones:", marginX, currentY);
+    doc.text("Aclaraciones finales:", marginX, currentY);
 
     currentY += 8;
 
-    doc.setFont("Inter", "normal");
-    doc.setFontSize(pdfTheme.main.valueSize);
-    doc.setTextColor(...pdfTheme.main.valueColor);
+    const blocks = parseRichTextHtml(presupuesto.observations);
 
-    currentY = drawPlainTextLines(
-        doc,
-        observationLines,
-        marginX,
-        currentY,
-        pdfTheme.main.lineHeight,
-        onNewPage
-    );
+    blocks.forEach((block) => {
+        currentY = ensurePageSpace(
+            doc,
+            currentY,
+            pdfTheme.main.lineHeight + 4,
+            onNewPage
+        );
+
+        currentY = drawRichTextBlock(
+            doc,
+            block,
+            marginX,
+            currentY,
+            maxWidth
+        );
+
+        currentY += 2;
+    });
 
     return currentY;
 }
