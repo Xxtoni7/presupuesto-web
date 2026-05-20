@@ -20,6 +20,24 @@ function normalizeRichTextForEditor(html) {
     return html.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 }
 
+function normalizeRichTextForPayload(html) {
+    if (!html) return "";
+
+    const normalizedHtml = html
+        .replaceAll("&nbsp;", " ")
+        .replaceAll("\u00A0", " ")
+        .replaceAll("\t", " ");
+
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = normalizedHtml;
+
+    const plainText = tempElement.textContent?.trim();
+
+    if (!plainText) return "";
+
+    return html;
+}
+
 function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel }) {
     const [formData, setFormData] = useState({
         ...emptyPresupuesto,
@@ -99,10 +117,10 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
         fechaPresupuesto: formData.fechaPresupuesto,
         fechaVencimiento: formData.fechaVencimiento || null,
         workAddress: formData.workAddress,
-        jobDescription: formData.jobDescription,
+        jobDescription: normalizeRichTextForPayload(formData.jobDescription),
         estimatedTime: formData.estimatedTime,
         paymentTerms: formData.paymentTerms,
-        observations: formData.observations,
+        observations: normalizeRichTextForPayload(formData.observations),
         idCompany: Number(companyId),
     });
 
