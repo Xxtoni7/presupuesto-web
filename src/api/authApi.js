@@ -1,0 +1,73 @@
+import { apiRequest } from "./apiClient";
+import { setAccessToken, clearAccessToken } from "../utils/authTokenStore";
+
+function saveAuthSession(data) {
+    if (data?.accessToken) {
+        setAccessToken(data.accessToken);
+    }
+
+    return data;
+}
+
+export async function registerUser({ email, password, confirmPassword }) {
+    const data = await apiRequest("/api/Auth/register", {
+        method: "POST",
+        body: {
+            email,
+            password,
+            confirmPassword,
+        },
+        auth: false,
+    });
+
+    return saveAuthSession(data);
+}
+
+export async function loginUser({ email, password }) {
+    const data = await apiRequest("/api/Auth/login", {
+        method: "POST",
+        body: {
+            email,
+            password,
+        },
+        auth: false,
+    });
+
+    return saveAuthSession(data);
+}
+
+export async function loginWithGoogle(idToken) {
+    const data = await apiRequest("/api/Auth/google-login", {
+        method: "POST",
+        body: {
+            idToken,
+        },
+        auth: false,
+    });
+
+    return saveAuthSession(data);
+}
+
+export async function refreshToken() {
+    const data = await apiRequest("/api/Auth/refresh-token", {
+        method: "POST",
+        auth: false,
+    });
+
+    return saveAuthSession(data);
+}
+
+export async function getCurrentUser() {
+    return apiRequest("/api/Auth/me");
+}
+
+export async function logoutUser() {
+    try {
+        await apiRequest("/api/Auth/logout", {
+            method: "POST",
+            auth: false,
+        });
+    } finally {
+        clearAccessToken();
+    }
+}

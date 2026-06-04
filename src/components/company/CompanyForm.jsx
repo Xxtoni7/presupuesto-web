@@ -18,7 +18,6 @@ function CompanyForm({ company, onSuccess, onCancel }) {
         phone: "",
         email: "",
         address: "",
-        idUser: 1,
     });
 
     const isEdit = Boolean(company);
@@ -38,7 +37,6 @@ function CompanyForm({ company, onSuccess, onCancel }) {
             phone: company.phone || "",
             email: company.email || "",
             address: company.address || "",
-            idUser: company.idUser ?? 1,
         });
 
         setLogoPreview(company.logoUrl || "");

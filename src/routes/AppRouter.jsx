@@ -2,21 +2,49 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
 import MainLayout from "../layouts/MainLayout";
 import CompaniesPage from "../pages/CompaniesPage";
 import PresupuestosPage from "../pages/PresupuestosPage";
 import SettingsPage from "../pages/SettingsPage";
 import CompanyPresupuestosPage from "../pages/CompanyPresupuestosPage";
 import PresupuestoFormPage from "../pages/PresupuestoFormPage";
+import RegisterPage from "../pages/RegisterPage";
+import LandingPage from "../pages/LandingPage";
 
 function AppRouter() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/login" element={<LoginPage />} />
+                <Route
+                    path="/login"
+                    element={
+                        <PublicRoute>
+                            <LoginPage />
+                        </PublicRoute>
+                    }
+                />
+
+                <Route
+                    path="/register"
+                    element={
+                        <PublicRoute>
+                            <RegisterPage />
+                        </PublicRoute>
+                    }
+                />
 
                 <Route
                     path="/"
+                    element={
+                        <PublicRoute>
+                            <LandingPage />
+                        </PublicRoute>
+                    }
+                />
+
+                <Route
+                    path="/dashboard"
                     element={
                         <ProtectedRoute>
                             <MainLayout>
@@ -25,16 +53,18 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 />
+
                 <Route
                     path="/companies"
                     element={
                         <ProtectedRoute>
-                        <MainLayout>
-                            <CompaniesPage />
-                        </MainLayout>
+                            <MainLayout>
+                                <CompaniesPage />
+                            </MainLayout>
                         </ProtectedRoute>
                     }
                 />
+
                 <Route
                     path="/companies/:companyId/budgets"
                     element={
@@ -45,6 +75,7 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 />
+
                 <Route
                     path="/companies/:companyId/budgets/new"
                     element={
@@ -55,6 +86,7 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 />
+
                 <Route
                     path="/companies/:companyId/budgets/:presupuestoId/edit"
                     element={
@@ -65,23 +97,25 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 />
+
                 <Route
                     path="/budgets"
                     element={
                         <ProtectedRoute>
-                        <MainLayout>
-                            <PresupuestosPage />
-                        </MainLayout>
+                            <MainLayout>
+                                <PresupuestosPage />
+                            </MainLayout>
                         </ProtectedRoute>
                     }
                 />
+
                 <Route
                     path="/settings"
                     element={
                         <ProtectedRoute>
-                        <MainLayout>
-                            <SettingsPage />
-                        </MainLayout>
+                            <MainLayout>
+                                <SettingsPage />
+                            </MainLayout>
                         </ProtectedRoute>
                     }
                 />

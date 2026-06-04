@@ -1,2 +1,5 @@
-//export const API_BASE_URL = "https://localhost:7277";
-export const API_BASE_URL = "https://presupuestos-api-qjo2.onrender.com";
+export const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+if (!API_BASE_URL) {
+    throw new Error("Falta configurar VITE_API_URL en el archivo .env");
+}

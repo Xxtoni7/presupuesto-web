@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -7,20 +7,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 
-
-function LoginPage() {
+function RegisterPage() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const { login } = useAuth();
+    const { register } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
         password: "",
+        confirmPassword: "",
     });
     const [error, setError] = useState("");
-
-    const redirectTo = location.state?.from?.pathname || "/dashboard";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,20 +34,37 @@ function LoginPage() {
 
         const email = formData.email.trim();
         const password = formData.password;
+        const confirmPassword = formData.confirmPassword;
 
-        if (!email || !password) {
-            setError("Ingresá tu email y contraseña para continuar.");
+        if (!email || !password || !confirmPassword) {
+            setError("Completá todos los campos para crear tu cuenta.");
+            return;
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
+
+        if (!passwordRegex.test(password)) {
+            setError("La contraseña debe tener al menos 8 caracteres, una letra minúscula y un número.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("Las contraseñas no coinciden.");
             return;
         }
 
         try {
             setLoading(true);
 
-            await login(email, password);
+            await register({
+                email,
+                password,
+                confirmPassword,
+            });
 
-            navigate(redirectTo, { replace: true });
+            navigate("/dashboard", { replace: true });
         } catch (err) {
-            setError(err.message || "No se pudo iniciar sesión.");
+            setError(err.message || "No se pudo crear la cuenta.");
         } finally {
             setLoading(false);
         }
@@ -64,9 +78,9 @@ function LoginPage() {
                         <img src={logo} alt="Logo" className="w-16 h-16 object-contain" />
                     </div>
 
-                    <CardTitle className="text-2xl">Generar Presupuesto</CardTitle>
+                    <CardTitle className="text-2xl">Crear cuenta</CardTitle>
                     <p className="text-gray-500 mt-2">
-                        Ingresá tus credenciales para continuar
+                        Empezá gratis y creá tu primer presupuesto
                     </p>
                 </CardHeader>
 
@@ -98,6 +112,23 @@ function LoginPage() {
                                 required
                                 className="mt-1.5"
                             />
+                            <p className="mt-1 text-xs text-gray-500">
+                                Debe tener al menos 8 caracteres, una letra minúscula y un número.
+                            </p>
+                        </div>
+
+                        <div>
+                            <Label htmlFor="confirmPassword">Confirmar contraseña</Label>
+                            <Input
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                type="password"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                placeholder="Repetí tu contraseña"
+                                required
+                                className="mt-1.5"
+                            />
                         </div>
 
                         {error && (
@@ -114,10 +145,10 @@ function LoginPage() {
                             {loading ? (
                                 <>
                                     <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                    Iniciando sesión...
+                                    Creando cuenta...
                                 </>
                             ) : (
-                                "Iniciar sesión"
+                                "Crear cuenta gratis"
                             )}
                         </Button>
 
@@ -131,9 +162,9 @@ function LoginPage() {
                         </Button>
 
                         <p className="text-center text-sm text-gray-500">
-                            ¿Todavía no tenés cuenta?{" "}
-                            <Link to="/register" className="font-medium text-red-500 hover:text-red-600">
-                                Crear cuenta
+                            ¿Ya tenés cuenta?{" "}
+                            <Link to="/login" className="font-medium text-red-500 hover:text-red-600">
+                                Iniciar sesión
                             </Link>
                         </p>
                     </form>
@@ -143,4 +174,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default RegisterPage;

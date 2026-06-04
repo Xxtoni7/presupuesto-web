@@ -22,5 +22,4 @@ export const emptyCompany = {
     email: "",
     address: "",
     industry: "",
-    idUser: 1, // TODO: Obtener el id del usuario logueado
 };
