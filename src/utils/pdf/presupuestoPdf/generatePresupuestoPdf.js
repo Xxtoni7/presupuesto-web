@@ -8,7 +8,7 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
     await registerInterFonts(doc);
 
     const primaryColor = hexToRgb(company?.colorMain);
-    const secondaryColor = hexToRgb(company?.colorSecondary, [254, 226, 226]);
+    const secondaryColor = hexToRgb(company?.colorSecondary, [0, 0, 0]);
 
     const logoImage = await loadImageElement(getImageUrl(company?.logoUrl));
 

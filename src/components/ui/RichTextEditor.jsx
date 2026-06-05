@@ -59,7 +59,6 @@ const formats = [
     "bold",
     "underline",
     "list",
-    "bullet",
 ];
 
 function RichTextEditor({ value, onChange, placeholder }) {

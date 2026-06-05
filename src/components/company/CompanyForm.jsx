@@ -4,8 +4,20 @@ import { createCompany, updateCompany } from "../../api/companyApi";
 import { uploadCompanyLogo } from "../../api/uploadApi";
 import { Upload } from "lucide-react";
 
+function emptyToNull(value) {
+    const trimmedValue = value?.trim();
+
+    return trimmedValue || null;
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function CompanyForm({ company, onSuccess, onCancel }) {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [fieldErrors, setFieldErrors] = useState({});
     const fileInputRef = useRef(null);
     const [logoPreview, setLogoPreview] = useState("");
 
@@ -49,6 +61,11 @@ function CompanyForm({ company, onSuccess, onCancel }) {
             ...prev,
             [name]: value,
         }));
+
+        setFieldErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
     };
 
     const handleLogoChange = async (e) => {
@@ -67,33 +84,58 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
             setLogoPreview(URL.createObjectURL(file));
         } catch (err) {
-            alert(err.message || "Error al subir el logo");
+            setError(err.message || "Error al subir el logo");
         } finally {
             setLoading(false);
         }
     };
 
+    const buildCompanyPayload = () => ({
+        name: formData.name.trim(),
+        logoUrl: emptyToNull(formData.logoUrl),
+        colorMain: formData.colorMain || "#c90000",
+        colorSecondary: formData.colorSecondary || "#000000",
+        industry: emptyToNull(formData.industry),
+        phone: emptyToNull(formData.phone),
+        email: emptyToNull(formData.email),
+        address: emptyToNull(formData.address),
+    });
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        setFieldErrors({});
 
         if (!formData.name.trim()) {
-            alert("El nombre es obligatorio");
+            setError("El nombre de la empresa es obligatorio.");
+            return;
+        }
+
+        const email = formData.email.trim();
+
+        if (email && !isValidEmail(email)) {
+            setFieldErrors((prev) => ({
+                ...prev,
+                email: "Ingresá un email válido para la empresa.",
+            }));
             return;
         }
 
         try {
             setLoading(true);
 
+            const payload = buildCompanyPayload();
+
             if (isEdit) {
                 const id = company.idCompany ?? company.id;
-                await updateCompany(id, formData);
+                await updateCompany(id, payload);
             } else {
-                await createCompany(formData);
+                await createCompany(payload);
             }
 
             onSuccess();
         } catch (err) {
-            alert(err.message || "Error al guardar");
+            setError(err.message || "Error al guardar la empresa.");
         } finally {
             setLoading(false);
         }
@@ -110,6 +152,12 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+                    {error}
+                </div>
+            )}
+
             <div className="space-y-4">
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-[#111111]">
@@ -202,7 +250,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                             >
                                 <div
                                 className="h-6 w-6 rounded-md border"
-                                style={{ backgroundColor: formData.colorMain || "#000000" }}
+                                style={{ backgroundColor: formData.colorMain || "#c90000" }}
                                 />
                                 <span className="text-sm text-[#111111]">Elegir color</span>
                             </button>
@@ -285,22 +333,27 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                         />
                     </div>
 
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-[#111111]">
-                        Email empresa{" "}
-                        <span className="ml-1 text-xs font-normal text-gray-400">
-                            (Opcional)
-                        </span>
-                    </label>
-                    <input
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="contacto@empresa.com"
-                    className="mt-1.5 flex h-9 w-full rounded-lg border border-[#d1d5db] bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
-                    />
-                </div>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-[#111111]">
+                            Email empresa{" "}
+                            <span className="ml-1 text-xs font-normal text-gray-400">
+                                (Opcional)
+                            </span>
+                        </label>
+                        <input
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="contacto@empresa.com"
+                            className="mt-1.5 flex h-9 w-full rounded-lg border border-[#d1d5db] bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
+                        />
+                        {fieldErrors.email && (
+                            <p className="mt-1 text-xs text-red-500">
+                                {fieldErrors.email}
+                            </p>
+                        )}
+                    </div>
                 </div>
 
                 <div>
