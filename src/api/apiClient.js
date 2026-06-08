@@ -26,6 +26,34 @@ async function parseResponse(response) {
     return response.text();
 }
 
+function getApiErrorMessage(data, fallbackMessage) {
+    if (!data) return fallbackMessage;
+
+    if (typeof data === "string") {
+        return data || fallbackMessage;
+    }
+
+    if (data.message) {
+        return data.message;
+    }
+
+    if (data.errors) {
+        const firstError = Object.values(data.errors)
+            .flat()
+            .find(Boolean);
+
+        if (firstError) {
+            return firstError;
+        }
+    }
+
+    if (data.title) {
+        return data.title;
+    }
+
+    return fallbackMessage;
+}
+
 async function refreshAccessToken() {
     if (!refreshPromise) {
         refreshPromise = fetch(`${API_BASE_URL}/api/Auth/refresh-token`, {
@@ -38,7 +66,7 @@ async function refreshAccessToken() {
                 if (!response.ok) {
                     clearAccessToken();
                     throw new ApiError(
-                        data?.message || "Sesión expirada. Iniciá sesión nuevamente.",
+                        getApiErrorMessage(data, "Sesión expirada. Iniciá sesión nuevamente."),
                         response.status,
                         data
                     );
@@ -118,7 +146,7 @@ export async function apiRequest(endpoint, options = {}) {
 
     if (!response.ok) {
         throw new ApiError(
-            data?.message || "Ocurrió un error al procesar la solicitud.",
+            getApiErrorMessage(data, "Ocurrió un error al procesar la solicitud."),
             response.status,
             data
         );

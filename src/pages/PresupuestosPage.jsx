@@ -11,6 +11,7 @@ import PresupuestoPreview from "../components/presupuesto/PresupuestoPreview";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";
 import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
+import { authorizePresupuestoPdfExport } from "../api/presupuestoApi";
 import { toast } from "sonner";
 import { generatePresupuestoPdf } from "../utils/pdf/presupuestoPdf/generatePresupuestoPdf";
 import { duplicatePresupuesto } from "../services/presupuestoService";
@@ -34,6 +35,7 @@ function PresupuestosPage() {
     const [previewCompany, setPreviewCompany] = useState(null);
     const [presupuestoToDelete, setPresupuestoToDelete] = useState(null);
     const [isDeletingPresupuesto, setIsDeletingPresupuesto] = useState(false);
+    const [pdfGeneratingId, setPdfGeneratingId] = useState(null);
 
     const filteredPresupuestos = useMemo(() => {
         const term = normalizeText(searchTerm.trim());
@@ -133,13 +135,21 @@ function PresupuestosPage() {
     };
 
     const handleDownload = async (presupuesto) => {
+        const presupuestoId = presupuesto.idPresupuesto;
+
+        if (pdfGeneratingId === presupuestoId) return;
+
         const toastId = toast.loading("Generando PDF...", {
-            description: "Estamos preparando el presupuesto para descargar.",
+            description: "Estamos validando tu plan y preparando el presupuesto.",
         });
 
         try {
+            setPdfGeneratingId(presupuestoId);
+
+            await authorizePresupuestoPdfExport(presupuestoId);
+
             const [items, company] = await Promise.all([
-                getItemsByPresupuesto(presupuesto.idPresupuesto),
+                getItemsByPresupuesto(presupuestoId),
                 getCompanyById(presupuesto.idCompany),
             ]);
 
@@ -154,12 +164,25 @@ function PresupuestosPage() {
                 description: `Se descargó ${presupuesto.budgetNumber || "el presupuesto"}.`,
                 duration: 3500,
             });
-        } catch {
-            toast.error("No se pudo generar el PDF", {
-                id: toastId,
-                description: "No se encontró la empresa o los ítems del presupuesto.",
-                duration: 4500,
-            });
+        } catch (err) {
+            const isPdfLimitError = err.status === 403;
+
+            toast.error(
+                isPdfLimitError ? "Límite de PDF alcanzado" : "No se pudo generar el PDF",
+                {
+                    id: toastId,
+                    description: err.message || "Intentá nuevamente en unos segundos.",
+                    duration: isPdfLimitError ? 7000 : 4500,
+                    action: isPdfLimitError
+                        ? {
+                            label: "Ver planes",
+                            onClick: () => navigate("/settings"),
+                        }
+                        : undefined,
+                }
+            );
+        } finally {
+            setPdfGeneratingId(null);
         }
     };
 
@@ -210,6 +233,7 @@ function PresupuestosPage() {
                         onDuplicate={handleDuplicate}
                         onPreview={handlePreview}
                         onDownload={handleDownload}
+                        isPdfGenerating={pdfGeneratingId === presupuesto.idPresupuesto}
                     />
                 ))}
             </div>
@@ -223,6 +247,7 @@ function PresupuestosPage() {
                 onDuplicate={handleDuplicate}
                 onPreview={handlePreview}
                 onDownload={handleDownload}
+                pdfGeneratingId={pdfGeneratingId}
             />
         );
     }

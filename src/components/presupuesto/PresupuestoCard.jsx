@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Calendar, User, Edit, Trash2, Copy, Eye, Download } from "lucide-react";
+import { Calendar, User, Edit, Trash2, Copy, Eye, Download, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -18,7 +18,7 @@ function formatDate(dateString) {
     }).format(date);
 }
 
-function PresupuestoCard({presupuesto, onEdit, onDelete, onDuplicate, onPreview, onDownload}) {
+function PresupuestoCard({presupuesto, onEdit, onDelete, onDuplicate, onPreview, onDownload, isPdfGenerating = false}) {
     return (
         <Card className="relative flex min-h-[355px] flex-col transition-all duration-200 hover:shadow-lg">
             <CardContent className="relative flex-1 pt-6 pb-16">
@@ -78,9 +78,19 @@ function PresupuestoCard({presupuesto, onEdit, onDelete, onDuplicate, onPreview,
                         variant="outline"
                         size="sm"
                         onClick={() => onDownload(presupuesto)}
+                        disabled={isPdfGenerating}
                     >
-                        <Download className="mr-2 h-4 w-4" />
-                        PDF
+                        {isPdfGenerating ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Generando...
+                            </>
+                        ) : (
+                            <>
+                                <Download className="mr-2 h-4 w-4" />
+                                PDF
+                            </>
+                        )}
                     </Button>
                 </div>
 
@@ -124,6 +134,7 @@ PresupuestoCard.propTypes = {
     onDuplicate: PropTypes.func.isRequired,
     onPreview: PropTypes.func.isRequired,
     onDownload: PropTypes.func.isRequired,
+    isPdfGenerating: PropTypes.bool,
 };
 
 export default PresupuestoCard;
