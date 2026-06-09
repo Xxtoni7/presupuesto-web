@@ -4,6 +4,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import GoogleLoginButton from "../components/auth/GoogleLoginButton";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 
@@ -11,13 +12,13 @@ import logo from "../assets/logo.png";
 function LoginPage() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { login } = useAuth();
-
+    const { login, loginWithGoogle } = useAuth();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
+    const [googleLoading, setGoogleLoading] = useState(false);
     const [error, setError] = useState("");
 
     const redirectTo = location.state?.from?.pathname || "/dashboard";
@@ -54,6 +55,26 @@ function LoginPage() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleGoogleSuccess = async (credential) => {
+        setError("");
+
+        try {
+            setGoogleLoading(true);
+
+            await loginWithGoogle(credential);
+
+            navigate(redirectTo, { replace: true });
+        } catch (err) {
+            setError(err.message || "No se pudo iniciar sesión con Google.");
+        } finally {
+            setGoogleLoading(false);
+        }
+    };
+
+    const handleGoogleError = (err) => {
+        setError(err.message || "No se pudo cargar Google Login.");
     };
 
     return (
@@ -121,14 +142,23 @@ function LoginPage() {
                             )}
                         </Button>
 
-                        <Button
-                            type="button"
-                            variant="outline"
-                            className="w-full"
-                            disabled
-                        >
-                            Continuar con Google
-                        </Button>
+                        {googleLoading ? (
+                            <Button
+                                type="button"
+                                variant="outline"
+                                className="w-full"
+                                disabled
+                            >
+                                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-transparent"></div>
+                                Iniciando sesión con Google...
+                            </Button>
+                        ) : (
+                            <GoogleLoginButton
+                                onSuccess={handleGoogleSuccess}
+                                onError={handleGoogleError}
+                                disabled={loading}
+                            />
+                        )}
 
                         <p className="text-center text-sm text-gray-500">
                             ¿Todavía no tenés cuenta?{" "}

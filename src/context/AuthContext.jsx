@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { getCurrentUser, loginUser, logoutUser, refreshToken, registerUser } from "../api/authApi";
+import { getCurrentUser, loginUser, loginWithGoogle as loginWithGoogleRequest, logoutUser, refreshToken, registerUser } from "../api/authApi";
 import { clearAccessToken } from "../utils/authTokenStore";
 
 const AuthContext = createContext(null);
@@ -69,6 +69,19 @@ export function AuthProvider({ children }) {
             return loadCurrentUser();
         },
         [loadCurrentUser]
+        );
+
+        const loginWithGoogle = useCallback(
+        async (idToken) => {
+            if (!idToken) {
+                throw new Error("No se pudo obtener la credencial de Google.");
+            }
+
+            await loginWithGoogleRequest(idToken);
+
+            return loadCurrentUser();
+        },
+        [loadCurrentUser]
     );
 
     const logout = useCallback(async () => {
@@ -83,10 +96,20 @@ export function AuthProvider({ children }) {
             isLoadingAuth,
             login,
             register,
+            loginWithGoogle,
             logout,
             restoreSession,
         }),
-        [user, isAuthenticated, isLoadingAuth, login, register, logout, restoreSession]
+        [
+            user, 
+            isAuthenticated, 
+            isLoadingAuth, 
+            login, 
+            register, 
+            loginWithGoogle, 
+            logout, 
+            restoreSession
+        ]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
