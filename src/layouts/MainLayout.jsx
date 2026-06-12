@@ -68,7 +68,7 @@ function MainLayout({ children }) {
                         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
                 >
-                    <div className="h-[64px] border-b border-gray-200 flex items-center justify-between px-4 md:px-6">
+                    <div className="h-[64px] flex items-center justify-between px-4 md:px-6">
                         <div className="flex items-center gap-3">
                             <img src={logo} alt="Logo" className="h-10 w-10 object-contain" />
                             <span className="hidden text-[18px] font-semibold md:inline">
@@ -85,7 +85,7 @@ function MainLayout({ children }) {
                         </button>
                     </div>
 
-                    <nav className="p-5 space-y-3">
+                    <nav className="px-5 pt-7 pb-5 space-y-3">
                         {menu.map((item) => {
                             const Icon = item.icon;
                             const isActive = location.pathname === item.path;
@@ -139,10 +139,10 @@ function MainLayout({ children }) {
                             <button
                                 type="button"
                                 onClick={() => setOpenUserMenu((prev) => !prev)}
-                                className={`flex h-9 w-9 items-center justify-center rounded-full border bg-white transition hover:bg-gray-50 ${
+                                className={`flex h-10 w-10 items-center justify-center rounded-xl border shadow-sm transition ${
                                     openUserMenu
-                                        ? "border-red-500"
-                                        : "border-transparent"
+                                        ? "border-red-500 bg-gray-50 ring-1 ring-red-500/10"
+                                        : "border-[#d1d5db] bg-white hover:bg-gray-50"
                                 }`}
                             >
                                 <User className="h-5 w-5 text-black" />
