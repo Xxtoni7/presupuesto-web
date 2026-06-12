@@ -52,7 +52,7 @@ function MainLayout({ children }) {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#f8f8f8]">
+        <div className="min-h-screen bg-[#FAFAFB]">
             <div className="flex min-h-screen">
                 {isMobileMenuOpen && (
                     <button
@@ -72,7 +72,7 @@ function MainLayout({ children }) {
                         <div className="flex items-center gap-3">
                             <img src={logo} alt="Logo" className="h-10 w-10 object-contain" />
                             <span className="hidden text-[18px] font-semibold md:inline">
-                                Presupuesto WEB
+                                MT Presupuestos
                             </span>
                         </div>
 
@@ -174,7 +174,7 @@ function MainLayout({ children }) {
                         </div>
                     </header>
 
-                    <main className="flex-1 p-8">{children}</main>
+                    <main className="flex-1 bg-[#FAFAFB] p-8">{children}</main>
                 </div>
             </div>
         </div>
