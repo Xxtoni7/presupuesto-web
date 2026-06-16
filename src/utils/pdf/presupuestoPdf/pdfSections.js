@@ -64,29 +64,31 @@ export function drawHeader(doc, company, presupuesto, primaryColor, logoImage, h
     const logoBoxX = marginX;
     const logoBoxY = 14;
 
-    const logoBoxSize = getLogoBoxSize(logoImage);
-    const logoBoxWidth = logoBoxSize.width;
-    const logoBoxHeight = logoBoxSize.height;
-
-    const logoPadding = 0.8;
-    const logoMaxWidth = logoBoxWidth - logoPadding * 2;
-    const logoMaxHeight = logoBoxHeight - logoPadding * 2;
-
-    doc.setFillColor(255, 255, 255);
-    doc.setDrawColor(229, 231, 235);
-    doc.setLineWidth(0.4);
-
-    doc.roundedRect(
-        logoBoxX,
-        logoBoxY,
-        logoBoxWidth,
-        logoBoxHeight,
-        2.5,
-        2.5,
-        "FD"
-    );
+    let companyTextX = marginX;
 
     if (logoImage) {
+        const logoBoxSize = getLogoBoxSize(logoImage);
+        const logoBoxWidth = logoBoxSize.width;
+        const logoBoxHeight = logoBoxSize.height;
+
+        const logoPadding = 0.8;
+        const logoMaxWidth = logoBoxWidth - logoPadding * 2;
+        const logoMaxHeight = logoBoxHeight - logoPadding * 2;
+
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(229, 231, 235);
+        doc.setLineWidth(0.4);
+
+        doc.roundedRect(
+            logoBoxX,
+            logoBoxY,
+            logoBoxWidth,
+            logoBoxHeight,
+            2.5,
+            2.5,
+            "FD"
+        );
+
         const imageFormat =
             logoImage.src?.toLowerCase().includes(".jpg") ||
             logoImage.src?.toLowerCase().includes(".jpeg")
@@ -110,9 +112,9 @@ export function drawHeader(doc, company, presupuesto, primaryColor, logoImage, h
             containedSize.width,
             containedSize.height
         );
-    }
 
-    const companyTextX = logoBoxX + logoBoxWidth + 6;
+        companyTextX = logoBoxX + logoBoxWidth + 6;
+    }
 
     // Company Name
     doc.setFont("Inter", "semibold");

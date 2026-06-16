@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import DOMPurify from "dompurify";
-import { Building2, Calendar, Mail, MapPin, Phone, User } from "lucide-react";
+import { Calendar, Mail, MapPin, Phone, User } from "lucide-react";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 function formatDate(dateValue) {
@@ -80,7 +80,7 @@ function PresupuestoPreview({ presupuesto, company, items }) {
     const primaryColor = company?.colorMain || "#ef4444";
     const secondaryColor = company?.colorSecondary || "#000000";
     const textWrapClass = "whitespace-pre-wrap break-words overflow-wrap-anywhere";
-    const logoSrc = company?.logoUrl || null;
+    const logoSrc = company?.logoUrl?.trim() || null;
     const hasWorkAddress = hasText(presupuesto.workAddress);
     const hasJobDescription = hasRichTextContent(presupuesto.jobDescription);
     const hasEstimatedTime = hasText(presupuesto.estimatedTime);
@@ -137,16 +137,12 @@ function PresupuestoPreview({ presupuesto, company, items }) {
             >
                 <div className="flex items-start justify-between gap-6">
                     <div className="flex items-center gap-5">
-                        {company?.logoUrl ? (
+                        {logoSrc && (
                             <img
                                 src={logoSrc}
                                 alt={company.name}
                                 className="h-20 w-24 rounded-lg border border-gray-200 object-contain p-1"
                             />
-                        ) : (
-                            <div className="flex h-16 w-24 items-center justify-center rounded-lg bg-gray-100">
-                                <Building2 className="h-8 w-8 text-gray-400" />
-                            </div>
                         )}
 
                         <div className="pt-1">

@@ -81,7 +81,7 @@ function LandingPage() {
                 <div className="flex items-center gap-3 animate-slide-in-down">
                     <img src={logo} alt="Logo" className="h-10 w-10 object-contain filter drop-shadow-lg" />
                     <span className="text-xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-                        Presupuesto WEB
+                        MT Presupuestos
                     </span>
                 </div>
 
@@ -101,11 +101,6 @@ function LandingPage() {
             </header>
 
             <main className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-6 py-16 text-center md:py-24">
-                <div className="animate-slide-in-down delay-100">
-                    <span className="inline-block mb-5 rounded-full bg-gradient-to-r from-red-500/20 to-orange-500/20 px-4 py-2 text-sm font-medium text-red-300 border border-red-500/30 backdrop-blur-sm hover:bg-red-500/30 transition-all duration-300">
-                        ⚡ Creá presupuestos profesionales en minutos
-                    </span>
-                </div>
 
                 <h1 className="max-w-3xl text-4xl md:text-6xl font-bold tracking-tight text-white animate-slide-in-down delay-200 leading-tight">
                     Generá, guardá y descargá

@@ -10,7 +10,10 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
     const primaryColor = hexToRgb(company?.colorMain);
     const secondaryColor = hexToRgb(company?.colorSecondary, [0, 0, 0]);
 
-    const logoImage = await loadImageElement(getImageUrl(company?.logoUrl));
+    const logoUrl = company?.logoUrl?.trim() || null;
+    const logoImage = logoUrl
+        ? await loadImageElement(getImageUrl(logoUrl))
+        : null;
 
     const pdfIcons = {
         phone: await loadSvgAsPngDataUrl("/icons/pdf/phone.svg", 24),
