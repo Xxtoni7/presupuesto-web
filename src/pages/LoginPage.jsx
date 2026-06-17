@@ -5,6 +5,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import GoogleLoginButton from "../components/auth/GoogleLoginButton";
+import PasswordInput from "../components/auth/PasswordInput";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 
@@ -92,6 +93,13 @@ function LoginPage() {
                 </CardHeader>
 
                 <CardContent>
+
+                    {error && (
+                            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+                                {error}
+                            </div>
+                    )}
+
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <Label htmlFor="email">Email</Label>
@@ -109,23 +117,26 @@ function LoginPage() {
 
                         <div>
                             <Label htmlFor="password">Contraseña</Label>
-                            <Input
+
+                            <PasswordInput
                                 id="password"
                                 name="password"
-                                type="password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="********"
                                 required
                                 className="mt-1.5"
                             />
-                        </div>
 
-                        {error && (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-                                {error}
+                            <div className="mt-2 text-left">
+                                <Link
+                                    to="/forgot-password"
+                                    className="text-sm font-medium text-gray-500 hover:text-red-500"
+                                >
+                                    ¿Te olvidaste la contraseña?
+                                </Link>
                             </div>
-                        )}
+                        </div>
 
                         <Button
                             type="submit"

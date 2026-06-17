@@ -71,3 +71,26 @@ export async function logoutUser() {
         clearAccessToken();
     }
 }
+
+export async function forgotPassword(email) {
+    return apiRequest("/api/Auth/forgot-password", {
+        method: "POST",
+        body: {
+            email,
+        },
+        auth: false,
+    });
+}
+
+export async function resetPassword({ userId, token, newPassword, confirmNewPassword }) {
+    return apiRequest("/api/Auth/reset-password", {
+        method: "POST",
+        body: {
+            userId,
+            token,
+            newPassword,
+            confirmNewPassword,
+        },
+        auth: false,
+    });
+}

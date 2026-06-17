@@ -11,6 +11,8 @@ import CompanyPresupuestosPage from "../pages/CompanyPresupuestosPage";
 import PresupuestoFormPage from "../pages/PresupuestoFormPage";
 import RegisterPage from "../pages/RegisterPage";
 import LandingPage from "../pages/LandingPage";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 
 function AppRouter() {
     return (
@@ -32,6 +34,15 @@ function AppRouter() {
                             <RegisterPage />
                         </PublicRoute>
                     }
+                />
+
+                <Route 
+                    path="/forgot-password" 
+                    element={<ForgotPasswordPage />} 
+                />
+                <Route 
+                    path="/reset-password" 
+                    element={<ResetPasswordPage />} 
                 />
 
                 <Route

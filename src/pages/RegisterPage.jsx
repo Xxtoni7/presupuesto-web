@@ -5,8 +5,10 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import GoogleLoginButton from "../components/auth/GoogleLoginButton";
+import PasswordInput from "../components/auth/PasswordInput";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
+import { isValidPassword, PASSWORD_REQUIREMENTS_MESSAGE } from "../utils/passwordValidation";
 
 function RegisterPage() {
     const navigate = useNavigate();
@@ -43,10 +45,8 @@ function RegisterPage() {
             return;
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
-
-        if (!passwordRegex.test(password)) {
-            setError("La contraseña debe tener al menos 8 caracteres, una letra minúscula y un número.");
+        if (!isValidPassword(password)) {
+            setError(PASSWORD_REQUIREMENTS_MESSAGE);
             return;
         }
 
@@ -107,6 +107,12 @@ function RegisterPage() {
                 </CardHeader>
 
                 <CardContent>
+
+                    {error && (
+                        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+                            {error}
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <Label htmlFor="email">Email</Label>
@@ -119,50 +125,50 @@ function RegisterPage() {
                                 placeholder="su@email.com"
                                 required
                                 className="mt-1.5"
+                                disabled={loading || googleLoading}
                             />
                         </div>
 
                         <div>
                             <Label htmlFor="password">Contraseña</Label>
-                            <Input
+                            <PasswordInput
                                 id="password"
                                 name="password"
-                                type="password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="********"
                                 required
                                 className="mt-1.5"
+                                disabled={loading || googleLoading}
                             />
-                            <p className="mt-1 text-xs text-gray-500">
-                                Debe tener al menos 8 caracteres, una letra minúscula y un número.
-                            </p>
+                            
                         </div>
 
                         <div>
-                            <Label htmlFor="confirmPassword">Confirmar contraseña</Label>
-                            <Input
+                            <Label htmlFor="confirmPassword">
+                                Confirmar contraseña
+                            </Label>
+
+                            <PasswordInput
                                 id="confirmPassword"
                                 name="confirmPassword"
-                                type="password"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                                 placeholder="Repetí tu contraseña"
                                 required
                                 className="mt-1.5"
+                                disabled={loading || googleLoading}
                             />
                         </div>
 
-                        {error && (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-                                {error}
-                            </div>
-                        )}
+                        <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 text-xs text-gray-500">
+                            {PASSWORD_REQUIREMENTS_MESSAGE}
+                        </div>
 
                         <Button
                             type="submit"
                             className="w-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center gap-2"
-                            disabled={loading}
+                            disabled={loading || googleLoading}
                         >
                             {loading ? (
                                 <>
