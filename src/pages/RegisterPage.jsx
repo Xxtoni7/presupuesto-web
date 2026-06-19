@@ -58,13 +58,19 @@ function RegisterPage() {
         try {
             setLoading(true);
 
-            await register({
+            const data = await register({
                 email,
                 password,
                 confirmPassword,
             });
 
-            navigate("/dashboard", { replace: true });
+            navigate("/email-confirmation-sent", {
+                replace: true,
+                state: {
+                    email,
+                    message: data?.message,
+                },
+            });
         } catch (err) {
             setError(err.message || "No se pudo crear la cuenta.");
         } finally {

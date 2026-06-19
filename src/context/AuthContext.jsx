@@ -63,13 +63,9 @@ export function AuthProvider({ children }) {
         [loadCurrentUser]
     );
 
-    const register = useCallback(
-        async ({ email, password, confirmPassword }) => {
-            await registerUser({ email, password, confirmPassword });
-            return loadCurrentUser();
-        },
-        [loadCurrentUser]
-        );
+    const register = useCallback(async ({ email, password, confirmPassword }) => {
+        return registerUser({ email, password, confirmPassword });
+    }, []);
 
         const loginWithGoogle = useCallback(
         async (idToken) => {

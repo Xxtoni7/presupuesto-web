@@ -13,6 +13,8 @@ import RegisterPage from "../pages/RegisterPage";
 import LandingPage from "../pages/LandingPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
+import EmailConfirmationSentPage from "../pages/EmailConfirmationSentPage";
+import ConfirmEmailPage from "../pages/ConfirmEmailPage";
 
 function AppRouter() {
     return (
@@ -43,6 +45,14 @@ function AppRouter() {
                 <Route 
                     path="/reset-password" 
                     element={<ResetPasswordPage />} 
+                />
+                <Route 
+                    path="/email-confirmation-sent" 
+                    element={<EmailConfirmationSentPage />} 
+                />
+                <Route 
+                    path="/confirm-email" 
+                    element={<ConfirmEmailPage />} 
                 />
 
                 <Route

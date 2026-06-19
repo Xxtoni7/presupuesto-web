@@ -10,7 +10,7 @@ function saveAuthSession(data) {
 }
 
 export async function registerUser({ email, password, confirmPassword }) {
-    const data = await apiRequest("/api/Auth/register", {
+    return apiRequest("/api/Auth/register", {
         method: "POST",
         body: {
             email,
@@ -19,8 +19,28 @@ export async function registerUser({ email, password, confirmPassword }) {
         },
         auth: false,
     });
+}
 
-    return saveAuthSession(data);
+export async function confirmEmail({ userId, token }) {
+    const query = new URLSearchParams({
+        userId,
+        token,
+    });
+
+    return apiRequest(`/api/Auth/confirm-email?${query.toString()}`, {
+        method: "GET",
+        auth: false,
+    });
+}
+
+export async function resendEmailConfirmation(email) {
+    return apiRequest("/api/Auth/resend-email-confirmation", {
+        method: "POST",
+        body: {
+            email,
+        },
+        auth: false,
+    });
 }
 
 export async function loginUser({ email, password }) {

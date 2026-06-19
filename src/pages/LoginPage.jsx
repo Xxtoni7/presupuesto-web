@@ -7,8 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import GoogleLoginButton from "../components/auth/GoogleLoginButton";
 import PasswordInput from "../components/auth/PasswordInput";
 import { useAuth } from "../context/AuthContext";
+import { resendEmailConfirmation } from "../api/authApi";
+import { toast } from "sonner";
 import logo from "../assets/logo.png";
 
+const EMAIL_NOT_CONFIRMED_MESSAGE =
+    "Tenés que verificar tu email antes de iniciar sesión.";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -21,8 +25,11 @@ function LoginPage() {
     });
     const [googleLoading, setGoogleLoading] = useState(false);
     const [error, setError] = useState("");
+    const [resendLoading, setResendLoading] = useState(false);
 
     const redirectTo = location.state?.from?.pathname || "/dashboard";
+    const shouldShowResendConfirmation =
+        error === EMAIL_NOT_CONFIRMED_MESSAGE && Boolean(formData.email.trim());
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,6 +42,7 @@ function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         setError("");
 
         const email = formData.email.trim();
@@ -52,14 +60,40 @@ function LoginPage() {
 
             navigate(redirectTo, { replace: true });
         } catch (err) {
-            setError(err.message || "No se pudo iniciar sesión.");
+            setError(err.message || "");
         } finally {
             setLoading(false);
         }
     };
 
+    const handleResendEmailConfirmation = async () => {
+        const email = formData.email.trim();
+
+        if (!email) {
+            return;
+        }
+
+        try {
+            setResendLoading(true);
+
+            const data = await resendEmailConfirmation(email);
+
+            if (data?.message) {
+                toast.success(data.message);
+            }
+        } catch (err) {
+            if (err.message) {
+                toast.error(err.message);
+            }
+        } finally {
+            setResendLoading(false);
+        }
+    };
+
     const handleGoogleSuccess = async (credential) => {
         setError("");
+        setResendMessage("");
+        setResendError("");
 
         try {
             setGoogleLoading(true);
@@ -68,14 +102,16 @@ function LoginPage() {
 
             navigate(redirectTo, { replace: true });
         } catch (err) {
-            setError(err.message || "No se pudo iniciar sesión con Google.");
+            setError(err.message || "");
         } finally {
             setGoogleLoading(false);
         }
     };
 
     const handleGoogleError = (err) => {
-        setError(err.message || "No se pudo cargar Google Login.");
+        setError(err.message || "");
+        setResendMessage("");
+        setResendError("");
     };
 
     return (
@@ -92,12 +128,25 @@ function LoginPage() {
                     </p>
                 </CardHeader>
 
-                <CardContent>
-
+                <CardContent className="space-y-4">
                     {error && (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-                                {error}
-                            </div>
+                        <div className="space-y-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+                            <p>{error}</p>
+
+                            {shouldShowResendConfirmation && (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="w-full bg-white"
+                                    disabled={resendLoading}
+                                    onClick={handleResendEmailConfirmation}
+                                >
+                                    {resendLoading
+                                        ? "Reenviando email..."
+                                        : "Reenviar email de verificación"}
+                                </Button>
+                            )}
+                        </div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
