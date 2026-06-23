@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -8,6 +8,7 @@ import GoogleLoginButton from "../components/auth/GoogleLoginButton";
 import PasswordInput from "../components/auth/PasswordInput";
 import { useAuth } from "../context/AuthContext";
 import { resendEmailConfirmation } from "../api/authApi";
+import { consumeSessionMessage } from "../utils/authSessionMessageStore";
 import { toast } from "sonner";
 import logo from "../assets/logo.png";
 
@@ -30,6 +31,16 @@ function LoginPage() {
     const redirectTo = location.state?.from?.pathname || "/dashboard";
     const shouldShowResendConfirmation =
         error === EMAIL_NOT_CONFIRMED_MESSAGE && Boolean(formData.email.trim());
+
+    useEffect(() => {
+        const message = consumeSessionMessage();
+
+        if (message) {
+            toast.warning(message, {
+                duration: 9000,
+            });
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

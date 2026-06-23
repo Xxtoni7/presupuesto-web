@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import PropTypes from "prop-types";
 import { getCurrentUser, loginUser, loginWithGoogle as loginWithGoogleRequest, logoutUser, refreshToken, registerUser } from "../api/authApi";
 import { clearAccessToken, clearHasSession, hasStoredSession } from "../utils/authTokenStore";
+import { setSessionRestoreFailedMessage } from "../utils/authSessionMessageStore";
 
 const AuthContext = createContext(null);
 
@@ -36,6 +37,7 @@ export function AuthProvider({ children }) {
             await refreshToken();
             await loadCurrentUser();
         } catch {
+            setSessionRestoreFailedMessage();
             clearSession();
         } finally {
             setIsLoadingAuth(false);
@@ -51,6 +53,7 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const handleSessionExpired = () => {
+            setSessionRestoreFailedMessage();
             clearSession();
         };
 
