@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../utils/constants";
-import { getAccessToken, setAccessToken, clearAccessToken } from "../utils/authTokenStore";
+import { getAccessToken, setAccessToken, clearAccessToken, setHasSession, clearHasSession } from "../utils/authTokenStore";
 
 class ApiError extends Error {
     constructor(message, status, data = null) {
@@ -65,6 +65,7 @@ async function refreshAccessToken() {
 
                 if (!response.ok) {
                     clearAccessToken();
+                    clearHasSession();
                     throw new ApiError(
                         getApiErrorMessage(data, "Sesión expirada. Iniciá sesión nuevamente."),
                         response.status,
@@ -73,6 +74,7 @@ async function refreshAccessToken() {
                 }
 
                 setAccessToken(data.accessToken);
+                setHasSession();
                 return data.accessToken;
             })
             .finally(() => {
@@ -135,6 +137,7 @@ export async function apiRequest(endpoint, options = {}) {
             });
         } catch (error) {
             clearAccessToken();
+            clearHasSession();
 
             globalThis.dispatchEvent(new Event("auth:session-expired"));
 

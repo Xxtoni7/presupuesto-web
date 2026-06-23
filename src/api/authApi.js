@@ -1,9 +1,10 @@
 import { apiRequest } from "./apiClient";
-import { setAccessToken, clearAccessToken } from "../utils/authTokenStore";
+import { setAccessToken, clearAccessToken, setHasSession, clearHasSession } from "../utils/authTokenStore";
 
 function saveAuthSession(data) {
     if (data?.accessToken) {
         setAccessToken(data.accessToken);
+        setHasSession();
     }
 
     return data;
@@ -89,6 +90,7 @@ export async function logoutUser() {
         });
     } finally {
         clearAccessToken();
+        clearHasSession();
     }
 }
 

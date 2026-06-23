@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { getCurrentUser, loginUser, loginWithGoogle as loginWithGoogleRequest, logoutUser, refreshToken, registerUser } from "../api/authApi";
-import { clearAccessToken } from "../utils/authTokenStore";
+import { clearAccessToken, clearHasSession, hasStoredSession } from "../utils/authTokenStore";
 
 const AuthContext = createContext(null);
 
@@ -14,6 +14,7 @@ export function AuthProvider({ children }) {
 
     const clearSession = useCallback(() => {
         clearAccessToken();
+        clearHasSession();
         setUser(null);
     }, []);
 
@@ -26,6 +27,11 @@ export function AuthProvider({ children }) {
     const restoreSession = useCallback(async () => {
         try {
             setIsLoadingAuth(true);
+
+            if (!hasStoredSession()) {
+                clearSession();
+                return;
+            }
 
             await refreshToken();
             await loadCurrentUser();
@@ -67,7 +73,7 @@ export function AuthProvider({ children }) {
         return registerUser({ email, password, confirmPassword });
     }, []);
 
-        const loginWithGoogle = useCallback(
+    const loginWithGoogle = useCallback(
         async (idToken) => {
             if (!idToken) {
                 throw new Error("No se pudo obtener la credencial de Google.");

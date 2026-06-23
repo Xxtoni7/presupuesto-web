@@ -92,8 +92,6 @@ function LoginPage() {
 
     const handleGoogleSuccess = async (credential) => {
         setError("");
-        setResendMessage("");
-        setResendError("");
 
         try {
             setGoogleLoading(true);
@@ -110,8 +108,6 @@ function LoginPage() {
 
     const handleGoogleError = (err) => {
         setError(err.message || "");
-        setResendMessage("");
-        setResendError("");
     };
 
     return (
