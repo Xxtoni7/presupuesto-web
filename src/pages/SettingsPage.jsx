@@ -19,7 +19,7 @@ function formatPrice(value) {
 }
 
 function getUsageLabel(used, max) {
-    if (max === -1) return `${used} / Ilimitado`;
+    if (max === -1) return `Ilimitado`;
 
     return `${used} / ${max}`;
 }
