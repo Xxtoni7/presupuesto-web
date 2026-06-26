@@ -132,6 +132,14 @@ function SettingsPage() {
     const [availablePlans, setAvailablePlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [activeSection, setActiveSection] = useState("perfil");
+    const settingsSections = [
+        { id: "perfil", label: "Perfil", icon: User },
+        { id: "suscripcion", label: "Suscripci\u00f3n", icon: Crown },
+        { id: "uso", label: "Uso disponible", icon: FileText },
+        { id: "planes", label: "Planes", icon: Sparkles },
+        { id: "apariencia", label: "Apariencia", icon: MonitorCog },
+    ];
 
     useEffect(() => {
         const loadSettingsData = async () => {
@@ -156,6 +164,46 @@ function SettingsPage() {
         loadSettingsData();
     }, []);
 
+    useEffect(() => {
+        const sectionIds = settingsSections.map((section) => section.id);
+        const sectionId = globalThis.location.hash.replace("#", "");
+
+        if (sectionIds.includes(sectionId)) {
+            setActiveSection(sectionId);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (loading) return undefined;
+
+        const sectionIds = settingsSections.map((section) => section.id);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const visibleEntry = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+                if (visibleEntry?.target.id) {
+                    setActiveSection(visibleEntry.target.id);
+                }
+            },
+            {
+                rootMargin: "-30% 0px -55% 0px",
+                threshold: [0.1, 0.25, 0.5],
+            }
+        );
+
+        sectionIds.forEach((sectionId) => {
+            const sectionElement = document.getElementById(sectionId);
+
+            if (sectionElement) {
+                observer.observe(sectionElement);
+            }
+        });
+
+        return () => observer.disconnect();
+    }, [loading]);
+
     if (loading) {
         return (
             <div className="py-12 text-center">
@@ -170,12 +218,12 @@ function SettingsPage() {
     const currentPlanName = currentPlan?.planName || user?.planName || "Free";
 
     return (
-        <div className="mx-auto max-w-7xl">
-            <div className="mb-8">
-                <h1 className="text-4xl font-bold text-[#111111]">
+        <div className="lg:-m-8 lg:flex lg:min-h-screen">
+            <div className="mb-8 lg:hidden">
+                <h1 className="text-3xl font-bold text-[#111111]">
                     Configuración
                 </h1>
-                <p className="mt-2 text-base text-gray-600">
+                <p className="mt-2 text-sm text-gray-600">
                     Administra tu cuenta, plan de suscripción y preferencias
                 </p>
             </div>
@@ -186,8 +234,38 @@ function SettingsPage() {
                 </div>
             )}
 
-            <div className="space-y-8">
-                <section className="grid gap-6 lg:grid-cols-3">
+            <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[260px] lg:shrink-0 lg:flex-col lg:border-r lg:border-gray-200 lg:bg-white lg:px-6 lg:py-8">
+                <div className="mb-6">
+                    <h1 className="text-2xl font-bold text-[#111111]">
+                        Configuración
+                    </h1>
+                </div>
+
+                <nav className="flex flex-col gap-1">
+                    {settingsSections.map((section) => {
+                        const Icon = section.icon;
+
+                        return (
+                            <a
+                                key={section.id}
+                                href={`#${section.id}`}
+                                onClick={() => setActiveSection(section.id)}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                                    activeSection === section.id
+                                        ? "bg-red-500 text-white shadow-sm"
+                                        : "text-gray-600 hover:bg-red-50 hover:text-red-500"
+                                }`}
+                            >
+                                <Icon className="h-4 w-4" />
+                                <span>{section.label}</span>
+                            </a>
+                        );
+                    })}
+                </nav>
+            </aside>
+
+            <div className="w-full max-w-7xl space-y-8 lg:p-8">
+                <section id="perfil" className="scroll-mt-24 grid gap-6 lg:grid-cols-3">
                     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm lg:col-span-3">
                         <div className="flex items-center gap-4 pb-6">
                             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50">
@@ -228,7 +306,7 @@ function SettingsPage() {
                 </section>
 
                 <section className="grid gap-6 lg:grid-cols-2">
-                    <div className="rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-white p-8 shadow-sm">
+                    <div id="suscripcion" className="scroll-mt-24 rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-white p-8 shadow-sm">
                         <div className="mb-6 flex items-start justify-between gap-4">
                             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
                                 <Crown className="h-6 w-6 text-red-500" />
@@ -253,7 +331,7 @@ function SettingsPage() {
                     </div>
 
                     {currentPlan && (
-                        <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+                        <div id="uso" className="scroll-mt-24 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
                             <div className="mb-6">
                                 <h3 className="text-lg font-semibold text-[#111111]">
                                     Uso disponible
@@ -313,7 +391,7 @@ function SettingsPage() {
                     )}
                 </section>
 
-                <section>
+                <section id="planes" className="scroll-mt-24">
                     <div className="mb-6">
                         <div className="flex items-center gap-3">
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
@@ -341,7 +419,7 @@ function SettingsPage() {
                     </div>
                 </section>
 
-                <section className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+                <section id="apariencia" className="scroll-mt-24 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
                     <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <div className="flex items-center gap-3 mb-2">
