@@ -4,7 +4,7 @@ import { CheckCircle, Loader2, XCircle } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { confirmEmail } from "../api/authApi";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 
 const INCOMPLETE_LINK_MESSAGE =
     "El link de verificación es inválido o está incompleto.";

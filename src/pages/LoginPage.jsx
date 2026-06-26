@@ -10,7 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import { resendEmailConfirmation } from "../api/authApi";
 import { consumeSessionMessage } from "../utils/authSessionMessageStore";
 import { toast } from "sonner";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 
 const EMAIL_NOT_CONFIRMED_MESSAGE =
     "Tenés que verificar tu email antes de iniciar sesión.";

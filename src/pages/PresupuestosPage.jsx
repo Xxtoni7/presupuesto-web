@@ -13,7 +13,6 @@ import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
 import { authorizePresupuestoPdfExport } from "../api/presupuestoApi";
 import { toast } from "sonner";
-import { generatePresupuestoPdf } from "../utils/pdf/presupuestoPdf/generatePresupuestoPdf";
 import { duplicatePresupuesto } from "../services/presupuestoService";
 
 
@@ -152,6 +151,10 @@ function PresupuestosPage() {
                 getItemsByPresupuesto(presupuestoId),
                 getCompanyById(presupuesto.idCompany),
             ]);
+
+            const { generatePresupuestoPdf } = await import(
+                "../utils/pdf/presupuestoPdf/generatePresupuestoPdf"
+            );
 
             await generatePresupuestoPdf(
                 presupuesto,

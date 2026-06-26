@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import GoogleLoginButton from "../components/auth/GoogleLoginButton";
 import PasswordInput from "../components/auth/PasswordInput";
 import { useAuth } from "../context/AuthContext";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 import { isValidPassword, PASSWORD_REQUIREMENTS_MESSAGE } from "../utils/passwordValidation";
 
 function RegisterPage() {

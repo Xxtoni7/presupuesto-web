@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Home, Building2, FileText, Settings, Search, User, LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 import { useSearch } from "../context/SearchContext";
 
 function MainLayout({ children }) {

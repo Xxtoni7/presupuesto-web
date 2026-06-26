@@ -6,7 +6,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { forgotPassword } from "../api/authApi";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 
 function ForgotPasswordPage() {
     const [email, setEmail] = useState("");

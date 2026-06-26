@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FileText, Building2, Download, CheckCircle, Zap, Lock } from "lucide-react";
 import { Button } from "../components/ui/button";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 
 function LandingPage() {
     return (
