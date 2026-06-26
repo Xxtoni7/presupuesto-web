@@ -64,7 +64,7 @@ function MainLayout({ children }) {
                 )}
 
                 <aside
-                    className={`fixed inset-y-0 left-0 z-50 w-[260px] transform bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 md:static md:translate-x-0 ${
+                    className={`fixed inset-y-0 left-0 z-50 w-[260px] transform overflow-y-auto bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 md:translate-x-0 ${
                         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
                 >
@@ -109,7 +109,7 @@ function MainLayout({ children }) {
                     </nav>
                 </aside>
 
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col md:ml-[260px]">
                     <header className="h-[64px] bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-6">
                         <div className="flex w-10 items-center justify-start md:hidden">
                             <button
