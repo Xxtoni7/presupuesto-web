@@ -5,10 +5,10 @@ import SettingsSectionHeader from "./SettingsSectionHeader";
 
 function SubscriptionSection({ currentPlan, currentPlanName }) {
     return (
-        <section id="suscripcion" className="scroll-mt-24">
+        <section id="suscripcion" className="scroll-mt-24 border-t border-gray-100 pt-10">
             <SettingsSectionHeader
                 icon={Crown}
-                title={<>Suscripción</>}
+                title="Suscripción"
                 description="Plan actual y recursos disponibles"
                 iconClassName="text-red-500"
                 iconContainerClassName="bg-red-50"
@@ -40,7 +40,7 @@ function SubscriptionSection({ currentPlan, currentPlanName }) {
                 </div>
 
                 {currentPlan && (
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <div className="rounded-2xl border border-gray-100 bg-gray-50 p-6 shadow-sm">
                         <div className="mb-5">
                             <h3 className="text-lg font-semibold text-[#111111]">
                                 Uso disponible
@@ -51,7 +51,7 @@ function SubscriptionSection({ currentPlan, currentPlanName }) {
                         </div>
 
                         <div className="space-y-3">
-                            <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                            <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white px-4 py-3">
                                 <div className="flex items-center gap-3">
                                     <Building2 className="h-5 w-5 text-red-500" />
                                     <span className="text-sm font-medium text-[#111111]">
@@ -66,7 +66,7 @@ function SubscriptionSection({ currentPlan, currentPlanName }) {
                                 </span>
                             </div>
 
-                            <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                            <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white px-4 py-3">
                                 <div className="flex items-center gap-3">
                                     <FileText className="h-5 w-5 text-red-500" />
                                     <span className="text-sm font-medium text-[#111111]">
@@ -81,7 +81,7 @@ function SubscriptionSection({ currentPlan, currentPlanName }) {
                                 </span>
                             </div>
 
-                            <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                            <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white px-4 py-3">
                                 <div className="flex items-center gap-3">
                                     <Download className="h-5 w-5 text-red-500" />
                                     <span className="text-sm font-medium text-[#111111]">
@@ -116,3 +116,4 @@ SubscriptionSection.propTypes = {
 };
 
 export default SubscriptionSection;
+

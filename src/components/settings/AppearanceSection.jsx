@@ -3,7 +3,7 @@ import SettingsSectionHeader from "./SettingsSectionHeader";
 
 function AppearanceSection() {
     return (
-        <section id="apariencia" className="scroll-mt-24">
+        <section id="apariencia" className="scroll-mt-24 border-t border-gray-100 pt-10">
             <SettingsSectionHeader
                 icon={MonitorCog}
                 title="Apariencia"
@@ -12,25 +12,22 @@ function AppearanceSection() {
                 iconContainerClassName="bg-purple-50"
             />
 
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <p className="font-medium text-gray-600">
-                            Modo oscuro
-                        </p>
-                    </div>
+            <div className="flex flex-col gap-4 rounded-xl bg-gray-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="font-medium text-gray-600">
+                    Modo oscuro
+                </p>
 
-                    <button
-                        type="button"
-                        disabled
-                        className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-400 sm:justify-end"
-                    >
-                        Proximamente
-                    </button>
-                </div>
+                <button
+                    type="button"
+                    disabled
+                    className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-400 sm:justify-end"
+                >
+                    Proximamente
+                </button>
             </div>
         </section>
     );
 }
 
 export default AppearanceSection;
+

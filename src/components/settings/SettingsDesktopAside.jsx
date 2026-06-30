@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 function SettingsDesktopAside({ sections, activeSection, onSectionChange }) {
     return (
-        <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[260px] lg:shrink-0 lg:flex-col lg:border-r lg:border-gray-200 lg:bg-white lg:px-6 lg:py-8">
+        <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[240px] lg:shrink-0 lg:flex-col lg:border-r lg:border-gray-200 lg:bg-white lg:px-5 lg:py-8">
             <div className="mb-6">
                 <h1 className="text-2xl font-bold text-[#111111]">
                     Configuración

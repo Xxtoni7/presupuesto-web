@@ -13,25 +13,23 @@ function ProfileSection({ user, currentPlanName }) {
                 iconContainerClassName="bg-blue-50"
             />
 
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <div className="flex flex-col gap-5 sm:flex-row">
-                    <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-600">
-                            Email
-                        </p>
-                        <p className="mt-2 flex items-center gap-2 break-all text-base font-semibold text-[#111111]">
-                            <Mail className="h-4 w-4 shrink-0 text-gray-400" />
-                            {user?.email || "Sin email disponible"}
-                        </p>
-                    </div>
-                    <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-600">
-                            Plan actual
-                        </p>
-                        <p className="mt-2 text-base font-semibold text-red-500">
-                            Plan {currentPlanName}
-                        </p>
-                    </div>
+            <div className="grid gap-5 border-t border-gray-100 pt-5 sm:grid-cols-2">
+                <div>
+                    <p className="text-sm font-medium text-gray-600">
+                        Email
+                    </p>
+                    <p className="mt-2 flex items-center gap-2 break-all text-base font-semibold text-[#111111]">
+                        <Mail className="h-4 w-4 shrink-0 text-gray-400" />
+                        {user?.email || "Sin email disponible"}
+                    </p>
+                </div>
+                <div>
+                    <p className="text-sm font-medium text-gray-600">
+                        Plan actual
+                    </p>
+                    <p className="mt-2 text-base font-semibold text-red-500">
+                        Plan {currentPlanName}
+                    </p>
                 </div>
             </div>
         </section>

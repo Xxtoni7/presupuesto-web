@@ -120,26 +120,31 @@ function SettingsPage() {
                 onSectionChange={setActiveSection}
             />
 
-            <div className="w-full max-w-7xl space-y-6 lg:p-8">
-                <ProfileSection
-                    user={user}
-                    currentPlanName={currentPlanName}
-                />
+            <div className="w-full min-w-0 flex-1 lg:p-6 xl:p-8">
+                <div className="w-full rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6 xl:p-8">
+                    <div className="space-y-12">
+                        <ProfileSection
+                            user={user}
+                            currentPlanName={currentPlanName}
+                        />
 
-                <SubscriptionSection
-                    currentPlan={currentPlan}
-                    currentPlanName={currentPlanName}
-                />
+                        <SubscriptionSection
+                            currentPlan={currentPlan}
+                            currentPlanName={currentPlanName}
+                        />
 
-                <PlansSection
-                    availablePlans={availablePlans}
-                    currentPlanName={currentPlanName}
-                />
+                        <PlansSection
+                            availablePlans={availablePlans}
+                            currentPlanName={currentPlanName}
+                        />
 
-                <AppearanceSection />
+                        <AppearanceSection />
+                    </div>
+                </div>
             </div>
         </div>
     );
 }
 
 export default SettingsPage;
+

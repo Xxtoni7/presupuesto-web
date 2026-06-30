@@ -5,7 +5,7 @@ import SettingsSectionHeader from "./SettingsSectionHeader";
 
 function PlansSection({ availablePlans, currentPlanName }) {
     return (
-        <section id="planes" className="scroll-mt-24">
+        <section id="planes" className="scroll-mt-24 border-t border-gray-100 pt-10">
             <SettingsSectionHeader
                 icon={Sparkles}
                 title="Planes disponibles"
@@ -14,7 +14,7 @@ function PlansSection({ availablePlans, currentPlanName }) {
                 iconContainerClassName="bg-amber-50"
             />
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {availablePlans.map((plan) => (
                     <PlanOptionCard
                         key={plan.idPlan}
@@ -39,3 +39,4 @@ PlansSection.propTypes = {
 };
 
 export default PlansSection;
+
