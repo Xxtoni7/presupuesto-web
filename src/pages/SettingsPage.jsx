@@ -34,8 +34,8 @@ function getPlanFeatures(plan) {
     ];
 }
 
-function PlanOptionCard({ plan, isCurrent }) {
-    const isPopular = plan.name === "Pro";
+function PlanOptionCard({ plan, isCurrent, currentPlanName }) {
+    const isPopular = plan.name === "Pro" && currentPlanName !== "Business";
 
     return (
         <article
@@ -48,7 +48,7 @@ function PlanOptionCard({ plan, isCurrent }) {
             {isPopular && !isCurrent && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span className="rounded-full bg-gradient-to-r from-red-500 to-red-600 px-3 py-1 text-xs font-semibold text-white shadow-md">
-                        Más popular
+                        M&aacute;s popular
                     </span>
                 </div>
             )}
@@ -123,6 +123,7 @@ PlanOptionCard.propTypes = {
         pdfExportLimitPeriod: PropTypes.string.isRequired,
     }).isRequired,
     isCurrent: PropTypes.bool.isRequired,
+    currentPlanName: PropTypes.string.isRequired,
 };
 
 function SettingsPage() {
@@ -136,7 +137,6 @@ function SettingsPage() {
     const settingsSections = [
         { id: "perfil", label: "Perfil", icon: User },
         { id: "suscripcion", label: "Suscripci\u00f3n", icon: Crown },
-        { id: "uso", label: "Uso disponible", icon: FileText },
         { id: "planes", label: "Planes", icon: Sparkles },
         { id: "apariencia", label: "Apariencia", icon: MonitorCog },
     ];
@@ -177,31 +177,41 @@ function SettingsPage() {
         if (loading) return undefined;
 
         const sectionIds = settingsSections.map((section) => section.id);
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const visibleEntry = entries
-                    .filter((entry) => entry.isIntersecting)
-                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        const updateActiveSection = () => {
+            const isNearPageEnd =
+                window.innerHeight + window.scrollY >=
+                document.documentElement.scrollHeight - 24;
 
-                if (visibleEntry?.target.id) {
-                    setActiveSection(visibleEntry.target.id);
+            if (isNearPageEnd) {
+                setActiveSection("apariencia");
+                return;
+            }
+
+            const activeId = sectionIds.reduce((currentActiveId, sectionId) => {
+                const sectionElement = document.getElementById(sectionId);
+
+                if (!sectionElement) return currentActiveId;
+
+                const sectionTop = sectionElement.getBoundingClientRect().top;
+
+                if (sectionTop <= 140) {
+                    return sectionId;
                 }
-            },
-            {
-                rootMargin: "-30% 0px -55% 0px",
-                threshold: [0.1, 0.25, 0.5],
-            }
-        );
 
-        sectionIds.forEach((sectionId) => {
-            const sectionElement = document.getElementById(sectionId);
+                return currentActiveId;
+            }, "perfil");
 
-            if (sectionElement) {
-                observer.observe(sectionElement);
-            }
-        });
+            setActiveSection(activeId);
+        };
 
-        return () => observer.disconnect();
+        updateActiveSection();
+        window.addEventListener("scroll", updateActiveSection, { passive: true });
+        window.addEventListener("resize", updateActiveSection);
+
+        return () => {
+            window.removeEventListener("scroll", updateActiveSection);
+            window.removeEventListener("resize", updateActiveSection);
+        };
     }, [loading]);
 
     if (loading) {
@@ -221,10 +231,10 @@ function SettingsPage() {
         <div className="lg:-m-8 lg:flex lg:min-h-screen">
             <div className="mb-8 lg:hidden">
                 <h1 className="text-3xl font-bold text-[#111111]">
-                    Configuración
+                    Configuraci&oacute;n
                 </h1>
                 <p className="mt-2 text-sm text-gray-600">
-                    Administra tu cuenta, plan de suscripción y preferencias
+                    Administr&aacute; tu cuenta, plan de suscripci&oacute;n y preferencias
                 </p>
             </div>
 
@@ -237,7 +247,7 @@ function SettingsPage() {
             <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[260px] lg:shrink-0 lg:flex-col lg:border-r lg:border-gray-200 lg:bg-white lg:px-6 lg:py-8">
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold text-[#111111]">
-                        Configuración
+                        Configuraci&oacute;n
                     </h1>
                 </div>
 
@@ -264,181 +274,197 @@ function SettingsPage() {
                 </nav>
             </aside>
 
-            <div className="w-full max-w-7xl space-y-8 lg:p-8">
-                <section id="perfil" className="scroll-mt-24 grid gap-6 lg:grid-cols-3">
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm lg:col-span-3">
-                        <div className="flex items-center gap-4 pb-6">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50">
-                                <User className="h-6 w-6 text-blue-600" />
-                            </div>
-                            <div>
-                                <h2 className="text-lg font-semibold text-[#111111]">
-                                    Perfil
-                                </h2>
-                                <p className="text-sm text-gray-500">
-                                    Información de tu cuenta
+            <div className="w-full max-w-7xl space-y-6 lg:p-8">
+                <section id="perfil" className="scroll-mt-24">
+                    <div className="mb-5 flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
+                            <User className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                            <h2 className="text-lg font-semibold text-[#111111]">
+                                Perfil
+                            </h2>
+                            <p className="text-sm text-gray-500">
+                                Informaci&oacute;n de tu cuenta
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                        <div className="flex flex-col gap-5 sm:flex-row">
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-600">
+                                    Email
+                                </p>
+                                <p className="mt-2 flex items-center gap-2 break-all text-base font-semibold text-[#111111]">
+                                    <Mail className="h-4 w-4 shrink-0 text-gray-400" />
+                                    {user?.email || "Sin email disponible"}
                                 </p>
                             </div>
-                        </div>
-
-                        <div className="border-t border-gray-100 pt-6">
-                            <div className="flex flex-col gap-6 sm:flex-row">
-                                <div className="flex-1">
-                                    <p className="text-sm font-medium text-gray-600">
-                                        Email
-                                    </p>
-                                    <p className="mt-2 flex items-center gap-2 break-all text-base font-semibold text-[#111111]">
-                                        <Mail className="h-4 w-4 shrink-0 text-gray-400" />
-                                        {user?.email || "Sin email disponible"}
-                                    </p>
-                                </div>
-                                <div className="flex-1">
-                                    <p className="text-sm font-medium text-gray-600">
-                                        Plan actual
-                                    </p>
-                                    <p className="mt-2 text-base font-semibold text-red-500">
-                                        Plan {currentPlanName}
-                                    </p>
-                                </div>
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-600">
+                                    Plan actual
+                                </p>
+                                <p className="mt-2 text-base font-semibold text-red-500">
+                                    Plan {currentPlanName}
+                                </p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section className="grid gap-6 lg:grid-cols-2">
-                    <div id="suscripcion" className="scroll-mt-24 rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-white p-8 shadow-sm">
-                        <div className="mb-6 flex items-start justify-between gap-4">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
-                                <Crown className="h-6 w-6 text-red-500" />
-                            </div>
-                            <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-red-500 shadow-sm">
-                                Actual
-                            </span>
+                <section id="suscripcion" className="scroll-mt-24">
+                    <div className="mb-5 flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50">
+                            <Crown className="h-5 w-5 text-red-500" />
                         </div>
-
                         <div>
-                            <p className="text-sm font-medium text-gray-500">
-                                Tu suscripción
-                            </p>
-                            <h2 className="mt-2 text-5xl font-bold text-[#111111]">
-                                {currentPlanName}
+                            <h2 className="text-lg font-semibold text-[#111111]">
+                                Suscripci&oacute;n
                             </h2>
+                            <p className="text-sm text-gray-500">
+                                Plan actual y recursos disponibles
+                            </p>
                         </div>
-
-                        <p className="mt-6 text-sm leading-6 text-gray-600">
-                            Tu cuenta está usando el plan <span className="font-semibold text-[#111111]">{currentPlanName}</span>. Podrás mejorar tu plan cuando activemos los pagos.
-                        </p>
                     </div>
 
-                    {currentPlan && (
-                        <div id="uso" className="scroll-mt-24 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-                            <div className="mb-6">
-                                <h3 className="text-lg font-semibold text-[#111111]">
-                                    Uso disponible
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-500">
-                                    Recursos de tu plan
+                    <div className="grid gap-5 lg:grid-cols-2">
+                        <div className="rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-white p-6 shadow-sm">
+                            <div className="mb-5 flex items-start justify-between gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
+                                    <Crown className="h-6 w-6 text-red-500" />
+                                </div>
+                                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-red-500 shadow-sm">
+                                    Actual
+                                </span>
+                            </div>
+
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">
+                                    Tu suscripci&oacute;n
                                 </p>
+                                <h3 className="mt-2 text-4xl font-bold text-[#111111]">
+                                    {currentPlanName}
+                                </h3>
                             </div>
 
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
-                                    <div className="flex items-center gap-3">
-                                        <Building2 className="h-5 w-5 text-red-500" />
-                                        <span className="text-sm font-medium text-[#111111]">
-                                            Empresas
-                                        </span>
-                                    </div>
-                                    <span className="font-semibold text-[#111111]">
-                                        {getUsageLabel(
-                                            currentPlan.companiesUsed,
-                                            currentPlan.maxCompanies
-                                        )}
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
-                                    <div className="flex items-center gap-3">
-                                        <FileText className="h-5 w-5 text-red-500" />
-                                        <span className="text-sm font-medium text-[#111111]">
-                                            Presupuestos
-                                        </span>
-                                    </div>
-                                    <span className="font-semibold text-[#111111]">
-                                        {getUsageLabel(
-                                            currentPlan.presupuestosUsed,
-                                            currentPlan.maxPresupuestos
-                                        )}
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
-                                    <div className="flex items-center gap-3">
-                                        <Download className="h-5 w-5 text-red-500" />
-                                        <span className="text-sm font-medium text-[#111111]">
-                                            Exportaciones PDF
-                                        </span>
-                                    </div>
-                                    <span className="font-semibold text-[#111111]">
-                                        {getUsageLabel(
-                                            currentPlan.pdfExportsUsed,
-                                            currentPlan.maxPdfExports
-                                        )}
-                                    </span>
-                                </div>
-                            </div>
+                            <p className="mt-5 text-sm leading-6 text-gray-600">
+                                Tu cuenta est&aacute; usando el plan <span className="font-semibold text-[#111111]">{currentPlanName}</span>. Podr&aacute;s mejorar tu plan cuando activemos los pagos.
+                            </p>
                         </div>
-                    )}
+
+                        {currentPlan && (
+                            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                                <div className="mb-5">
+                                    <h3 className="text-lg font-semibold text-[#111111]">
+                                        Uso disponible
+                                    </h3>
+                                    <p className="mt-1 text-sm text-gray-500">
+                                        Recursos de tu plan
+                                    </p>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                                        <div className="flex items-center gap-3">
+                                            <Building2 className="h-5 w-5 text-red-500" />
+                                            <span className="text-sm font-medium text-[#111111]">
+                                                Empresas
+                                            </span>
+                                        </div>
+                                        <span className="font-semibold text-[#111111]">
+                                            {getUsageLabel(
+                                                currentPlan.companiesUsed,
+                                                currentPlan.maxCompanies
+                                            )}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                                        <div className="flex items-center gap-3">
+                                            <FileText className="h-5 w-5 text-red-500" />
+                                            <span className="text-sm font-medium text-[#111111]">
+                                                Presupuestos
+                                            </span>
+                                        </div>
+                                        <span className="font-semibold text-[#111111]">
+                                            {getUsageLabel(
+                                                currentPlan.presupuestosUsed,
+                                                currentPlan.maxPresupuestos
+                                            )}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                                        <div className="flex items-center gap-3">
+                                            <Download className="h-5 w-5 text-red-500" />
+                                            <span className="text-sm font-medium text-[#111111]">
+                                                Exportaciones PDF
+                                            </span>
+                                        </div>
+                                        <span className="font-semibold text-[#111111]">
+                                            {getUsageLabel(
+                                                currentPlan.pdfExportsUsed,
+                                                currentPlan.maxPdfExports
+                                            )}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </section>
 
                 <section id="planes" className="scroll-mt-24">
-                    <div className="mb-6">
-                        <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
-                                <Sparkles className="h-5 w-5 text-amber-600" />
-                            </div>
-                            <div>
-                                <h2 className="text-lg font-semibold text-[#111111]">
-                                    Planes disponibles
-                                </h2>
-                                <p className="text-sm text-gray-500">
-                                    Compara todas las opciones y elige el que mejor se adapte a ti
-                                </p>
-                            </div>
+                    <div className="mb-5 flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50">
+                            <Sparkles className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div>
+                            <h2 className="text-lg font-semibold text-[#111111]">
+                                Planes disponibles
+                            </h2>
+                            <p className="text-sm text-gray-500">
+                                Compar&aacute; todas las opciones y eleg&iacute; el que mejor se adapte a ti
+                            </p>
                         </div>
                     </div>
 
-                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {availablePlans.map((plan) => (
                             <PlanOptionCard
                                 key={plan.idPlan}
                                 plan={plan}
                                 isCurrent={plan.name === currentPlanName}
+                                currentPlanName={currentPlanName}
                             />
                         ))}
                     </div>
                 </section>
 
-                <section id="apariencia" className="scroll-mt-24 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-                    <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                <section id="apariencia" className="scroll-mt-24">
+                    <div className="mb-5 flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50">
+                            <MonitorCog className="h-5 w-5 text-purple-600" />
+                        </div>
                         <div>
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50">
-                                    <MonitorCog className="h-5 w-5 text-purple-600" />
-                                </div>
-                                <h3 className="text-lg font-semibold text-[#111111]">
-                                    Apariencia
-                                </h3>
-                            </div>
+                            <h2 className="text-lg font-semibold text-[#111111]">
+                                Apariencia
+                            </h2>
                             <p className="text-sm text-gray-500">
-                                Personaliza la apariencia de la aplicación
+                                Personaliz&aacute; la apariencia de la aplicaci&oacute;n
                             </p>
                         </div>
+                    </div>
 
-                        <div className="flex flex-col gap-2 sm:text-right">
-                            <p className="font-medium text-gray-600">
-                                Modo oscuro
-                            </p>
+                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <p className="font-medium text-gray-600">
+                                    Modo oscuro
+                                </p>
+                            </div>
+
                             <button
                                 type="button"
                                 disabled
