@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,6 +7,93 @@
 
 body {
     font-family: 'Inter', sans-serif;
+}
+.landing-page {
+    font-family: 'Manrope', sans-serif;
+}
+
+.landing-logo-stage {
+    position: relative;
+    isolation: isolate;
+    filter: drop-shadow(0 0 24px rgba(239, 68, 68, 0.14));
+}
+
+.landing-logo-image {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter:
+        drop-shadow(0 0 14px rgba(239, 68, 68, 0.15))
+        drop-shadow(0 0 32px rgba(127, 29, 29, 0.15));
+}
+
+.landing-logo-reaction {
+    position: absolute;
+    inset: -14%;
+    z-index: 1;
+    color: rgb(241, 42, 42);
+    perspective: 50000px;
+    pointer-events: none;
+    filter:
+        drop-shadow(0 0 8px rgba(239, 68, 68, 0.55))
+        drop-shadow(0 0 18px rgba(127, 29, 29, 0.35));
+}
+
+.landing-logo-reaction div {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-left: 2px solid currentColor;
+    border-top: 2px solid transparent;
+    border-radius: 9999px;
+    opacity: 0.82;
+    transform-style: preserve-3d;
+}
+
+.landing-logo-reaction div:nth-child(1) {
+    animation: landing-reaction-orbit-1 1.7s linear infinite;
+}
+
+.landing-logo-reaction div:nth-child(2) {
+    animation: landing-reaction-orbit-2 1.7s linear infinite;
+}
+
+.landing-logo-reaction div:nth-child(3) {
+    animation: landing-reaction-orbit-3 1.7s linear infinite;
+}
+
+@keyframes landing-reaction-orbit-1 {
+    from {
+        transform: rotateZ(120deg) rotateX(66deg) rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(120deg) rotateX(66deg) rotateZ(360deg);
+    }
+}
+
+@keyframes landing-reaction-orbit-2 {
+    from {
+        transform: rotateZ(240deg) rotateX(66deg) rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(240deg) rotateX(66deg) rotateZ(360deg);
+    }
+}
+
+@keyframes landing-reaction-orbit-3 {
+    from {
+        transform: rotateZ(360deg) rotateX(66deg) rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(360deg) rotateX(66deg) rotateZ(360deg);
+    }
 }
 
 .rich-text-preview {
