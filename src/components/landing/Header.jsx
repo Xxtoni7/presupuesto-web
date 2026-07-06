@@ -24,7 +24,7 @@ function Header({ loginPath, registerPath }) {
         <header
             className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
                 isScrolled
-                    ? "border-b border-slate-200/80 bg-white/90 text-slate-950 shadow-sm shadow-slate-950/10 backdrop-blur-xl"
+                    ? "border-b border-red-400/15 bg-[rgba(28,5,8,0.66)] text-white shadow-sm shadow-black/20 backdrop-blur-[32px] supports-[backdrop-filter]:bg-[rgba(28,5,8,0.58)]"
                     : "border-b border-transparent bg-transparent text-white shadow-none"
             }`}
         >
@@ -54,7 +54,7 @@ function Header({ loginPath, registerPath }) {
                         variant="outline"
                         className={`h-8 px-2 text-[11px] shadow-none sm:h-9 sm:px-4 sm:text-sm ${
                             isScrolled
-                                ? "border-slate-200 bg-white/70 text-slate-800 hover:bg-white"
+                                ? "border-white/15 bg-white/10 text-white hover:bg-white/15 hover:text-white"
                                 : "border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
                         }`}
                     >
