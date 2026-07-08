@@ -1,12 +1,13 @@
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
+import Roadmap from "../components/landing/Roadmap";
 
 const LOGIN_PATH = "/login";
 const REGISTER_PATH = "/register";
 
 function LandingPage() {
     return (
-        <div className="landing-page h-[100svh] overflow-hidden bg-[linear-gradient(180deg,#07070a_0%,#14070a_38%,#050507_100%)] text-white">
+        <div className="landing-page min-h-screen overflow-x-hidden bg-[#050507] text-white">
             <Header
                 loginPath={LOGIN_PATH}
                 registerPath={REGISTER_PATH}
@@ -16,6 +17,8 @@ function LandingPage() {
                 loginPath={LOGIN_PATH}
                 registerPath={REGISTER_PATH}
             />
+
+            <Roadmap />
         </div>
     );
 }
