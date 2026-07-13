@@ -41,7 +41,7 @@ function Header({ loginPath, registerPath }) {
                     />
 
                     <span className="hidden truncate text-sm font-bold tracking-tight sm:block sm:text-lg">
-                        MT Presupuestos
+                        MT PRESUPUESTOS
                     </span>
                 </Link>
 
