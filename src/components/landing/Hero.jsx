@@ -73,7 +73,7 @@ function Hero({ loginPath, registerPath }) {
         <main className="relative">
             <section
                 ref={heroRef}
-                className="relative isolate flex min-h-[100svh] w-full flex-col items-center justify-start overflow-hidden bg-black px-4 pb-24 pt-24 text-center sm:justify-center sm:px-6 sm:pb-28 sm:pt-24 lg:px-8 lg:pb-36"
+                className="relative isolate flex min-h-[100svh] w-full flex-col items-center justify-start overflow-hidden bg-black px-4 pb-24 pt-24 text-center sm:justify-center sm:px-6 sm:pb-28 sm:pt-24 lg:px-8 lg:pb-48"
             >
                 <img
                     src={fondo}
@@ -146,24 +146,27 @@ function Hero({ loginPath, registerPath }) {
                         </div>
                     </div>
 
-                    <div
-                        ref={previewRef}
-                        className="-mt-10 hidden w-full max-w-6xl px-4 lg:block"
-                    >
-                        <div className="relative overflow-hidden rounded-[2rem] border border-red-400/25 bg-red-950/10 p-[1px] shadow-[0_35px_120px_rgba(127,29,29,0.38)] backdrop-blur-xl">
-                            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(239,68,68,0.45),rgba(255,255,255,0.06)_38%,rgba(127,29,29,0.3))] opacity-70" />
+                </div>
+            </section>
 
-                            <div className="relative overflow-hidden rounded-[1.95rem] border border-white/10 bg-black/35 p-2">
-                                <img
-                                    src={fotoHome}
-                                    alt="Vista previa de MT Presupuestos"
-                                    className="block w-full rounded-[1.45rem] border border-white/10 object-cover shadow-[0_24px_80px_rgba(0,0,0,0.55)]"
-                                />
-                            </div>
+            <div className="absolute inset-x-0 bottom-12 z-30 hidden translate-y-[60%] px-8 lg:block">
+                <div
+                    ref={previewRef}
+                    className="mx-auto w-full max-w-6xl"
+                >
+                    <div className="relative overflow-hidden rounded-[2rem] border border-red-400/25 bg-red-950/10 p-[1px] shadow-[0_22px_32px_-12px_rgba(15,5,7,0.58),0_12px_42px_-20px_rgba(127,29,29,0.3)] backdrop-blur-xl">
+                        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(239,68,68,0.45),rgba(255,255,255,0.06)_38%,rgba(127,29,29,0.3))] opacity-70" />
+
+                        <div className="relative overflow-hidden rounded-[1.95rem] border border-white/10 bg-black/35 p-2">
+                            <img
+                                src={fotoHome}
+                                alt="Vista previa de MT Presupuestos"
+                                className="block w-full rounded-[1.45rem] border border-white/10 object-cover shadow-[0_24px_80px_rgba(0,0,0,0.55)]"
+                            />
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
         </main>
     );
 }

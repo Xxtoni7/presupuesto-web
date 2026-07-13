@@ -125,7 +125,7 @@ function Roadmap() {
                     ease: "none",
                     scrollTrigger: {
                         trigger: roadmapRef.current,
-                        start: "top 18%",
+                        start: "top 12%",
                         end: "bottom 80%",
                         scrub: true,
                     },
@@ -199,7 +199,7 @@ function Roadmap() {
 
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_52%,rgba(239,68,68,0.07),transparent_24rem),radial-gradient(circle_at_82%_72%,rgba(251,146,60,0.08),transparent_26rem)]" />
 
-            <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-start px-4 pb-32 pt-44 text-left sm:px-6 sm:pt-48 lg:px-8">
+            <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-start px-4 pb-32 pt-44 text-left sm:px-6 sm:pt-48 lg:px-8 lg:pt-[22rem]">
                 <div ref={introRef} className="max-w-[760px]">     
                     <h2
                         id="roadmap-title"
