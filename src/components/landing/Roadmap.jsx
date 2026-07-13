@@ -187,13 +187,17 @@ function Roadmap() {
         <section
             ref={roadmapRef}
             aria-labelledby="roadmap-title"
-            className="relative min-h-[90svh] overflow-hidden bg-[linear-gradient(180deg,#050507_0%,#160608_2%,#4a090f_5%,#b86f67_11%,#e7b9ae_20%,#efd1c7_32%,#f1d9cf_100%)] text-slate-950"
+            className="relative min-h-[90svh] overflow-hidden bg-[#EEE1DA] text-slate-950"
         >
-            <div className="pointer-events-none absolute left-[-10rem] top-28 h-80 w-80 rounded-full bg-red-500/18 blur-[120px]" />
-            <div className="pointer-events-none absolute right-[-12rem] top-[38%] h-96 w-96 rounded-full bg-rose-300/28 blur-[140px]" />
-            <div className="pointer-events-none absolute left-1/2 bottom-[-5rem] h-72 w-[46rem] -translate-x-1/2 rounded-full bg-orange-200/35 blur-[120px]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-48 bg-[linear-gradient(180deg,rgba(5,5,7,0.62)_0%,rgba(74,9,15,0.42)_34%,rgba(199,146,135,0.18)_62%,rgba(246,232,226,0)_100%)]" />
 
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_52%,rgba(239,68,68,0.16),transparent_24rem),radial-gradient(circle_at_82%_72%,rgba(251,146,60,0.16),transparent_26rem)]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-px bg-red-950/25" />
+
+            <div className="pointer-events-none absolute left-[-10rem] top-28 h-80 w-80 rounded-full bg-red-400/5 blur-[120px]" />
+            <div className="pointer-events-none absolute right-[-12rem] top-[38%] h-96 w-96 rounded-full bg-orange-100/10 blur-[140px]" />
+            <div className="pointer-events-none absolute left-1/2 bottom-[-5rem] h-72 w-[46rem] -translate-x-1/2 rounded-full bg-white/18 blur-[120px]" />
+
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_52%,rgba(239,68,68,0.07),transparent_24rem),radial-gradient(circle_at_82%_72%,rgba(251,146,60,0.08),transparent_26rem)]" />
 
             <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-start px-4 pb-32 pt-44 text-left sm:px-6 sm:pt-48 lg:px-8">
                 <div ref={introRef} className="max-w-[760px]">     
@@ -230,7 +234,7 @@ function Roadmap() {
                                 C88 170 100 240 170 295
                                 C245 355 292 415 265 505
                                 C235 610 145 650 118 745"
-                            stroke="rgba(254,202,202,0.7)"
+                            stroke="transparent"
                             strokeWidth="3"
                             strokeLinecap="round"
                             fill="none"
@@ -262,7 +266,7 @@ function Roadmap() {
                             d="M380 170
                                 C380 390 820 500 820 800
                                 S380 1210 380 1460"
-                            stroke="rgba(254,202,202,0.7)"
+                            stroke="transparent"
                             strokeWidth="3"
                             strokeLinecap="round"
                             fill="none"
