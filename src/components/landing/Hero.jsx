@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import gsap from "gsap";
 import { Button } from "../ui/button";
 import logo from "../../assets/logo.webp";
-import fondo from "../../assets/hero/fondo.jpg";
-import fotoHome from "../../assets/hero/fotoHome.png";
+import fondo from "../../assets/hero/fondo.webp";
+import fotoHome from "../../assets/hero/fotoHome.webp";
 
 function Hero({ loginPath, registerPath }) {
     const heroRef = useRef(null);

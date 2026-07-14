@@ -1,6 +1,7 @@
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
 import Roadmap from "../components/landing/Roadmap";
+import PricingPlans from "../components/landing/PricingPlans";
 
 const LOGIN_PATH = "/login";
 const REGISTER_PATH = "/register";
@@ -19,6 +20,8 @@ function LandingPage() {
             />
 
             <Roadmap />
+
+            <PricingPlans registerPath={REGISTER_PATH} />
         </div>
     );
 }
