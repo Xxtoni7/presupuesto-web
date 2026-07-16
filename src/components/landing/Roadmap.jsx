@@ -206,7 +206,7 @@ function Roadmap() {
                         className="roadmap-intro-animate mt-6 text-3xl font-bold tracking-[-0.04em] text-slate-950 sm:text-4xl lg:text-5xl"
                     >
                         ¿Cansado de tardar tanto haciendo{" "}
-                        <span className="relative inline-block text-red-800">
+                        <span className="relative inline-block text-red-600">
                             <span className="relative z-10">presupuestos?</span>
                             <span
                                 aria-hidden="true"
