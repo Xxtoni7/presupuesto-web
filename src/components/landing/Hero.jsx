@@ -73,6 +73,7 @@ function Hero({ loginPath, registerPath }) {
         <main className="relative">
             <section
                 ref={heroRef}
+                id="inicio"
                 className="relative isolate flex min-h-[100svh] w-full flex-col items-center justify-start overflow-hidden bg-black px-4 pb-24 pt-24 text-center sm:justify-center sm:px-6 sm:pb-28 sm:pt-24 lg:px-8 lg:pb-48"
             >
                 <img

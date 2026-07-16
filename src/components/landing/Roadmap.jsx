@@ -186,6 +186,7 @@ function Roadmap() {
     return (
         <section
             ref={roadmapRef}
+            id="como-funciona"
             aria-labelledby="roadmap-title"
             className="relative min-h-[90svh] overflow-hidden bg-[#EEE1DA] text-slate-950"
         >

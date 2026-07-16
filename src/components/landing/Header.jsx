@@ -4,6 +4,18 @@ import PropTypes from "prop-types";
 import { Button } from "../ui/button";
 import logo from "../../assets/logo.webp";
 
+function handleSectionNavigation(event) {
+    const sectionId = event.currentTarget.hash.slice(1);
+    const section = document.getElementById(sectionId);
+
+    if (!section) {
+        return;
+    }
+
+    event.preventDefault();
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 function Header({ loginPath, registerPath }) {
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -29,10 +41,11 @@ function Header({ loginPath, registerPath }) {
             }`}
         >
             <div className="flex h-16 w-full items-center justify-between gap-2 px-4 sm:h-20 sm:px-8 lg:px-12 xl:px-16">
-                <Link
-                    to="/"
+                <a
+                    href="#inicio"
+                    onClick={handleSectionNavigation}
                     className="flex min-w-0 items-center gap-2 sm:gap-3"
-                    aria-label="MT Presupuestos"
+                    aria-label="Volver al inicio"
                 >
                     <img
                         src={logo}
@@ -43,7 +56,36 @@ function Header({ loginPath, registerPath }) {
                     <span className="hidden truncate text-sm font-bold tracking-tight sm:block sm:text-lg">
                         MT PRESUPUESTOS
                     </span>
-                </Link>
+                </a>
+
+                <nav
+                    className="hidden shrink-0 items-center gap-1 lg:flex"
+                    aria-label="Secciones de la landing"
+                >
+                    <a
+                        href="#inicio"
+                        onClick={handleSectionNavigation}
+                        className="rounded-lg px-3 py-2 text-sm font-semibold text-white/75 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500/30"
+                    >
+                        Inicio
+                    </a>
+
+                    <a
+                        href="#como-funciona"
+                        onClick={handleSectionNavigation}
+                        className="rounded-lg px-3 py-2 text-sm font-semibold text-white/75 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500/30"
+                    >
+                        Cómo funciona
+                    </a>
+
+                    <a
+                        href="#planes"
+                        onClick={handleSectionNavigation}
+                        className="rounded-lg px-3 py-2 text-sm font-semibold text-white/75 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500/30"
+                    >
+                        Planes
+                    </a>
+                </nav>
 
                 <nav
                     className="flex shrink-0 items-center gap-1.5 sm:gap-3"
