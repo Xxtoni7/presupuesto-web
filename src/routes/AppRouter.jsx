@@ -18,6 +18,8 @@ const ForgotPasswordPage = lazy(() => import("../pages/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
 const EmailConfirmationSentPage = lazy(() => import("../pages/EmailConfirmationSentPage"));
 const ConfirmEmailPage = lazy(() => import("../pages/ConfirmEmailPage"));
+const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicyPage"));
+const TermsAndConditionsPage = lazy(() => import("../pages/TermsAndConditionsPage"));
 
 function AppRouter() {
     return (
@@ -66,6 +68,16 @@ function AppRouter() {
                                 <LandingPage />
                             </PublicRoute>
                         }
+                    />
+
+                    <Route
+                        path="/politica-de-privacidad"
+                        element={<PrivacyPolicyPage />}
+                    />
+
+                    <Route
+                        path="/terminos-y-condiciones"
+                        element={<TermsAndConditionsPage />}
                     />
 
                     <Route

@@ -1,0 +1,653 @@
+Términos y Condiciones de MT Presupuestos
+
+Última actualización: 17/07/2026
+
+1. Identificación y aceptación
+
+Los presentes Términos y Condiciones regulan el acceso y uso de MT Presupuestos, una plataforma digital destinada a facilitar la creación, administración y exportación de presupuestos profesionales.
+
+El servicio es ofrecido por:
+
+Responsable: [NOMBRE COMPLETO O RAZÓN SOCIAL]
+CUIT: [CUIT]
+Domicilio: [DOMICILIO LEGAL]
+Correo de soporte: [CORREO DE SOPORTE]
+Sitio web: [DOMINIO DE MT PRESUPUESTOS]
+
+Al crear una cuenta, iniciar sesión, contratar un plan o utilizar MT Presupuestos, la persona usuaria declara haber leído y aceptado estos Términos y Condiciones y la Política de Privacidad.
+
+Si no está de acuerdo con estas condiciones, deberá abstenerse de utilizar el servicio.
+
+2. Descripción del servicio
+
+MT Presupuestos es una plataforma de software como servicio, o SaaS, que permite, entre otras funciones:
+
+Crear una cuenta de usuario.
+Iniciar sesión con email y contraseña.
+Registrarse o iniciar sesión mediante Google.
+Crear y administrar un espacio de trabajo.
+Cargar información de una o más empresas.
+Incorporar logos e identidad visual.
+Crear, editar, consultar y eliminar presupuestos.
+Agregar trabajos, productos, servicios, cantidades y precios.
+Calcular subtotales y totales.
+Consultar métricas y actividad desde un panel.
+Exportar presupuestos en formato PDF.
+Contratar y administrar planes.
+Consultar límites y uso del plan.
+Acceder a futuras funcionalidades incorporadas al servicio.
+
+MT Presupuestos podrá modificar, mejorar o ampliar sus funcionalidades siempre que ello no prive injustificadamente a las personas usuarias de las prestaciones esenciales ya contratadas.
+
+3. Naturaleza de la herramienta
+
+MT Presupuestos es una herramienta tecnológica para crear y administrar presupuestos.
+
+La plataforma no presta servicios contables, fiscales, jurídicos, financieros ni de asesoramiento profesional.
+
+Los documentos generados mediante MT Presupuestos:
+
+No son necesariamente facturas fiscales.
+No reemplazan comprobantes fiscales exigidos legalmente.
+No garantizan la celebración de un contrato.
+No constituyen asesoramiento contable o jurídico.
+No garantizan la aceptación del presupuesto por parte del cliente.
+No sustituyen la intervención de un profesional cuando resulte necesaria.
+
+La persona usuaria deberá verificar si el documento generado cumple con los requisitos legales, impositivos o comerciales aplicables a su actividad.
+
+4. Registro y cuenta
+
+Para utilizar determinadas funcionalidades será necesario crear una cuenta.
+
+La persona usuaria se compromete a:
+
+Proporcionar información verdadera y actualizada.
+Mantener actualizados sus datos.
+Utilizar una dirección de correo electrónico a la que tenga acceso.
+Proteger su contraseña y medios de autenticación.
+No prestar, vender o transferir su cuenta.
+Informar inmediatamente cualquier acceso no autorizado.
+No crear cuentas mediante información falsa o perteneciente a terceros sin autorización.
+
+Cada cuenta podrá estar asociada a un espacio de trabajo.
+
+Actualmente, el modelo inicial de MT Presupuestos está diseñado principalmente bajo la relación de una cuenta de usuario por cada espacio de trabajo, sin perjuicio de que en el futuro puedan incorporarse equipos, roles o invitaciones.
+
+5. Verificación de correo electrónico
+
+Las cuentas creadas mediante email y contraseña podrán requerir la confirmación de la dirección de correo electrónico.
+
+Hasta completar la verificación, MT Presupuestos podrá impedir el inicio de sesión o limitar determinadas funciones.
+
+La persona usuaria es responsable de:
+
+Introducir correctamente su email.
+Revisar la carpeta de correo no deseado.
+Solicitar un nuevo correo de confirmación cuando sea necesario.
+Mantener acceso a la dirección vinculada a su cuenta.
+6. Inicio de sesión con Google
+
+MT Presupuestos puede permitir el registro y acceso mediante una cuenta de Google.
+
+Al utilizar esta opción, la persona usuaria autoriza el uso de la información básica necesaria para:
+
+Identificar su cuenta.
+Crear o vincular su usuario.
+Confirmar su dirección de correo electrónico.
+Iniciar sesión de manera segura.
+
+El uso de Google está sujeto también a las condiciones y políticas propias de Google.
+
+MT Presupuestos no controla la disponibilidad de los servicios de Google y no será responsable por interrupciones atribuibles exclusivamente a dicha plataforma.
+
+7. Responsabilidad sobre la cuenta
+
+La persona usuaria es responsable de toda actividad realizada desde su cuenta, excepto cuando pueda acreditarse que el acceso fue causado por una falla imputable a MT Presupuestos.
+
+Ante una sospecha de acceso no autorizado, deberá:
+
+Cambiar su contraseña.
+Cerrar las sesiones activas cuando la opción esté disponible.
+Contactar a [CORREO DE SOPORTE].
+
+MT Presupuestos podrá revocar sesiones o solicitar una nueva autenticación cuando detecte actividad inusual o riesgos de seguridad.
+
+8. Información cargada por la persona usuaria
+
+La persona usuaria puede cargar información de:
+
+Empresas.
+Clientes.
+Proveedores.
+Contactos.
+Productos.
+Servicios.
+Trabajos.
+Materiales.
+Precios.
+Direcciones.
+Logos.
+Observaciones.
+Condiciones comerciales.
+
+La persona usuaria declara que:
+
+Tiene derecho a utilizar esa información.
+Cuenta con autorización cuando incorpora datos de terceros.
+La información no vulnera derechos de terceros.
+La información no es ilegal, engañosa o fraudulenta.
+Los logos, imágenes y marcas cargados pueden utilizarse legítimamente.
+
+MT Presupuestos no verifica previamente la exactitud ni legitimidad de todos los contenidos ingresados.
+
+9. Propiedad del contenido
+
+La persona usuaria conserva la titularidad sobre la información, textos, logos, imágenes, presupuestos y demás contenidos que carga en MT Presupuestos.
+
+Al utilizar el servicio, otorga a MT Presupuestos una autorización limitada, no exclusiva y vigente durante el tiempo necesario para:
+
+Almacenar la información.
+Mostrarla dentro de la cuenta.
+Procesarla técnicamente.
+Generar presupuestos y documentos.
+Crear archivos PDF.
+Realizar copias de seguridad.
+Prestar soporte.
+Proteger y mantener el servicio.
+
+Esta autorización no transfiere la propiedad del contenido a MT Presupuestos.
+
+10. Exactitud de presupuestos y cálculos
+
+La persona usuaria es responsable de comprobar:
+
+Identidad y datos de su empresa.
+Información del cliente.
+Cantidades.
+Precios.
+Descuentos.
+Impuestos.
+Subtotales.
+Totales.
+Fechas.
+Condiciones de pago.
+Plazos de ejecución.
+Descripciones de trabajos o servicios.
+Información incluida en el documento final.
+
+Aunque MT Presupuestos puede realizar cálculos automáticos, la persona usuaria deberá revisar el resultado antes de descargar, enviar, imprimir o aceptar un presupuesto.
+
+MT Presupuestos no responde por pérdidas originadas exclusivamente por información incorrecta cargada por el usuario.
+
+11. Exportación de archivos PDF
+
+La plataforma permite generar presupuestos en formato PDF.
+
+El archivo puede incluir:
+
+Datos de la empresa.
+Logo.
+Datos del cliente.
+Descripción de trabajos.
+Ítems.
+Cantidades.
+Precios.
+Subtotales.
+Totales.
+Observaciones.
+Condiciones comerciales.
+
+La persona usuaria es responsable del contenido del PDF y del uso que haga de él.
+
+MT Presupuestos podrá registrar cada exportación para:
+
+Aplicar los límites del plan.
+Contabilizar el uso.
+Prevenir abusos.
+Mostrar métricas.
+Administrar las prestaciones contratadas.
+
+La disponibilidad de una exportación dependerá del plan y del cupo disponible.
+
+12. Planes
+
+MT Presupuestos podrá ofrecer:
+
+Un plan gratuito.
+Uno o más planes pagos.
+Planes promocionales o temporales.
+Funcionalidades adicionales.
+
+Cada plan puede establecer límites relacionados con:
+
+Cantidad de empresas.
+Cantidad de presupuestos activos.
+Cantidad de exportaciones PDF.
+Período de renovación del cupo.
+Funcionalidades disponibles.
+Soporte.
+Otras prestaciones informadas antes de contratar.
+
+Los precios, límites y características vigentes serán informados en la sección de planes y, cuando corresponda, antes de confirmar el pago.
+
+La información mostrada en la pantalla de contratación forma parte de estas condiciones.
+
+13. Plan gratuito
+
+El plan gratuito podrá utilizarse sin abonar una suscripción mientras permanezca disponible.
+
+Este plan puede tener límites sobre:
+
+Empresas.
+Presupuestos activos.
+Exportaciones PDF.
+Almacenamiento.
+Funcionalidades.
+Soporte.
+
+MT Presupuestos podrá modificar razonablemente las prestaciones gratuitas mediante aviso previo cuando el cambio sea relevante.
+
+La existencia del plan gratuito no genera un derecho permanente a que todas sus condiciones se mantengan indefinidamente.
+
+14. Planes pagos
+
+Los planes pagos brindan acceso a límites superiores o funcionalidades adicionales.
+
+Antes de contratar se informará:
+
+Nombre del plan.
+Precio.
+Moneda.
+Frecuencia de cobro.
+Impuestos aplicables, cuando corresponda.
+Límites incluidos.
+Fecha estimada de renovación.
+Medio de pago.
+Condiciones de cancelación.
+
+La contratación se considerará confirmada cuando el proveedor de pagos informe que la operación fue aprobada.
+
+15. Suscripción y renovación automática
+
+Salvo que se indique expresamente lo contrario, los planes pagos podrán funcionar mediante suscripción mensual con renovación automática.
+
+Esto significa que:
+
+El plan se renueva al finalizar cada período.
+Se intenta cobrar el precio vigente mediante el medio de pago registrado.
+La renovación continúa hasta que la persona usuaria solicite la cancelación.
+La persona usuaria puede impedir futuras renovaciones cancelando antes de la próxima fecha de cobro.
+
+La fecha de renovación podrá visualizarse desde la cuenta o informarse por correo electrónico.
+
+La renovación automática deberá ser informada claramente antes de contratar.
+
+16. Procesamiento de pagos
+
+Los pagos serán procesados mediante:
+
+Proveedor de pagos: [PROVEEDOR DE PAGOS]
+
+MT Presupuestos podrá recibir del proveedor:
+
+Estado del pago.
+Identificador de la operación.
+Importe.
+Moneda.
+Fecha.
+Plan contratado.
+Información necesaria para administrar la suscripción.
+
+Los datos completos de tarjeta y códigos de seguridad serán tratados por el proveedor de pagos conforme a sus propias condiciones y medidas de seguridad.
+
+La persona usuaria es responsable de contar con autorización para utilizar el medio de pago elegido.
+
+17. Facturación e impuestos
+
+Los precios podrán incluir o no impuestos, según se informe en la pantalla de contratación.
+
+Cuando corresponda legalmente, MT Presupuestos emitirá el comprobante aplicable utilizando los datos proporcionados por la persona usuaria.
+
+La persona usuaria es responsable de suministrar correctamente:
+
+Nombre o razón social.
+CUIT.
+Condición fiscal.
+Domicilio.
+Información necesaria para facturación.
+18. Pagos rechazados
+
+Si un pago es rechazado, cancelado, desconocido o revertido:
+
+La suscripción podrá quedar pendiente.
+Se podrá solicitar otro medio de pago.
+Se podrá reintentar el cobro.
+Podrán suspenderse las funciones pagas.
+La cuenta podrá pasar a las condiciones del plan gratuito.
+Los recursos excedidos podrán quedar limitados o en modo de solo lectura.
+
+MT Presupuestos podrá informar la situación mediante el sitio o correo electrónico.
+
+19. Cambios de plan
+
+La persona usuaria podrá solicitar el cambio de plan desde las opciones disponibles en su cuenta.
+
+Mejora de plan
+
+Al pasar a un plan superior:
+
+Podrán habilitarse inmediatamente los nuevos límites.
+Podrá cobrarse el nuevo precio.
+La fecha y modalidad de renovación serán informadas antes de confirmar.
+Cambio a un plan inferior
+
+Cuando un usuario pase a un plan con límites menores:
+
+MT Presupuestos no eliminará automáticamente sus empresas o presupuestos.
+Los datos continuarán visibles.
+Los recursos que excedan el nuevo límite podrán quedar deshabilitados o en modo de solo lectura.
+La persona usuaria podrá eliminar los recursos excedidos.
+La creación de nuevos recursos podrá permanecer bloqueada mientras se supere el límite.
+Al eliminar un recurso activo, otro recurso excedido podrá habilitarse automáticamente conforme al orden estable utilizado por el sistema.
+
+El detalle de los límites aplicables será mostrado antes de confirmar el cambio.
+
+20. Cancelación de la suscripción
+
+La persona usuaria podrá cancelar la renovación de su plan desde:
+
+La configuración de su cuenta.
+El mecanismo de baja disponible en el sitio.
+[CORREO DE SOPORTE], cuando corresponda.
+
+La cancelación de la renovación no necesariamente elimina la cuenta.
+
+Salvo que se informe algo distinto o corresponda una solución legal diferente:
+
+El plan pago seguirá activo hasta terminar el período ya abonado.
+No se realizarán nuevos cobros luego de la fecha efectiva de cancelación.
+Al finalizar el período, la cuenta podrá pasar al plan gratuito.
+Los datos que excedan los límites del plan gratuito podrán quedar visibles pero restringidos.
+
+MT Presupuestos deberá facilitar la baja por medios compatibles con los utilizados para contratar.
+
+21. Derecho de arrepentimiento
+
+Cuando la contratación constituya una relación de consumo celebrada a distancia, la persona consumidora podrá ejercer el derecho de revocación dentro del plazo legal aplicable.
+
+La solicitud podrá realizarse mediante:
+
+El botón de arrepentimiento disponible en el sitio.
+[CORREO DE SOPORTE].
+Otro mecanismo electrónico informado por MT Presupuestos.
+
+El ejercicio de este derecho será gratuito y se gestionará conforme a la normativa aplicable. En Argentina, los contratos a distancia reconocen un plazo irrenunciable de diez días para revocar la aceptación, cuando corresponda.
+
+22. Reembolsos
+
+Fuera de los casos de arrepentimiento, cobro duplicado, error imputable a MT Presupuestos u otro supuesto legal obligatorio, los pagos correspondientes a períodos ya iniciados podrán considerarse no reembolsables.
+
+No obstante, cada solicitud será evaluada teniendo en cuenta:
+
+La legislación aplicable.
+La fecha del pago.
+El uso del servicio.
+La existencia de un error técnico.
+La existencia de cobros duplicados.
+La causa de la solicitud.
+
+Ninguna disposición de estos Términos limita derechos irrenunciables reconocidos a consumidores.
+
+23. Modificaciones de precio
+
+MT Presupuestos podrá modificar los precios de sus planes.
+
+Los cambios:
+
+Serán informados antes de aplicarse a una renovación.
+No se aplicarán retroactivamente.
+No afectarán períodos ya abonados.
+Podrán ser rechazados cancelando futuras renovaciones antes de su entrada en vigencia.
+
+La continuidad del plan después de la fecha informada implicará la aceptación del nuevo precio, sin perjuicio de los derechos legales correspondientes.
+
+24. Uso permitido
+
+La persona usuaria deberá utilizar MT Presupuestos de forma lícita y conforme a estas condiciones.
+
+Está prohibido:
+
+Acceder a cuentas ajenas.
+Intentar vulnerar la seguridad.
+Evadir límites de los planes.
+Automatizar abusivamente solicitudes.
+Introducir código malicioso.
+Interferir con el funcionamiento del servicio.
+Utilizar datos de terceros sin autorización.
+Cargar contenido ilícito.
+Suplantar identidades.
+Utilizar la plataforma para fraude.
+Revender accesos sin autorización.
+Copiar o explotar comercialmente el software.
+Realizar ingeniería inversa en los casos prohibidos por la ley.
+Utilizar el servicio de manera que afecte a otros usuarios.
+25. Suspensión o restricción de cuentas
+
+MT Presupuestos podrá limitar o suspender una cuenta cuando exista:
+
+Incumplimiento grave de estas condiciones.
+Actividad fraudulenta.
+Riesgo para la seguridad.
+Acceso no autorizado.
+Uso abusivo del servicio.
+Falta de pago.
+Orden de autoridad competente.
+Vulneración de derechos de terceros.
+
+Cuando sea razonablemente posible, se informará previamente la causa y se ofrecerá una vía de contacto.
+
+En situaciones urgentes de seguridad, la suspensión podrá aplicarse inmediatamente.
+
+26. Eliminación de cuenta
+
+La persona usuaria podrá solicitar la eliminación de su cuenta mediante:
+
+La funcionalidad habilitada dentro del servicio.
+[CORREO DE SOPORTE].
+[CORREO DE PRIVACIDAD].
+
+La eliminación de cuenta puede provocar la pérdida definitiva de:
+
+Empresas.
+Presupuestos.
+Ítems.
+Logos.
+Configuraciones.
+Historial.
+Accesos asociados.
+
+Antes de eliminar, MT Presupuestos podrá:
+
+Verificar la identidad.
+Informar las consecuencias.
+Solicitar la cancelación de una suscripción activa.
+Conservar registros exigidos por ley.
+Conservar información mínima necesaria para prevenir fraude o resolver reclamos.
+27. Copias de seguridad y conservación
+
+MT Presupuestos podrá realizar copias de seguridad para proteger la continuidad del servicio.
+
+Sin embargo, la plataforma no reemplaza las copias que la persona usuaria debería mantener de sus propios documentos importantes.
+
+La persona usuaria deberá descargar y conservar los presupuestos o información que considere esencial.
+
+La eliminación de información de la cuenta puede no reflejarse inmediatamente en copias de seguridad, las cuales serán depuradas según los ciclos técnicos de conservación.
+
+28. Disponibilidad del servicio
+
+MT Presupuestos realizará esfuerzos razonables para mantener el servicio disponible.
+
+No se garantiza que funcione de manera ininterrumpida o libre de errores en todo momento.
+
+Podrían producirse interrupciones por:
+
+Mantenimiento.
+Actualizaciones.
+Fallas de infraestructura.
+Problemas de conectividad.
+Fallas de proveedores.
+Incidentes de seguridad.
+Fuerza mayor.
+Cambios técnicos necesarios.
+
+Cuando resulte posible, los mantenimientos relevantes serán informados.
+
+29. Servicios de terceros
+
+MT Presupuestos utiliza o puede utilizar servicios externos para:
+
+Autenticación.
+Alojamiento.
+Base de datos.
+Almacenamiento de imágenes.
+Envío de correos.
+Procesamiento de pagos.
+Monitoreo técnico.
+
+La disponibilidad de esas integraciones puede depender de sus respectivos proveedores.
+
+MT Presupuestos no controla modificaciones o interrupciones que dependan exclusivamente de terceros, aunque realizará esfuerzos razonables para restablecer las funciones afectadas.
+
+30. Propiedad intelectual de MT Presupuestos
+
+Son propiedad de MT Presupuestos o de sus respectivos licenciantes:
+
+El software.
+El código.
+La interfaz.
+La marca.
+El nombre.
+El logo.
+Los diseños.
+Las animaciones.
+La estructura de la plataforma.
+Los textos propios.
+Las bases de datos protegidas.
+Las funcionalidades.
+La documentación.
+
+La aceptación de estos Términos no transfiere derechos de propiedad intelectual a la persona usuaria.
+
+Se concede únicamente un derecho limitado, revocable, no exclusivo y no transferible para utilizar el servicio según el plan contratado.
+
+31. Comentarios y sugerencias
+
+La persona usuaria puede enviar sugerencias o comentarios sobre el servicio.
+
+MT Presupuestos podrá utilizar dichas sugerencias para mejorar la plataforma sin obligación de incorporarlas ni de pagar una compensación, salvo acuerdo escrito diferente.
+
+Esto no comprende información confidencial ni contenidos propios cargados en los presupuestos.
+
+32. Limitación de responsabilidad
+
+Dentro de los límites permitidos por la legislación aplicable, MT Presupuestos no será responsable por consecuencias derivadas exclusivamente de:
+
+Datos incorrectos ingresados por la persona usuaria.
+Presupuestos no revisados.
+Decisiones comerciales tomadas sobre la base de un presupuesto.
+Rechazo de presupuestos por clientes.
+Pérdida de oportunidades comerciales.
+Uso no autorizado de la cuenta por falta de protección de credenciales.
+Incumplimientos fiscales o legales de la persona usuaria.
+Servicios o conductas de terceros.
+Fallas externas fuera del control razonable de MT Presupuestos.
+
+Esta cláusula no limita responsabilidades que legalmente no puedan excluirse ni derechos reconocidos a consumidores.
+
+33. Reclamos
+
+Ante un problema, la persona usuaria deberá comunicarse con:
+
+Correo de soporte: [CORREO DE SOPORTE]
+
+El reclamo deberá incluir, cuando sea posible:
+
+Email asociado a la cuenta.
+Descripción del problema.
+Fecha.
+Plan contratado.
+Identificación del pago, si corresponde.
+Capturas o información útil.
+
+MT Presupuestos intentará responder dentro de un plazo razonable.
+
+34. Comunicaciones electrónicas
+
+La persona usuaria acepta recibir comunicaciones necesarias para:
+
+Verificar su cuenta.
+Recuperar su contraseña.
+Informar actividad de seguridad.
+Confirmar pagos.
+Informar renovaciones.
+Informar problemas de facturación.
+Comunicar cambios importantes.
+Responder solicitudes de soporte.
+
+Las notificaciones podrán enviarse al email vinculado a la cuenta o mostrarse dentro de la plataforma.
+
+35. Modificación de los Términos
+
+MT Presupuestos podrá actualizar estos Términos por:
+
+Cambios legales.
+Nuevas funciones.
+Incorporación de pagos.
+Cambios en planes.
+Cambios técnicos.
+Nuevos proveedores.
+Medidas de seguridad.
+
+Los cambios relevantes serán informados con una anticipación razonable mediante el sitio, la cuenta o correo electrónico.
+
+La versión vigente estará identificada mediante su fecha de actualización.
+
+Si la persona usuaria no acepta un cambio sustancial, podrá cancelar su suscripción y dejar de utilizar el servicio.
+
+36. Política de Privacidad
+
+El tratamiento de datos personales se rige por la Política de Privacidad de MT Presupuestos, disponible en:
+
+[DOMINIO DE MT PRESUPUESTOS]/politica-de-privacidad
+
+La Política de Privacidad forma parte complementaria de estos Términos.
+
+37. Nulidad parcial
+
+Si una cláusula fuera declarada inválida o inaplicable, las restantes continuarán vigentes siempre que puedan conservar su finalidad.
+
+La cláusula afectada será interpretada o reemplazada de la manera más compatible posible con la legislación aplicable.
+
+38. Ley aplicable y jurisdicción
+
+Estos Términos se rigen por las leyes de la República Argentina.
+
+Cuando exista una relación de consumo, serán competentes las autoridades y tribunales determinados por la normativa protectoria aplicable, sin que estas condiciones puedan restringir los derechos de la persona consumidora.
+
+Para relaciones que no sean de consumo, cualquier controversia será sometida a la jurisdicción de:
+
+[JURISDICCIÓN PARA USUARIOS NO CONSUMIDORES]
+
+salvo que las partes acuerden otra solución válida.
+
+39. Contacto
+
+Para consultas sobre estos Términos:
+
+Responsable: [NOMBRE COMPLETO O RAZÓN SOCIAL]
+CUIT: [CUIT]
+Domicilio: [DOMICILIO LEGAL]
+Correo de soporte: [CORREO DE SOPORTE]
+Correo de privacidad: [CORREO DE PRIVACIDAD]
+Sitio web: [DOMINIO DE MT PRESUPUESTOS]
