@@ -7,7 +7,7 @@ import PresupuestoCard from "../components/presupuesto/PresupuestoCard";
 import PresupuestoTable from "../components/presupuesto/PresupuestoTable";
 import { useSearch } from "../context/SearchContext";
 import { useCompanyPresupuestos } from "../hooks/useCompanyPresupuestos";
-import PresupuestoPreview from "../components/presupuesto/PresupuestoPreview";
+import PresupuestoPreview from "../components/presupuesto/presupuestoPreview/PresupuestoPreview";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";
 import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
