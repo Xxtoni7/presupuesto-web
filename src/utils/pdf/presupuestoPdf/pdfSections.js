@@ -737,6 +737,110 @@ export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
     return currentY;
 }
 
+function hasItemCost(items, field) {
+    return items.some((item) => {
+        const value = Number(item[field]);
+
+        return Number.isFinite(value) && value !== 0;
+    });
+}
+
+function getBudgetTableColumns(items) {
+    const showMaterials = hasItemCost(items, "materials");
+    const showLabor = hasItemCost(items, "labor");
+    const descriptionWidth =
+        55 + (showMaterials ? 0 : 30) + (showLabor ? 0 : 32);
+    const columns = [
+        {
+            key: "description",
+            header: "Descripción",
+            width: descriptionWidth,
+            formatValue: (item) => item.description || "-",
+            styles: {
+                halign: "left",
+                fontSize: 11,
+                textColor: [31, 41, 55],
+            },
+        },
+    ];
+
+    if (showMaterials) {
+        columns.push({
+            key: "materials",
+            header: "Materiales",
+            width: 30,
+            formatValue: (item) =>
+                formatCurrency(item.materials || 0),
+            styles: {
+                halign: "right",
+                valign: "middle",
+                fontSize: 9.5,
+                textColor: [107, 114, 128],
+            },
+        });
+    }
+
+    if (showLabor) {
+        columns.push({
+            key: "labor",
+            header: "Mano de obra",
+            width: 32,
+            formatValue: (item) =>
+                formatCurrency(item.labor || 0),
+            styles: {
+                halign: "right",
+                valign: "middle",
+                fontSize: 9.5,
+                textColor: [107, 114, 128],
+            },
+        });
+    }
+
+    columns.push(
+        {
+            key: "quantity",
+            header: "Cant",
+            width: 19,
+            formatValue: (item) => item.quantity || 0,
+            styles: {
+                halign: "center",
+                valign: "middle",
+                fontSize: 9.5,
+                fontStyle: "medium",
+                textColor: [75, 85, 99],
+            },
+        },
+        {
+            key: "subtotal",
+            header: "Subtotal",
+            width: 34,
+            formatValue: (item) =>
+                formatCurrency(item.subtotal || 0),
+            styles: {
+                halign: "right",
+                valign: "middle",
+                fontSize: 9.5,
+                fontStyle: "semibold",
+                textColor: [17, 24, 39],
+            },
+        }
+    );
+
+    return columns;
+}
+
+function getBudgetTableColumnStyles(columns) {
+    return Object.fromEntries(
+        columns.map((column, index) => [
+            index,
+            {
+                cellWidth: column.width,
+                ...column.styles,
+            },
+        ])
+    );
+}
+
 export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, onNewPage) {
     const pageWidth = doc.internal.pageSize.getWidth();
     const marginX = pdfTheme.page.marginX;
@@ -762,6 +866,11 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
 
     const currentY = startY + pdfTheme.main.sectionGap;
     let tablePageStartY = currentY + tableTitleGap;
+    const tableColumns = getBudgetTableColumns(items);
+    const quantityColumnIndex = tableColumns.findIndex(
+        (column) => column.key === "quantity"
+    );
+    const totalLabelColumnSpan = tableColumns.length - 2;
 
     const tableOptions = {
         startY: currentY + tableTitleGap,
@@ -780,25 +889,19 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
         },
 
         head: [[
-            "Descripción",
-            "Materiales",
-            "Mano de obra",
-            "Cant",
-            "Subtotal",
+            ...tableColumns.map((column) => column.header),
         ]],
 
-        body: items.map((item) => [
-            item.description || "-",
-            formatCurrency(item.materials || 0),
-            formatCurrency(item.labor || 0),
-            item.quantity || 0,
-            formatCurrency(item.subtotal || 0),
-        ]),
+        body: items.map((item) =>
+            tableColumns.map((column) =>
+                column.formatValue(item)
+            )
+        ),
 
         foot: [[
             {
                 content: "TOTAL",
-                colSpan: 3,
+                colSpan: totalLabelColumnSpan,
                 styles: {
                     halign: "right",
                     font: "Inter",
@@ -871,44 +974,8 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
             lineWidth: 0,
         },
 
-        columnStyles: {
-            0: {
-                cellWidth: 55,
-                halign: "left",
-                fontSize: 11,
-                textColor: [31, 41, 55],
-            },
-            1: {
-                cellWidth: 30,
-                halign: "right",
-                valign: "middle",
-                fontSize: 9.5,
-                textColor: [107, 114, 128],
-            },
-            2: {
-                cellWidth: 32,
-                halign: "right",
-                valign: "middle",
-                fontSize: 9.5,
-                textColor: [107, 114, 128],
-            },
-            3: {
-                cellWidth: 19,
-                halign: "center",
-                valign: "middle",
-                fontSize: 9.5,
-                fontStyle: "medium",
-                textColor: [75, 85, 99],
-            },
-            4: {
-                cellWidth: 34,
-                halign: "right",
-                valign: "middle",
-                fontSize: 9.5,
-                fontStyle: "semibold",
-                textColor: [17, 24, 39],
-            },
-        },
+        columnStyles:
+            getBudgetTableColumnStyles(tableColumns),
 
         willDrawCell: (data) => {
             if (data.section === "head" && data.column.index === 0) {
@@ -966,7 +1033,10 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
                     data.cell.styles.halign = "left";
                 }
 
-                if (data.column.index === 3) {
+                if (
+                    data.column.index ===
+                    quantityColumnIndex
+                ) {
                     data.cell.styles.halign = "center";
                 }
             }
