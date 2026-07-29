@@ -1,4 +1,4 @@
-import autoTable from "jspdf-autotable";
+import autoTable, { __createTable } from "jspdf-autotable";
 import { formatCurrency } from "../../formatCurrency";
 import { pdfTheme } from "./pdfTheme";
 import { formatPdfDate, parseRichTextHtml, hasRichTextContent } from "./pdfHelpers";
@@ -763,7 +763,7 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
     const currentY = startY + pdfTheme.main.sectionGap;
     let tablePageStartY = currentY + tableTitleGap;
 
-    autoTable(doc, {
+    const tableOptions = {
         startY: currentY + tableTitleGap,
 
         pageBreak: "avoid",
@@ -1047,7 +1047,27 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
 
             onNewPage();
         },
-    });
+    };
+
+    const measuredTable = __createTable(doc, tableOptions);
+    const completeTableHeight =
+        measuredTable.getHeadHeight(measuredTable.columns) +
+        measuredTable.body.reduce(
+            (height, row) => height + row.height,
+            0
+        ) +
+        measuredTable.getFootHeight(measuredTable.columns);
+    const fullPageAvailableHeight =
+        doc.internal.pageSize.getHeight() -
+        (pdfTheme.page.contentTopAfterHeader + tableTitleGap) -
+        pdfTheme.page.footerReservedSpace;
+
+    tableOptions.pageBreak =
+        completeTableHeight <= fullPageAvailableHeight
+            ? "avoid"
+            : "auto";
+
+    autoTable(doc, tableOptions);
 
     return doc.lastAutoTable.finalY + pdfTheme.main.sectionGap;
 }
