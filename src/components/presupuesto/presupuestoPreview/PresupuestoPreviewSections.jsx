@@ -151,12 +151,35 @@ function BudgetTableTitle() {
     );
 }
 
-function BudgetTableColGroup() {
+function hasItemCost(items, field) {
+    return items.some((item) => {
+        const value = Number(item[field]);
+
+        return Number.isFinite(value) && value !== 0;
+    });
+}
+
+function getBudgetTableVisibility(items) {
+    return {
+        showMaterials: hasItemCost(items, "materials"),
+        showLabor: hasItemCost(items, "labor"),
+    };
+}
+
+function BudgetTableColGroup({
+    showMaterials,
+    showLabor,
+}) {
+    const descriptionWidth =
+        55 + (showMaterials ? 0 : 30) + (showLabor ? 0 : 32);
+
     return (
         <colgroup>
-            <col style={{ width: "55mm" }} />
-            <col style={{ width: "30mm" }} />
-            <col style={{ width: "32mm" }} />
+            <col style={{ width: `${descriptionWidth}mm` }} />
+            {showMaterials && (
+                <col style={{ width: "30mm" }} />
+            )}
+            {showLabor && <col style={{ width: "32mm" }} />}
             <col style={{ width: "19mm" }} />
             <col style={{ width: "34mm" }} />
         </colgroup>
@@ -166,20 +189,44 @@ function BudgetTableColGroup() {
 function BudgetTableHeader({
     secondaryColor,
     headerTextColor,
+    showMaterials,
+    showLabor,
 }) {
     const headers = [
-        "Descripción",
-        "Materiales",
-        "Mano de obra",
-        "Cant",
-        "Subtotal",
+        {
+            key: "description",
+            label: "Descripción",
+            textAlign: "left",
+        },
+        ...(showMaterials
+            ? [
+                    {
+                        key: "materials",
+                        label: "Materiales",
+                        textAlign: "right",
+                    },
+                ]
+            : []),
+        ...(showLabor
+            ? [
+                    {
+                        key: "labor",
+                        label: "Mano de obra",
+                        textAlign: "right",
+                    },
+                ]
+            : []),
+        {
+            key: "quantity",
+            label: "Cant",
+            textAlign: "center",
+        },
+        {
+            key: "subtotal",
+            label: "Subtotal",
+            textAlign: "right",
+        },
     ];
-
-    const getHeaderTextAlign = (index) => {
-        if (index === 0) return "left";
-        if (index === 3) return "center";
-        return "right";
-    };
 
     return (
         <thead
@@ -189,21 +236,21 @@ function BudgetTableHeader({
             }}
         >
             <tr>
-                {headers.map((header, index) => (
+                {headers.map((header) => (
                     <th
-                        key={header}
+                        key={header.key}
                         className="font-bold"
                         style={{
                             color: headerTextColor,
                             fontSize: `${PDF_TABLE_LAYOUT.headerFontSizePt}pt`,
                             lineHeight: `${PDF_TABLE_LAYOUT.headerFontSizePt * PDF_TABLE_LAYOUT.lineHeightFactor}pt`,
                             padding: `${PDF_TABLE_LAYOUT.headerVerticalPaddingMm}mm ${PDF_TABLE_LAYOUT.cellPaddingMm}mm`,
-                            textAlign: getHeaderTextAlign(index),
+                            textAlign: header.textAlign,
                             verticalAlign: "middle",
                             whiteSpace: "nowrap",
                         }}
                     >
-                        {header}
+                        {header.label}
                     </th>
                 ))}
             </tr>
@@ -211,7 +258,11 @@ function BudgetTableHeader({
     );
 }
 
-function BudgetTableRow({ item }) {
+function BudgetTableRow({
+    item,
+    showMaterials,
+    showLabor,
+}) {
     const baseCellStyle = {
         padding: `${PDF_TABLE_LAYOUT.cellPaddingMm}mm`,
     };
@@ -237,29 +288,33 @@ function BudgetTableRow({ item }) {
                 </p>
             </td>
 
-            <td
-                className="text-right text-gray-500"
-                style={{
-                    ...baseCellStyle,
-                    fontSize: `${PDF_TABLE_LAYOUT.valueFontSizePt}pt`,
-                    lineHeight: valueLineHeight,
-                    verticalAlign: "middle",
-                }}
-            >
-                {formatCurrency(item.materials || 0)}
-            </td>
+            {showMaterials && (
+                <td
+                    className="text-right text-gray-500"
+                    style={{
+                        ...baseCellStyle,
+                        fontSize: `${PDF_TABLE_LAYOUT.valueFontSizePt}pt`,
+                        lineHeight: valueLineHeight,
+                        verticalAlign: "middle",
+                    }}
+                >
+                    {formatCurrency(item.materials || 0)}
+                </td>
+            )}
 
-            <td
-                className="text-right text-gray-500"
-                style={{
-                    ...baseCellStyle,
-                    fontSize: `${PDF_TABLE_LAYOUT.valueFontSizePt}pt`,
-                    lineHeight: valueLineHeight,
-                    verticalAlign: "middle",
-                }}
-            >
-                {formatCurrency(item.labor || 0)}
-            </td>
+            {showLabor && (
+                <td
+                    className="text-right text-gray-500"
+                    style={{
+                        ...baseCellStyle,
+                        fontSize: `${PDF_TABLE_LAYOUT.valueFontSizePt}pt`,
+                        lineHeight: valueLineHeight,
+                        verticalAlign: "middle",
+                    }}
+                >
+                    {formatCurrency(item.labor || 0)}
+                </td>
+            )}
 
             <td
                 className="text-center font-medium text-gray-600"
@@ -288,7 +343,15 @@ function BudgetTableRow({ item }) {
     );
 }
 
-function BudgetTableFooter({ total, primaryColor }) {
+function BudgetTableFooter({
+    total,
+    primaryColor,
+    showMaterials,
+    showLabor,
+}) {
+    const labelColumnSpan =
+        1 + Number(showMaterials) + Number(showLabor);
+
     return (
         <tfoot>
             <tr
@@ -298,7 +361,7 @@ function BudgetTableFooter({ total, primaryColor }) {
                 }}
             >
                 <td
-                    colSpan="3"
+                    colSpan={labelColumnSpan}
                     className="text-right font-semibold text-gray-500"
                     style={{
                         borderTop: `${PDF_TABLE_LAYOUT.footerDividerWidthMm}mm solid ${primaryColor}`,
@@ -353,6 +416,9 @@ function BudgetTableFrame({
     primaryColor,
     measureTable,
 }) {
+    const { showMaterials, showLabor } =
+        getBudgetTableVisibility(items);
+
     return (
         <div
             data-measure={measureTable ? "table-frame" : undefined}
@@ -362,11 +428,16 @@ function BudgetTableFrame({
             }}
         >
             <table className="w-full table-fixed">
-                <BudgetTableColGroup />
+                <BudgetTableColGroup
+                    showMaterials={showMaterials}
+                    showLabor={showLabor}
+                />
 
                 <BudgetTableHeader
                     secondaryColor={secondaryColor}
                     headerTextColor={headerTextColor}
+                    showMaterials={showMaterials}
+                    showLabor={showLabor}
                 />
 
                 <tbody className="bg-white">
@@ -376,6 +447,8 @@ function BudgetTableFrame({
                                 items[rowIndex].idItem ?? rowIndex
                             }
                             item={items[rowIndex]}
+                            showMaterials={showMaterials}
+                            showLabor={showLabor}
                         />
                     ))}
                 </tbody>
@@ -384,6 +457,8 @@ function BudgetTableFrame({
                     <BudgetTableFooter
                         total={presupuesto.total}
                         primaryColor={primaryColor}
+                        showMaterials={showMaterials}
+                        showLabor={showLabor}
                     />
                 )}
             </table>
