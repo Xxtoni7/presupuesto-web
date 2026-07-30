@@ -7,16 +7,16 @@ function PlanUsageContent({ plan, usage, onNavigate }) {
         <section>
             <div className="mb-4 flex items-start justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-red-50 text-red-500">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-red-50 text-red-500 dark:bg-red-500/15 dark:text-red-300">
                         <Gauge className="h-5 w-5" />
                     </div>
 
                     <div className="min-w-0">
-                        <h2 className="truncate text-lg font-bold text-[#111111]">
+                        <h2 className="truncate text-lg font-bold text-foreground">
                             Uso del plan
                         </h2>
 
-                        <p className="truncate text-sm text-gray-500">
+                        <p className="truncate text-sm text-muted-foreground">
                             Plan {plan.planName}
                         </p>
                     </div>

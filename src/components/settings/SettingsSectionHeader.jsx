@@ -13,10 +13,10 @@ function SettingsSectionHeader({
                 <Icon className={`h-5 w-5 ${iconClassName}`} />
             </div>
             <div>
-                <h2 className="text-lg font-semibold text-[#111111]">
+                <h2 className="text-lg font-semibold text-foreground">
                     {title}
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                     {description}
                 </p>
             </div>

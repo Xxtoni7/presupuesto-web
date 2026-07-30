@@ -10,7 +10,7 @@ function EmptyRecentPresupuestosCta({ onboarding, onNavigate }) {
     const actionUrl = onboarding?.actionUrl || "/companies";
 
     return (
-        <section className="rounded-2xl bg-[#111111] p-6 text-white">
+        <section className="rounded-2xl bg-gray-950 p-6 text-white dark:border dark:border-border dark:bg-background">
             <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white/80">
                 <Sparkles className="h-3.5 w-3.5 text-red-300" />
                 Siguiente paso
@@ -25,7 +25,7 @@ function EmptyRecentPresupuestosCta({ onboarding, onNavigate }) {
             <button
                 type="button"
                 onClick={() => onNavigate(actionUrl)}
-                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-[#111111] transition hover:bg-gray-100"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-gray-950 transition hover:bg-gray-100"
             >
                 {actionLabel}
                 <ArrowRight className="h-4 w-4" />

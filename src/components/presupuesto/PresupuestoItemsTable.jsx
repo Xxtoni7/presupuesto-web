@@ -43,9 +43,9 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
     };
 
     return (
-        <div className="space-y-4 rounded-xl border border-[#e5e7eb] p-6">
-            <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-[#111111]">
+        <div className="space-y-4 rounded-xl border border-border bg-card/40 p-4 sm:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h3 className="text-lg font-semibold text-foreground">
                     Detalle del presupuesto
                 </h3>
 
@@ -57,7 +57,7 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
 
             {items.length === 0 && (
                 <output
-                    className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+                    className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100"
                 >
                     <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
                     <p>
@@ -70,7 +70,7 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
                 {items.map((item, index) => (
                     <div
                         key={item.idItem ?? index}
-                        className="space-y-3 rounded-lg border border-[#e5e7eb] p-4"
+                        className="space-y-3 rounded-lg border border-border bg-background/60 p-4"
                     >
                         <Label className="text-xs">
                             Trabajo a realizar{" "}
@@ -135,7 +135,7 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
                                 <Input
                                     value={formatCurrency(item.subtotal || 0)}
                                     readOnly
-                                    className="mt-1 bg-[#f9fafb]"
+                                    className="mt-1 bg-muted"
                                 />
                             </div>
                         </div>

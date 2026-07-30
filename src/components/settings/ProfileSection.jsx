@@ -9,22 +9,22 @@ function ProfileSection({ user, currentPlanName }) {
                 icon={User}
                 title="Perfil"
                 description="Información de tu cuenta"
-                iconClassName="text-blue-600"
-                iconContainerClassName="bg-blue-50"
+                iconClassName="text-blue-600 dark:text-blue-300"
+                iconContainerClassName="bg-blue-50 dark:bg-blue-500/15"
             />
 
-            <div className="grid gap-5 border-t border-gray-100 pt-5 sm:grid-cols-2">
+            <div className="grid gap-5 border-t border-border pt-5 sm:grid-cols-2">
                 <div>
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-muted-foreground">
                         Email
                     </p>
-                    <p className="mt-2 flex items-center gap-2 break-all text-base font-semibold text-[#111111]">
-                        <Mail className="h-4 w-4 shrink-0 text-gray-400" />
+                    <p className="mt-2 flex items-center gap-2 break-all text-base font-semibold text-foreground">
+                        <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
                         {user?.email || "Sin email disponible"}
                     </p>
                 </div>
                 <div>
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-muted-foreground">
                         Plan actual
                     </p>
                     <p className="mt-2 text-base font-semibold text-red-500">

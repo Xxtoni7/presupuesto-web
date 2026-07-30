@@ -447,7 +447,7 @@ export default function PresupuestoPreviewPage({
     return (
         <section
             ref={isFirstPage ? pageRef : null}
-            className="relative mx-auto box-border flex h-[297mm] w-[210mm] shrink-0 flex-col overflow-hidden bg-white text-black shadow-[0_20px_60px_rgba(15,23,42,0.16)]"
+            className="relative mx-auto box-border flex h-[297mm] w-[210mm] shrink-0 flex-col overflow-hidden bg-white text-black shadow-[0_20px_60px_rgba(15,23,42,0.16)] [color-scheme:light]"
             style={{
                 padding: `12mm 20mm ${PDF_LAYOUT.footerReservedSpaceMm}mm`,
             }}

@@ -30,7 +30,7 @@ function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
                         <TableRow key={companyId}>
                             <TableCell>
                                 <div className="flex min-w-0 items-center gap-3">
-                                    <div className="flex h-11 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#e5e7eb] bg-white p-1">
+                                    <div className="flex h-11 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-white p-1">
                                         {logoSrc ? (
                                             <img
                                                 src={logoSrc}
@@ -38,12 +38,12 @@ function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
                                                 className="h-full w-full object-contain"
                                             />
                                         ) : (
-                                            <Building2 className="h-5 w-5 text-[#6b7280]" />
+                                            <Building2 className="h-5 w-5 text-muted-foreground" />
                                         )}
                                     </div>
 
                                     <div className="min-w-0">
-                                        <p className="truncate font-medium text-[#111111]">
+                                        <p className="truncate font-medium text-foreground">
                                             {company.name || "Sin nombre"}
                                         </p>
                                     </div>
@@ -53,15 +53,15 @@ function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
                             <TableCell>
                                 <div className="space-y-1">
                                     {company.phone && (
-                                        <div className="flex items-center gap-2 text-sm text-[#374151]">
-                                            <Phone className="h-4 w-4 text-[#6b7280]" />
+                                        <div className="flex items-center gap-2 text-sm text-foreground">
+                                            <Phone className="h-4 w-4 text-muted-foreground" />
                                             <span>{company.phone}</span>
                                         </div>
                                     )}
 
                                     {company.email && (
-                                        <div className="flex items-center gap-2 text-sm text-[#374151]">
-                                            <Mail className="h-4 w-4 text-[#6b7280]" />
+                                        <div className="flex items-center gap-2 text-sm text-foreground">
+                                            <Mail className="h-4 w-4 text-muted-foreground" />
                                             <span className="max-w-[360px] truncate">
                                                 {company.email}
                                             </span>
@@ -69,7 +69,7 @@ function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
                                     )}
 
                                     {!company.phone && !company.email && (
-                                        <span className="text-sm text-[#9ca3af]">
+                                        <span className="text-sm text-muted-foreground">
                                             Sin contacto
                                         </span>
                                     )}
@@ -77,8 +77,8 @@ function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
                             </TableCell>
 
                             <TableCell>
-                                <div className="flex max-w-[260px] items-center gap-2 text-sm text-[#374151]">
-                                    <MapPin className="h-4 w-4 shrink-0 text-[#6b7280]" />
+                                <div className="flex max-w-[260px] items-center gap-2 text-sm text-foreground">
+                                    <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
                                     <span className="truncate">
                                         {company.address || "Sin dirección"}
                                     </span>
@@ -86,7 +86,7 @@ function CompanyTable({ companies, onEdit, onDelete, onViewBudgets }) {
                             </TableCell>
 
                             <TableCell>
-                                <span className="text-sm text-[#374151]">
+                                <span className="text-sm text-foreground">
                                     {company.industry || "Sin rubro"}
                                 </span>
                             </TableCell>

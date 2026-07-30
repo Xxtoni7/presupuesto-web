@@ -20,36 +20,36 @@ function formatDate(dateString) {
 
 function PresupuestoCard({presupuesto, onEdit, onDelete, onDuplicate, onPreview, onDownload, isPdfGenerating = false}) {
     return (
-        <Card className="relative flex min-h-[355px] flex-col transition-all duration-200 hover:shadow-lg">
+        <Card className="relative flex min-h-[355px] flex-col transition-all duration-200 hover:-translate-y-0.5 hover:border-red-400/40 hover:shadow-lg">
             <CardContent className="relative flex-1 pt-6 pb-16">
                 <div className="space-y-3">
                     <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
-                            <h3 className="truncate text-lg font-semibold text-[#111111]">
+                            <h3 className="truncate text-lg font-semibold text-foreground">
                                 {presupuesto.title || "Sin título"}
                             </h3>
 
-                            <p className="mt-1 text-sm text-[#6b7280]">
+                            <p className="mt-1 text-sm text-muted-foreground">
                                 {presupuesto.budgetNumber || "Sin número"}
                             </p>
                         </div>
                     </div>
 
-                    <div className="space-y-2 border-t border-[#e5e7eb] pt-3">
-                        <div className="flex items-center gap-2 text-sm text-[#111111]">
-                            <User className="h-4 w-4 text-[#6b7280]" />
+                    <div className="space-y-2 border-t border-border pt-3">
+                        <div className="flex items-center gap-2 text-sm text-foreground">
+                            <User className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium">
                                 {presupuesto.clientName || "Sin cliente"}
                             </span>
                         </div>
 
-                        <div className="flex items-center gap-2 text-sm text-[#111111]">
-                            <Calendar className="h-4 w-4 text-[#6b7280]" />
+                        <div className="flex items-center gap-2 text-sm text-foreground">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
                             <span>{formatDate(presupuesto.fechaPresupuesto)}</span>
                         </div>
 
                         {presupuesto.workAddress && (
-                            <p className="truncate text-sm text-[#6b7280]">
+                            <p className="truncate text-sm text-muted-foreground">
                                 {presupuesto.workAddress}
                             </p>
                         )}
@@ -64,7 +64,7 @@ function PresupuestoCard({presupuesto, onEdit, onDelete, onDuplicate, onPreview,
                 </div>
             </CardContent>
 
-            <CardFooter className="flex flex-col items-center justify-center gap-2 border-t border-[#e5e7eb]">
+            <CardFooter className="flex flex-col items-center justify-center gap-2 border-t border-border">
                 <div className="flex items-center justify-center gap-2">
                     <Button variant="outline" size="sm" onClick={() => onPreview(presupuesto)}>
                         <Eye className="mr-2 h-4 w-4" />

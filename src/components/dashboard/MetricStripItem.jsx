@@ -7,27 +7,27 @@ function MetricStripItem({ title, value, description, icon: Icon, isMoney = fals
                 <div
                     className={`flex h-10 w-10 items-center justify-center rounded-2xl ${
                         isMoney
-                            ? "bg-emerald-50 text-emerald-600"
-                            : "bg-red-50 text-red-500"
+                            ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300"
+                            : "bg-red-50 text-red-500 dark:bg-red-500/15 dark:text-red-300"
                     }`}
                 >
                     <Icon className="h-5 w-5" />
                 </div>
 
-                <p className="truncate text-sm font-semibold text-gray-500">
+                <p className="truncate text-sm font-semibold text-muted-foreground">
                     {title}
                 </p>
             </div>
 
             <p
                 className={`truncate text-2xl font-bold tracking-tight ${
-                    isMoney ? "text-emerald-600" : "text-[#111111]"
+                    isMoney ? "text-emerald-600 dark:text-emerald-300" : "text-foreground"
                 }`}
             >
                 {value}
             </p>
 
-            <p className="mt-1 truncate text-sm text-gray-500">{description}</p>
+            <p className="mt-1 truncate text-sm text-muted-foreground">{description}</p>
         </div>
     );
 }

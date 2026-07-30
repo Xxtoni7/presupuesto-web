@@ -10,11 +10,11 @@ function RecentPresupuestosContent({ presupuestos, onboarding, onNavigate }) {
         <section className="p-5">
             <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
-                    <h2 className="text-lg font-bold text-[#111111]">
+                    <h2 className="text-lg font-bold text-foreground">
                         Últimos presupuestos
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-muted-foreground">
                         Tus presupuestos más recientes.
                     </p>
                 </div>
@@ -43,7 +43,7 @@ function RecentPresupuestosContent({ presupuestos, onboarding, onNavigate }) {
                             key={presupuesto.idPresupuesto}
                             type="button"
                             onClick={() => onNavigate("/budgets")}
-                            className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-left transition hover:border-red-100 hover:bg-red-50/50"
+                            className="w-full rounded-2xl border border-border bg-muted/45 px-4 py-3 text-left transition hover:border-red-300/50 hover:bg-red-50/50 dark:hover:border-red-500/30 dark:hover:bg-red-500/10"
                         >
                             <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                                 <div className="min-w-0">
@@ -51,22 +51,22 @@ function RecentPresupuestosContent({ presupuestos, onboarding, onNavigate }) {
                                         {presupuesto.budgetNumber || "Sin número"}
                                     </p>
 
-                                    <h3 className="mt-1 truncate font-bold text-[#111111]">
+                                    <h3 className="mt-1 truncate font-bold text-foreground">
                                         {presupuesto.title || "Sin título"}
                                     </h3>
 
-                                    <p className="mt-1 truncate text-sm text-gray-500">
+                                    <p className="mt-1 truncate text-sm text-muted-foreground">
                                         {presupuesto.clientName || "Sin cliente"} ·{" "}
                                         {presupuesto.companyName || "Sin empresa"}
                                     </p>
                                 </div>
 
                                 <div className="shrink-0 md:text-right">
-                                    <p className="font-bold text-[#111111]">
+                                    <p className="font-bold text-foreground">
                                         {formatCurrency(presupuesto.total)}
                                     </p>
 
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-muted-foreground">
                                         {formatDate(presupuesto.fechaPresupuesto)}
                                     </p>
                                 </div>

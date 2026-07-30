@@ -92,17 +92,17 @@ function CompaniesPage() {
         content = (
         <div className="py-12 text-center">
             <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-red-500 border-t-transparent"></div>
-            <p className="text-gray-500">Cargando empresas...</p>
+            <p className="text-muted-foreground">Cargando empresas...</p>
         </div>
         );
     } else if (filteredCompanies.length === 0) {
         content = (
         <div className="py-20 text-center">
-            <Building2 className="mx-auto mb-4 h-16 w-16 text-[#9ca3af]" />
-            <h3 className="mb-2 text-xl font-semibold text-[#111111]">
+            <Building2 className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
+            <h3 className="mb-2 text-xl font-semibold text-foreground">
                 No hay empresas registradas
             </h3>
-            <p className="mb-6 text-sm text-[#6b7280]">
+            <p className="mb-6 text-sm text-muted-foreground">
                 Comience creando su primera empresa
             </p>
             <button
@@ -152,23 +152,25 @@ function CompaniesPage() {
 
     return (
         <div className="space-y-5">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-[#111111]">Empresas</h1>
-                    <p className="mt-1 text-sm text-[#6b7280]">
+                    <h1 className="text-3xl font-bold text-foreground">Empresas</h1>
+                    <p className="mt-1 text-sm text-muted-foreground">
                         Gestione sus empresas y datos corporativos
                     </p>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <div className="flex rounded-lg border border-[#d1d5db] bg-white">
+                <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
+                    <div className="flex rounded-lg border border-input bg-card">
                         <button
                             type="button"
+                            aria-label="Ver empresas como tarjetas"
+                            aria-pressed={viewMode === "grid"}
                             onClick={() => setViewMode("grid")}
                             className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-sm transition ${
                             viewMode === "grid"
                                 ? "bg-red-500 text-white shadow-sm"
-                                : "text-[#111111] hover:bg-gray-50"
+                                : "text-foreground hover:bg-accent"
                             }`}
                         >
                             <Grid className="h-4 w-4" />
@@ -176,11 +178,13 @@ function CompaniesPage() {
 
                         <button
                             type="button"
+                            aria-label="Ver empresas como lista"
+                            aria-pressed={viewMode === "list"}
                             onClick={() => setViewMode("list")}
                             className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-sm transition ${
                             viewMode === "list"
                                 ? "bg-red-500 text-white shadow-sm"
-                                : "text-[#111111] hover:bg-gray-50"
+                                : "text-foreground hover:bg-accent"
                             }`}
                         >
                             <List className="h-4 w-4" />
@@ -190,7 +194,7 @@ function CompaniesPage() {
                     <button
                     type="button"
                     onClick={handleCreate}
-                    className="inline-flex h-9 items-center justify-center rounded-md bg-red-500 px-4 text-sm font-medium text-white shadow hover:bg-red-600"
+                    className="inline-flex h-9 flex-1 items-center justify-center rounded-md bg-red-500 px-4 text-sm font-medium text-white shadow hover:bg-red-600 sm:flex-none"
                     >
                         <Plus className="mr-2 h-4 w-4" />
                         Nueva empresa
@@ -206,16 +210,16 @@ function CompaniesPage() {
             createPortal(
                 <div className="fixed inset-0 z-[9999] bg-black/80">
                     <div className="flex min-h-screen items-center justify-center px-4 py-6">
-                        <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl bg-white shadow-2xl">
-                            <div className="flex items-center justify-between border-b border-[#e5e7eb] px-6 py-4">
-                                <h2 className="text-lg font-semibold text-[#111111]">
+                        <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-border bg-popover text-popover-foreground shadow-2xl">
+                            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+                                <h2 className="text-lg font-semibold text-foreground">
                                     {editingCompany ? "Editar empresa" : "Nueva empresa"}
                                 </h2>
 
                                 <button
                                 type="button"
                                 onClick={handleCloseModal}
-                                className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-gray-100"
+                                className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent"
                                 >
                                     <X className="h-4 w-4" />
                                 </button>
@@ -237,30 +241,30 @@ function CompaniesPage() {
             {companyToDelete &&
                 createPortal(
                     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 px-4">
-                        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+                        <div className="w-full max-w-md rounded-2xl border border-border bg-popover p-6 text-popover-foreground shadow-2xl">
                             <div className="mb-4 flex items-center gap-3">
-                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-red-100">
+                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-red-100 dark:bg-red-500/15">
                                     <Trash2 className="h-5 w-5 text-red-500" />
                                 </div>
 
                                 <div>
-                                    <h2 className="text-lg font-semibold text-gray-900">
+                                    <h2 className="text-lg font-semibold text-foreground">
                                         Eliminar empresa
                                     </h2>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-muted-foreground">
                                         Esta acción no se puede deshacer.
                                     </p>
                                 </div>
                             </div>
 
-                            <p className="text-sm leading-6 text-gray-600">
+                            <p className="text-sm leading-6 text-muted-foreground">
                                 ¿Seguro que querés eliminar{" "}
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-foreground">
                                     “{companyToDelete.name}”
                                 </span>?
                             </p>
 
-                            <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
                                 También se eliminarán los presupuestos asociados a esta empresa.
                             </div>
 
@@ -269,7 +273,7 @@ function CompaniesPage() {
                                     type="button"
                                     onClick={handleCancelDelete}
                                     disabled={isDeletingCompany}
-                                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+                                    className="rounded-lg border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-60"
                                 >
                                     Cancelar
                                 </button>

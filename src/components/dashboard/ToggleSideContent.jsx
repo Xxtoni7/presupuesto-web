@@ -13,15 +13,15 @@ function ToggleSideContent({ plan, usage, metrics, onNavigate }) {
     );
 
     return (
-        <aside className="border-t border-gray-100 p-5 xl:border-l xl:border-t-0">
-            <div className="mb-5 grid grid-cols-2 rounded-2xl bg-gray-100 p-1">
+        <aside className="border-t border-border p-5 xl:border-l xl:border-t-0">
+            <div className="mb-5 grid grid-cols-2 rounded-2xl bg-muted p-1">
                 <button
                     type="button"
                     onClick={() => setActiveView("highlight")}
                     className={`rounded-xl px-3 py-2 text-sm font-bold transition ${
                         activeView === "highlight"
-                            ? "bg-white text-[#111111] shadow-sm"
-                            : "text-gray-500 hover:text-[#111111]"
+                            ? "bg-card text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground"
                     }`}
                 >
                     Destacado
@@ -32,8 +32,8 @@ function ToggleSideContent({ plan, usage, metrics, onNavigate }) {
                     onClick={() => setActiveView("usage")}
                     className={`rounded-xl px-3 py-2 text-sm font-bold transition ${
                         activeView === "usage"
-                            ? "bg-white text-[#111111] shadow-sm"
-                            : "text-gray-500 hover:text-[#111111]"
+                            ? "bg-card text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground"
                     }`}
                 >
                     Plan

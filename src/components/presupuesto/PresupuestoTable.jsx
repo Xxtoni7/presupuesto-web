@@ -35,16 +35,16 @@ function PresupuestoTable({ presupuestos, onEdit, onDelete, onDuplicate, onPrevi
                         <TableRow key={presupuesto.idPresupuesto}>
                             <TableCell>
                                 <div className="min-w-0">
-                                    <p className="font-medium text-[#111111]">
+                                    <p className="font-medium text-foreground">
                                         {presupuesto.title || "Sin título"}
                                     </p>
 
-                                    <p className="text-sm text-[#6b7280]">
+                                    <p className="text-sm text-muted-foreground">
                                         {presupuesto.budgetNumber || "Sin número"}
                                     </p>
 
                                     {presupuesto.workAddress && (
-                                        <p className="max-w-xs truncate text-sm text-[#6b7280]">
+                                        <p className="max-w-xs truncate text-sm text-muted-foreground">
                                             {presupuesto.workAddress}
                                         </p>
                                     )}
@@ -53,14 +53,14 @@ function PresupuestoTable({ presupuestos, onEdit, onDelete, onDuplicate, onPrevi
 
                             <TableCell>
                                 <div className="flex items-center gap-2">
-                                    <User className="h-4 w-4 text-[#6b7280]" />
+                                    <User className="h-4 w-4 text-muted-foreground" />
                                     <span>{presupuesto.clientName || "Sin cliente"}</span>
                                 </div>
                             </TableCell>
 
                             <TableCell>
                                 <div className="flex items-center gap-2">
-                                    <Calendar className="h-4 w-4 text-[#6b7280]" />
+                                    <Calendar className="h-4 w-4 text-muted-foreground" />
                                     <span className="text-sm">
                                         {formatDate(presupuesto.fechaPresupuesto)}
                                     </span>

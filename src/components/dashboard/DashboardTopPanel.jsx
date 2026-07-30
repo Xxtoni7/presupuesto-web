@@ -39,14 +39,14 @@ function DashboardTopPanel({ user, summary, onNavigate }) {
     );
 
     return (
-        <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-            <div className="flex flex-col gap-4 border-b border-gray-100 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+        <section className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
+            <div className="flex flex-col gap-4 border-b border-border px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="min-w-0">
-                    <h1 className="truncate text-2xl font-bold tracking-tight text-[#111111]">
+                    <h1 className="truncate text-2xl font-bold tracking-tight text-foreground">
                         ¡Bienvenido, {getUserLabel(user)}! 👋
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-muted-foreground">
                         Resumen general de tu actividad y tus presupuestos.
                     </p>
                 </div>
@@ -71,7 +71,7 @@ function DashboardTopPanel({ user, summary, onNavigate }) {
                 </div>
             </div>
 
-            <div className="grid divide-y divide-gray-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0 xl:grid-cols-4">
+            <div className="grid divide-y divide-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 xl:grid-cols-4">
                 {metricsItems.map((item) => (
                     <MetricStripItem
                         key={item.title}

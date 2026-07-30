@@ -4,7 +4,7 @@ import ToggleSideContent from "./ToggleSideContent";
 
 function DashboardContentBlock({ recentPresupuestos, plan, usage, metrics, onboarding, onNavigate,}) {
     return (
-        <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-3xl border border-border bg-card text-card-foreground shadow-sm">
             <div className="grid items-start xl:grid-cols-[1.3fr_0.7fr]">
                 <RecentPresupuestosContent
                     presupuestos={recentPresupuestos || []}

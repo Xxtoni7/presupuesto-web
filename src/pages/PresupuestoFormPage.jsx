@@ -46,7 +46,7 @@ function PresupuestoFormPage() {
         return (
             <div className="py-12 text-center">
                 <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-red-500 border-t-transparent"></div>
-                <p className="text-[#6b7280]">Cargando presupuesto...</p>
+                <p className="text-muted-foreground">Cargando presupuesto...</p>
             </div>
         );
     }
@@ -61,17 +61,17 @@ function PresupuestoFormPage() {
                 </Link>
 
                 <div>
-                    <h1 className="text-3xl font-bold text-[#111111]">
+                    <h1 className="text-3xl font-bold text-foreground">
                         {presupuestoId ? "Editar presupuesto" : "Nuevo presupuesto"}
                     </h1>
-                    <p className="mt-1 text-sm text-[#6b7280]">
+                    <p className="mt-1 text-sm text-muted-foreground">
                         Complete los datos generales y los ítems del presupuesto
                     </p>
                 </div>
             </div>
 
             {error && (
-                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
                     {error}
                 </div>
             )}

@@ -49,7 +49,7 @@ function DashboardPage() {
 
     if (error) {
         return (
-            <div className="rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700">
+            <div className="rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
                 <h2 className="text-lg font-bold">
                     No pudimos cargar el Dashboard
                 </h2>
