@@ -45,17 +45,19 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
         drawPageHeader
     );
 
-    currentY = drawBudgetItemsSection(
-        doc,
-        presupuesto,
-        items,
-        currentY,
-        {
-            primaryColor,
-            secondaryColor,
-        },
-        drawPageHeader
-    );
+    if (items.length > 0) {
+        currentY = drawBudgetItemsSection(
+            doc,
+            presupuesto,
+            items,
+            currentY,
+            {
+                primaryColor,
+                secondaryColor,
+            },
+            drawPageHeader
+        );
+    }
 
     currentY = drawTimeAndPaymentSection(
         doc,

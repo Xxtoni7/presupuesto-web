@@ -553,16 +553,21 @@ export function buildPreviewPages({
         startReserveMm: PDF_LAYOUT.jobStartReserveMm,
         gap: sectionGap,
     });
-    addTableSection(
-        state,
-        measurements.table,
-        items,
-        sectionGap,
-    );
+    const hasItems = items.length > 0;
 
-    const tableAfterGap =
-        PDF_LAYOUT.tableAfterGapMm *
-        pixelsPerMillimeter;
+    if (hasItems) {
+        addTableSection(
+            state,
+            measurements.table,
+            items,
+            sectionGap,
+        );
+    }
+
+    const tableAfterGap = hasItems
+        ? PDF_LAYOUT.tableAfterGapMm *
+            pixelsPerMillimeter
+        : 0;
     const addedTimeSection = addTimeSection(
         state,
         measurements,

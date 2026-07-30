@@ -56,7 +56,9 @@ function PresupuestoCard({presupuesto, onEdit, onDelete, onDuplicate, onPreview,
                     </div>
                     <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
                         <p className="text-2xl font-bold text-red-500">
-                            {formatCurrency(presupuesto.total || 0)}
+                            {Number(presupuesto.total) > 0
+                                ? formatCurrency(presupuesto.total)
+                                : "━"}
                         </p>
                     </div>
                 </div>

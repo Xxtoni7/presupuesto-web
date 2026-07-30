@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, TriangleAlert } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -54,6 +54,17 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
                     Agregar ítem
                 </Button>
             </div>
+
+            {items.length === 0 && (
+                <output
+                    className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+                >
+                    <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                    <p>
+                        Si no agregás ítems, los importes escritos en la descripción no se usarán para calcular el total ni las estadísticas.
+                    </p>
+                </output>
+            )}
 
             <div className="space-y-4">
                 {items.map((item, index) => (
@@ -135,7 +146,6 @@ function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItem
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleRemoveItem(index)}
-                                disabled={items.length === 1}
                             >
                                 <Trash2 className="mr-2 h-4 w-4 text-red-500" />
                                 Eliminar

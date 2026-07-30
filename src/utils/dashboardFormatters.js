@@ -1,17 +1,23 @@
 export function formatCurrency(value) {
+    const numericValue = Number(value);
+
+    if (!Number.isFinite(numericValue) || numericValue === 0) {
+        return "━";
+    }
+
     return new Intl.NumberFormat("es-AR", {
         style: "currency",
         currency: "ARS",
         maximumFractionDigits: 0,
-    }).format(value || 0);
+    }).format(numericValue);
 }
 
 export function formatDate(dateValue) {
-    if (!dateValue) return "-";
+    if (!dateValue) return "━";
 
     const date = new Date(dateValue);
 
-    if (Number.isNaN(date.getTime())) return "-";
+    if (Number.isNaN(date.getTime())) return "━";
 
     return new Intl.DateTimeFormat("es-AR", {
         day: "2-digit",

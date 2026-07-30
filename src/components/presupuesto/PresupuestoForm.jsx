@@ -75,11 +75,6 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             try {
                 const data = await getItemsByPresupuesto(presupuesto.idPresupuesto);
 
-                if (data.length === 0) {
-                    setItems([{ ...emptyPresupuestoItem }]);
-                    return;
-                }
-
                 setItems(
                     data.map((item) => ({
                         idItem: item.idItem,
@@ -147,11 +142,6 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
         }
 
         const validItems = items.filter((item) => item.description.trim());
-
-        if (validItems.length === 0) {
-            setError("Debe agregar al menos un ítem al presupuesto.");
-            return;
-        }
 
         try {
             setLoading(true);
@@ -324,7 +314,9 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 </div>
 
                 <span className="text-2xl font-bold text-red-500">
-                    {formatCurrency(visualTotal)}
+                    {items.length === 0
+                        ? "━"
+                        : formatCurrency(visualTotal)}
                 </span>
             </div>
 

@@ -69,7 +69,9 @@ function PresupuestoTable({ presupuestos, onEdit, onDelete, onDuplicate, onPrevi
 
                             <TableCell className="text-right">
                                 <span className="text-lg font-semibold text-red-500">
-                                    {formatCurrency(presupuesto.total || 0)}
+                                    {Number(presupuesto.total) > 0
+                                        ? formatCurrency(presupuesto.total)
+                                        : "━"}
                                 </span>
                             </TableCell>
 
