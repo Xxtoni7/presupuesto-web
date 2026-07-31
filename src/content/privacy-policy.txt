@@ -1,0 +1,434 @@
+Política de Privacidad de MT Presupuestos
+
+Última actualización: 17/07/2026
+
+1. Introducción
+
+MT Presupuestos utiliza proveedores tecnológicos que pueden tratar determinada información exclusivamente para prestar los servicios técnicos necesarios para el funcionamiento de la plataforma.
+
+MT Presupuestos es una plataforma digital destinada a facilitar la creación, administración y exportación de presupuestos profesionales.
+
+Al utilizar MT Presupuestos, la persona usuaria declara haber leído y comprendido esta Política de Privacidad.
+
+2. Responsable del tratamiento
+
+El responsable del tratamiento de los datos personales es:
+
+Nombre o razón social: [NOMBRE O RAZÓN SOCIAL]
+CUIT: [CUIT]
+Domicilio: [DOMICILIO LEGAL]
+Correo electrónico: [CORREO DE PRIVACIDAD]
+Sitio web: [DOMINIO DE MT PRESUPUESTOS]
+
+Las consultas y solicitudes relacionadas con privacidad y protección de datos deberán enviarse al correo electrónico indicado.
+
+3. Alcance
+
+Esta Política se aplica a los datos tratados mediante:
+
+El sitio web y la landing page de MT Presupuestos.
+Los formularios de registro, acceso, contacto y soporte.
+El panel de administración de la plataforma.
+El inicio de sesión con email y contraseña.
+El inicio de sesión o creación de cuenta mediante Google.
+La creación de empresas, clientes, presupuestos y sus correspondientes ítems.
+La generación y exportación de presupuestos en PDF.
+La administración de planes y suscripciones.
+Los procesos de pago y renovación mensual.
+Las comunicaciones transaccionales enviadas por correo electrónico.
+
+4. Datos que recopilamos
+
+4.1. Datos de registro y cuenta
+
+Cuando una persona crea una cuenta, podemos recopilar:
+
+Nombre y apellido.
+Dirección de correo electrónico.
+Contraseña, almacenada mediante mecanismos de cifrado o hash.
+Identificador interno de usuario.
+Fecha de registro.
+Estado de verificación del correo electrónico.
+Workspace o espacio de trabajo asociado.
+Plan contratado.
+Estado de la suscripción.
+Fecha de inicio y, cuando corresponda, fecha de vencimiento o renovación.
+
+MT Presupuestos no almacena las contraseñas en texto plano.
+
+4.2. Datos obtenidos mediante Google
+
+Cuando una persona elige registrarse o iniciar sesión con Google, MT Presupuestos puede recibir, según los permisos efectivamente solicitados:
+
+Nombre.
+Dirección de correo electrónico.
+Identificador de la cuenta de Google.
+Imagen de perfil, cuando esté disponible.
+Confirmación de que la cuenta fue autenticada por Google.
+
+Estos datos se utilizan exclusivamente para crear la cuenta, identificar al usuario, iniciar sesión y mantener la seguridad del acceso.
+
+MT Presupuestos no accede al contenido de Gmail, Google Drive, contactos, calendarios ni otros servicios de Google, salvo que en el futuro se solicite expresamente un permiso adicional. En tal caso, se informará previamente al usuario y se actualizará esta Política.
+
+El uso de datos obtenidos mediante las API de Google se limita a las funcionalidades informadas y debe respetar la Política de Datos de Usuario de los Servicios API de Google.
+
+4.3. Datos de empresas
+
+La persona usuaria puede cargar información relacionada con una o más empresas, de acuerdo con los límites de su plan, incluyendo:
+
+Nombre o razón social.
+Nombre comercial.
+CUIT u otro identificador fiscal.
+Domicilio.
+Teléfono.
+Correo electrónico.
+Logo.
+Información comercial.
+Colores o elementos de identidad visual.
+Otros datos necesarios para personalizar presupuestos.
+
+4.4. Datos de clientes y presupuestos
+
+Para utilizar la funcionalidad principal del servicio, la persona usuaria puede ingresar:
+
+Nombre o razón social del cliente.
+Datos de contacto del cliente.
+Dirección del trabajo o servicio.
+Descripción del trabajo.
+Productos, tareas o servicios incluidos.
+Cantidades.
+Materiales.
+Mano de obra.
+Precios, subtotales y totales.
+Fechas.
+Condiciones comerciales.
+Observaciones.
+Información adicional que el usuario decida incorporar.
+
+La persona usuaria es responsable de contar con autorización o fundamento válido para ingresar datos personales de sus clientes u otras personas en la plataforma.
+
+4.5. Formularios y comunicaciones
+
+Cuando una persona completa un formulario o se comunica con soporte, podemos recopilar:
+
+Nombre.
+Correo electrónico.
+Motivo de la consulta.
+Contenido del mensaje.
+Información técnica relacionada con el problema.
+Archivos o capturas que la persona decida enviar.
+
+4.6. Datos técnicos y de uso
+
+Podemos registrar automáticamente información necesaria para operar y proteger el servicio, como:
+
+Dirección IP.
+Fecha y hora de acceso.
+Navegador.
+Sistema operativo.
+Tipo de dispositivo.
+Rutas o secciones utilizadas.
+Registros técnicos del servidor.
+Intentos de inicio de sesión.
+Errores de la aplicación.
+Acciones relevantes para la seguridad.
+Cantidad de empresas creadas.
+Cantidad de presupuestos creados.
+Cantidad de exportaciones PDF realizadas.
+
+Estos datos pueden utilizarse para seguridad, prevención de abusos, diagnóstico de errores, aplicación de límites de los planes y mejora técnica del servicio.
+
+5. Finalidades del tratamiento
+
+Utilizamos los datos para:
+
+Crear y administrar cuentas.
+Verificar direcciones de correo electrónico.
+Permitir el inicio y cierre de sesión.
+Autenticar usuarios mediante Google.
+Crear y administrar espacios de trabajo.
+Permitir la carga y edición de empresas.
+Crear, editar, consultar y eliminar presupuestos.
+Generar documentos PDF.
+Aplicar los límites correspondientes a cada plan.
+Gestionar suscripciones y renovaciones.
+Procesar o verificar pagos.
+Prevenir accesos no autorizados, fraudes y abusos.
+Enviar correos de verificación, seguridad y recuperación de cuenta.
+Responder consultas y brindar soporte.
+Mantener, diagnosticar y mejorar el funcionamiento del servicio.
+Cumplir obligaciones legales, fiscales, contables o administrativas.
+Proteger los derechos de MT Presupuestos, sus usuarios y terceros.
+
+No vendemos datos personales a anunciantes ni a terceros.
+
+6. Generación y exportación de PDF
+
+MT Presupuestos permite generar documentos PDF utilizando la información ingresada por la persona usuaria.
+
+Los PDFs pueden contener:
+
+Datos de la empresa.
+Logo.
+Datos del cliente.
+Descripción de trabajos o servicios.
+Materiales.
+Mano de obra.
+Cantidades.
+Precios.
+Totales.
+Observaciones.
+
+Actualmente, los archivos se generan para su descarga por parte del usuario. MT Presupuestos puede registrar que una exportación fue realizada para contabilizar el uso permitido por el plan, pero ello no implica necesariamente que el archivo PDF completo quede almacenado en los servidores.
+
+La persona usuaria es responsable de revisar el contenido antes de descargarlo, imprimirlo, enviarlo o compartirlo con terceros.
+
+7. Datos de terceros cargados por los usuarios
+
+MT Presupuestos puede alojar datos de clientes, proveedores u otras personas incorporados por sus usuarios dentro de presupuestos o empresas.
+
+En esos casos:
+
+El usuario de MT Presupuestos decide qué datos cargar y con qué finalidad.
+El usuario es responsable de informar a las personas correspondientes y contar con autorización o fundamento legal para tratar sus datos.
+MT Presupuestos trata esa información únicamente para prestar el servicio solicitado.
+MT Presupuestos no utiliza los datos de los clientes de sus usuarios para enviarles publicidad propia.
+
+Respecto de los datos de cuenta, facturación, seguridad y funcionamiento técnico, MT Presupuestos actúa como responsable del tratamiento.
+
+Respecto de los datos de terceros incorporados por un usuario en sus presupuestos, MT Presupuestos actúa principalmente como proveedor tecnológico o encargado del tratamiento por cuenta del usuario.
+
+8. Planes, suscripciones y pagos
+
+MT Presupuestos podrá ofrecer planes gratuitos y planes pagos con renovación periódica.
+
+Para administrar una suscripción podemos tratar:
+
+Plan seleccionado.
+Precio.
+Estado de la suscripción.
+Fecha de contratación.
+Fecha de renovación.
+Fecha de vencimiento.
+Estado del pago.
+Identificador de operación.
+Identificador del proveedor de pagos.
+Historial de suscripciones y operaciones.
+Información fiscal necesaria para facturación.
+
+Los pagos serán procesados por [PROVEEDOR DE PAGOS], que tratará los datos del medio de pago conforme a sus propias políticas de privacidad y seguridad.
+
+MT Presupuestos no deberá almacenar el número completo de tarjeta, código de seguridad ni credenciales bancarias completas. Podrá conservar referencias de transacción, estado del pago y otros datos necesarios para administrar la suscripción.
+
+9. Cookies, sesión y almacenamiento local
+
+MT Presupuestos utiliza tecnologías necesarias para mantener y proteger la sesión, incluyendo:
+
+Cookies de autenticación o refresh token.
+Cookies con atributos de seguridad.
+Almacenamiento local para recordar si existió una sesión previa.
+Datos técnicos necesarios para restaurar o cerrar una sesión.
+
+Las cookies de sesión son necesarias para:
+
+Mantener la cuenta iniciada.
+Renovar de forma segura el acceso.
+Evitar accesos no autorizados.
+Detectar sesiones vencidas.
+Permitir el cierre de sesión.
+
+Estas tecnologías no se utilizan por sí mismas para vender información ni para crear perfiles publicitarios.
+
+Si en el futuro se incorporan cookies analíticas, publicitarias o herramientas de seguimiento no esenciales, se informará previamente y se implementará el mecanismo de consentimiento correspondiente cuando resulte aplicable.
+
+10. Proveedores y terceros
+
+Podemos compartir datos estrictamente necesarios con proveedores que nos ayudan a prestar el servicio, tales como:
+
+Google
+
+Para permitir el registro e inicio de sesión mediante una cuenta de Google.
+
+Proveedor de alojamiento del frontend
+
+[PROVEEDOR DE FRONTEND, POR EJEMPLO NETLIFY], para publicar y distribuir la aplicación web.
+
+Proveedor de alojamiento del backend
+
+[PROVEEDOR DE BACKEND, POR EJEMPLO RENDER O AZURE], para ejecutar la API, autenticación y lógica del servicio.
+
+Proveedor de base de datos
+
+[PROVEEDOR DE BASE DE DATOS], para almacenar cuentas, empresas, presupuestos, planes y demás información necesaria.
+
+Cloudinary
+
+Para almacenar y entregar logos o imágenes cargadas por los usuarios.
+
+Proveedor de correo electrónico
+
+[PROVEEDOR SMTP O DE EMAIL], para enviar verificaciones, avisos de seguridad, recuperación de contraseña y comunicaciones operativas.
+
+Proveedor de pagos
+
+[PROVEEDOR DE PAGOS], para procesar suscripciones y operaciones económicas.
+
+Estos proveedores solo deberían acceder a la información necesaria para cumplir sus funciones y quedan sujetos a sus propios términos, políticas y obligaciones de confidencialidad.
+
+También podremos comunicar datos cuando:
+
+Lo exija una ley o autoridad competente.
+Sea necesario responder a una orden judicial.
+Sea necesario investigar fraude o incidentes de seguridad.
+Sea necesario proteger derechos, bienes o seguridad de MT Presupuestos, sus usuarios o terceros.
+Exista consentimiento de la persona titular.
+
+11. Transferencias internacionales
+
+Algunos proveedores tecnológicos pueden almacenar o procesar información fuera de Argentina.
+
+Esto puede ocurrir, por ejemplo, al utilizar servicios de nube, autenticación, almacenamiento de imágenes, correo electrónico o procesamiento de pagos.
+
+MT Presupuestos procurará utilizar proveedores que ofrezcan medidas de seguridad y garantías contractuales apropiadas. La normativa argentina regula las transferencias internacionales y exige condiciones o garantías cuando los datos se transfieren a jurisdicciones que no proporcionan un nivel adecuado de protección.
+
+12. Conservación de los datos
+
+Los datos se conservarán:
+
+Mientras la cuenta permanezca activa.
+Mientras sean necesarios para prestar el servicio.
+Mientras exista una suscripción activa o una obligación contractual.
+Durante el plazo necesario para resolver reclamos.
+Durante los plazos exigidos por normas fiscales, contables o legales.
+Durante un período razonable en copias de seguridad.
+Mientras sean necesarios para prevenir fraudes o proteger la seguridad.
+
+Cuando los datos dejen de ser necesarios, serán eliminados, anonimizados o bloqueados, salvo que exista una obligación legal de conservarlos.
+
+La eliminación de una cuenta no necesariamente produce la eliminación inmediata de información contenida en copias de seguridad o registros que deban conservarse por motivos legales o de seguridad.
+
+13. Seguridad
+
+MT Presupuestos adopta medidas técnicas y organizativas razonables para proteger la información, que pueden incluir:
+
+Contraseñas almacenadas mediante hash.
+Acceso mediante tokens.
+Refresh tokens almacenados en cookies HttpOnly.
+Restricciones de acceso.
+Verificación de correo electrónico.
+Conexiones HTTPS.
+Separación de datos por usuario y workspace.
+Validación de permisos y propiedad de los recursos.
+Monitoreo de errores e intentos de acceso.
+Copias de seguridad cuando corresponda.
+Acceso limitado por parte de proveedores y personal autorizado.
+
+La AAIP establece que los responsables deben aplicar medidas técnicas y organizativas para preservar la seguridad y confidencialidad de los datos personales.
+
+Sin embargo, ningún sistema conectado a Internet puede garantizar una seguridad absoluta.
+
+14. Derechos de las personas titulares
+
+Las personas titulares pueden solicitar:
+
+Información sobre el tratamiento de sus datos.
+Acceso a sus datos.
+Actualización.
+Rectificación.
+Supresión, cuando corresponda.
+Bloqueo de información sometida a revisión.
+Retiro del consentimiento, cuando el tratamiento se base en él.
+
+La solicitud deberá enviarse a:
+
+[CORREO DE PRIVACIDAD]
+
+Podremos solicitar información razonable para verificar la identidad de la persona antes de responder.
+
+Según la normativa argentina, las solicitudes de acceso deben responderse dentro de los diez días corridos, mientras que las solicitudes de rectificación, actualización o supresión deben atenderse dentro de los cinco días hábiles.
+
+La Agencia de Acceso a la Información Pública es el órgano de control de la Ley 25.326 y recibe denuncias o reclamos cuando una persona considera que sus derechos no fueron respetados.
+
+15. Eliminación de cuenta
+
+La persona usuaria puede solicitar la eliminación de su cuenta escribiendo a:
+
+[CORREO DE PRIVACIDAD]
+
+La eliminación podrá comprender:
+
+Datos del perfil.
+Empresas.
+Presupuestos.
+Ítems.
+Logos asociados.
+Tokens de sesión.
+Información de configuración.
+
+Antes de eliminar la información podremos:
+
+Verificar la identidad del solicitante.
+Comprobar que no existan obligaciones pendientes.
+Conservar datos requeridos por normas fiscales o legales.
+Mantener registros mínimos relacionados con prevención de fraude y seguridad.
+Informar qué información no puede eliminarse inmediatamente y por qué.
+
+16. Exactitud de la información
+
+La persona usuaria es responsable de proporcionar información verdadera, actualizada y suficiente.
+
+Desde la configuración de su cuenta podrá modificar determinados datos o solicitar su corrección a través del correo de privacidad.
+
+17. Comunicaciones
+
+Podemos enviar comunicaciones necesarias para el funcionamiento del servicio, como:
+
+Confirmación de correo.
+Recuperación de contraseña.
+Avisos de inicio de sesión.
+Alertas de seguridad.
+Cambios importantes del servicio.
+Avisos relacionados con planes, pagos o vencimientos.
+Respuestas de soporte.
+
+Las comunicaciones operativas no pueden desactivarse cuando sean indispensables para prestar o proteger el servicio.
+
+Las comunicaciones promocionales, si se implementan, deberán contar con un mecanismo para cancelar la suscripción.
+
+18. Menores de edad
+
+MT Presupuestos está orientado principalmente a personas, profesionales y empresas con capacidad para contratar y administrar una actividad comercial.
+
+Las personas menores de edad deberán utilizar el servicio con autorización y supervisión de su madre, padre, tutor o representante legal cuando ello resulte necesario.
+
+Si se detecta que se recopilaron datos de un menor sin la autorización correspondiente, podrán adoptarse medidas para eliminar la cuenta y la información relacionada.
+
+19. Enlaces y servicios de terceros
+
+La plataforma puede incluir enlaces o integraciones con sitios externos.
+
+MT Presupuestos no controla las políticas de privacidad ni las prácticas de esos terceros. Se recomienda revisar sus condiciones antes de proporcionarles información.
+
+20. Cambios en esta Política
+
+Podemos modificar esta Política para reflejar:
+
+Cambios legales.
+Nuevas funcionalidades.
+Nuevos proveedores.
+Cambios en los sistemas de autenticación.
+Incorporación de pagos.
+Cambios en la forma de almacenar o utilizar información.
+
+Cuando el cambio sea relevante, se informará mediante el sitio, el panel de usuario o el correo electrónico asociado a la cuenta.
+
+La fecha de la última actualización aparecerá al comienzo del documento.
+
+21. Contacto
+
+Para consultas, reclamos o solicitudes relacionadas con datos personales:
+
+Responsable: [NOMBRE O RAZÓN SOCIAL]
+Correo electrónico: [CORREO DE PRIVACIDAD]
+Domicilio: [DOMICILIO LEGAL]
+Sitio web: [DOMINIO DE MT PRESUPUESTOS]

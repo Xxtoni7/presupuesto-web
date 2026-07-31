@@ -59,7 +59,6 @@ const formats = [
     "bold",
     "underline",
     "list",
-    "bullet",
 ];
 
 function RichTextEditor({ value, onChange, placeholder }) {
@@ -120,7 +119,7 @@ function RichTextEditor({ value, onChange, placeholder }) {
         <div className="mt-1.5">
             <div
                 ref={editorWrapperRef}
-                className="flex w-full flex-col rounded-lg border border-[#d1d5db] bg-white shadow-sm focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500/20"
+                className="app-rich-text-editor flex w-full flex-col rounded-lg border border-input bg-background text-foreground shadow-sm focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500/20"
             >
                 <ReactQuill
                     ref={quillRef}
@@ -135,13 +134,13 @@ function RichTextEditor({ value, onChange, placeholder }) {
                         [&_.ql-toolbar]:top-0
                         [&_.ql-toolbar]:z-10
                         [&_.ql-toolbar]:rounded-t-lg
-                        [&_.ql-toolbar]:bg-white
+                        [&_.ql-toolbar]:bg-background
                         [&_.ql-toolbar]:!border-0
                         [&_.ql-toolbar]:!border-b
-                        [&_.ql-toolbar]:!border-[#e5e7eb]
+                        [&_.ql-toolbar]:!border-border
 
-                        [&_.ql-toolbar_.ql-history-control]:text-[#444444]
-                        [&_.ql-toolbar_.ql-history-control:hover]:text-[#111111]
+                        [&_.ql-toolbar_.ql-history-control]:text-muted-foreground
+                        [&_.ql-toolbar_.ql-history-control:hover]:text-foreground
 
                         [&_.ql-container]:border-0
 
@@ -149,11 +148,11 @@ function RichTextEditor({ value, onChange, placeholder }) {
                         [&_.ql-editor]:px-3
                         [&_.ql-editor]:py-2
                         [&_.ql-editor]:text-sm
-                        [&_.ql-editor]:text-[#111111]
+                        [&_.ql-editor]:text-foreground
                         [&_.ql-editor]:whitespace-pre-wrap
                         [&_.ql-editor]:[tab-size:4]
 
-                        [&_.ql-editor.ql-blank::before]:text-[#9ca3af]
+                        [&_.ql-editor.ql-blank::before]:text-muted-foreground
                         [&_.ql-editor.ql-blank::before]:not-italic
                     "
                 />

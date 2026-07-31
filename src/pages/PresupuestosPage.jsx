@@ -7,12 +7,12 @@ import { useSearch } from "../context/SearchContext";
 import { usePresupuestos } from "../hooks/usePresupuestos";
 import PresupuestoCard from "../components/presupuesto/PresupuestoCard";
 import PresupuestoTable from "../components/presupuesto/PresupuestoTable";
-import PresupuestoPreview from "../components/presupuesto/PresupuestoPreview";
+import PresupuestoPreview from "../components/presupuesto/presupuestoPreview/PresupuestoPreview";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";
 import { getItemsByPresupuesto } from "../api/presupuestoItemApi";
 import { getCompanyById } from "../api/companyApi";
+import { authorizePresupuestoPdfExport } from "../api/presupuestoApi";
 import { toast } from "sonner";
-import { generatePresupuestoPdf } from "../utils/pdf/presupuestoPdf/generatePresupuestoPdf";
 import { duplicatePresupuesto } from "../services/presupuestoService";
 
 
@@ -34,6 +34,7 @@ function PresupuestosPage() {
     const [previewCompany, setPreviewCompany] = useState(null);
     const [presupuestoToDelete, setPresupuestoToDelete] = useState(null);
     const [isDeletingPresupuesto, setIsDeletingPresupuesto] = useState(false);
+    const [pdfGeneratingId, setPdfGeneratingId] = useState(null);
 
     const filteredPresupuestos = useMemo(() => {
         const term = normalizeText(searchTerm.trim());
@@ -133,15 +134,27 @@ function PresupuestosPage() {
     };
 
     const handleDownload = async (presupuesto) => {
+        const presupuestoId = presupuesto.idPresupuesto;
+
+        if (pdfGeneratingId === presupuestoId) return;
+
         const toastId = toast.loading("Generando PDF...", {
-            description: "Estamos preparando el presupuesto para descargar.",
+            description: "Estamos validando tu plan y preparando el presupuesto.",
         });
 
         try {
+            setPdfGeneratingId(presupuestoId);
+
+            await authorizePresupuestoPdfExport(presupuestoId);
+
             const [items, company] = await Promise.all([
-                getItemsByPresupuesto(presupuesto.idPresupuesto),
+                getItemsByPresupuesto(presupuestoId),
                 getCompanyById(presupuesto.idCompany),
             ]);
+
+            const { generatePresupuestoPdf } = await import(
+                "../utils/pdf/presupuestoPdf/generatePresupuestoPdf"
+            );
 
             await generatePresupuestoPdf(
                 presupuesto,
@@ -154,12 +167,25 @@ function PresupuestosPage() {
                 description: `Se descargó ${presupuesto.budgetNumber || "el presupuesto"}.`,
                 duration: 3500,
             });
-        } catch {
-            toast.error("No se pudo generar el PDF", {
-                id: toastId,
-                description: "No se encontró la empresa o los ítems del presupuesto.",
-                duration: 4500,
-            });
+        } catch (err) {
+            const isPdfLimitError = err.status === 403;
+
+            toast.error(
+                isPdfLimitError ? "Límite de PDF alcanzado" : "No se pudo generar el PDF",
+                {
+                    id: toastId,
+                    description: err.message || "Intentá nuevamente en unos segundos.",
+                    duration: isPdfLimitError ? 7000 : 4500,
+                    action: isPdfLimitError
+                        ? {
+                            label: "Ver planes",
+                            onClick: () => navigate("/settings"),
+                        }
+                        : undefined,
+                }
+            );
+        } finally {
+            setPdfGeneratingId(null);
         }
     };
 
@@ -169,12 +195,12 @@ function PresupuestosPage() {
         content = (
             <div className="py-12 text-center">
                 <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-red-500 border-t-transparent"></div>
-                <p className="text-[#6b7280]">Cargando presupuestos...</p>
+                <p className="text-muted-foreground">Cargando presupuestos...</p>
             </div>
         );
     } else if (error) {
         content = (
-            <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+            <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
                 {"Error al obtener los presupuestos, intente recargar la página. "}
                 {error}
             </div>
@@ -182,11 +208,11 @@ function PresupuestosPage() {
     } else if (filteredPresupuestos.length === 0) {
         content = (
             <div className="py-20 text-center">
-                <FileText className="mx-auto mb-4 h-16 w-16 text-[#9ca3af]" />
-                <h3 className="mb-2 text-xl font-semibold text-[#111111]">
+                <FileText className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
+                <h3 className="mb-2 text-xl font-semibold text-foreground">
                     No hay presupuestos
                 </h3>
-                <p className="mb-6 text-sm text-[#6b7280]">
+                <p className="mb-6 text-sm text-muted-foreground">
                     Comience creando su primer presupuesto
                 </p>
 
@@ -210,6 +236,7 @@ function PresupuestosPage() {
                         onDuplicate={handleDuplicate}
                         onPreview={handlePreview}
                         onDownload={handleDownload}
+                        isPdfGenerating={pdfGeneratingId === presupuesto.idPresupuesto}
                     />
                 ))}
             </div>
@@ -223,25 +250,28 @@ function PresupuestosPage() {
                 onDuplicate={handleDuplicate}
                 onPreview={handlePreview}
                 onDownload={handleDownload}
+                pdfGeneratingId={pdfGeneratingId}
             />
         );
     }
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-[#111111]">Presupuestos</h1>
-                    <p className="mt-1 text-sm text-[#6b7280]">
+                    <h1 className="text-3xl font-bold text-foreground">Presupuestos</h1>
+                    <p className="mt-1 text-sm text-muted-foreground">
                         Gestione todos los presupuestos del sistema
                     </p>
                 </div>
 
-                <div className="flex gap-3">
-                    <div className="flex rounded-lg border border-[#e5e7eb] bg-white">
+                <div className="flex flex-wrap gap-3">
+                    <div className="flex rounded-lg border border-border bg-card">
                         <Button
                             variant={viewMode === "grid" ? "default" : "ghost"}
                             size="icon"
+                            aria-label="Ver presupuestos como tarjetas"
+                            aria-pressed={viewMode === "grid"}
                             onClick={() => setViewMode("grid")}
                         >
                             <Grid className="h-4 w-4" />
@@ -250,6 +280,8 @@ function PresupuestosPage() {
                         <Button
                             variant={viewMode === "list" ? "default" : "ghost"}
                             size="icon"
+                            aria-label="Ver presupuestos como lista"
+                            aria-pressed={viewMode === "list"}
                             onClick={() => setViewMode("list")}
                         >
                             <List className="h-4 w-4" />
@@ -268,7 +300,7 @@ function PresupuestosPage() {
             {content}
 
             <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-                <DialogContent className="max-h-[90vh] max-w-6xl overflow-y-auto p-0">
+                <DialogContent className="max-h-[90vh] max-w-6xl overflow-y-auto border-border bg-muted p-0">
                     <DialogHeader className="sr-only">
                         <DialogTitle>Vista previa del presupuesto</DialogTitle>
                         <DialogDescription>
@@ -288,32 +320,32 @@ function PresupuestosPage() {
             {presupuestoToDelete &&
                 createPortal(
                     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 px-4">
-                        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+                        <div className="w-full max-w-md rounded-2xl border border-border bg-popover p-6 text-popover-foreground shadow-2xl">
                             <div className="mb-4 flex items-center gap-3">
-                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-red-100">
+                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-red-100 dark:bg-red-500/15">
                                     <Trash2 className="h-5 w-5 text-red-500" />
                                 </div>
 
                                 <div>
-                                    <h2 className="text-lg font-semibold text-gray-900">
+                                    <h2 className="text-lg font-semibold text-foreground">
                                         Eliminar presupuesto
                                     </h2>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-muted-foreground">
                                         Esta acción no se puede deshacer.
                                     </p>
                                 </div>
                             </div>
 
-                            <p className="text-sm leading-6 text-gray-600">
+                            <p className="text-sm leading-6 text-muted-foreground">
                                 ¿Seguro que querés eliminar{" "}
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-foreground">
                                     “{presupuestoToDelete.title ||
                                         presupuestoToDelete.budgetNumber ||
                                         "este presupuesto"}”
                                 </span>?
                             </p>
 
-                            <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
                                 Se eliminará este presupuesto.
                             </div>
 
@@ -322,7 +354,7 @@ function PresupuestosPage() {
                                     type="button"
                                     onClick={handleCancelDelete}
                                     disabled={isDeletingPresupuesto}
-                                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+                                    className="rounded-lg border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-60"
                                 >
                                     Cancelar
                                 </button>

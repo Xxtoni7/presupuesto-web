@@ -8,9 +8,12 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
     await registerInterFonts(doc);
 
     const primaryColor = hexToRgb(company?.colorMain);
-    const secondaryColor = hexToRgb(company?.colorSecondary, [254, 226, 226]);
+    const secondaryColor = hexToRgb(company?.colorSecondary, [0, 0, 0]);
 
-    const logoImage = await loadImageElement(getImageUrl(company?.logoUrl));
+    const logoUrl = company?.logoUrl?.trim() || null;
+    const logoImage = logoUrl
+        ? await loadImageElement(getImageUrl(logoUrl))
+        : null;
 
     const pdfIcons = {
         phone: await loadSvgAsPngDataUrl("/icons/pdf/phone.svg", 24),
@@ -42,17 +45,19 @@ export async function generatePresupuestoPdf(presupuesto, company, items) {
         drawPageHeader
     );
 
-    currentY = drawBudgetItemsSection(
-        doc,
-        presupuesto,
-        items,
-        currentY,
-        {
-            primaryColor,
-            secondaryColor,
-        },
-        drawPageHeader
-    );
+    if (items.length > 0) {
+        currentY = drawBudgetItemsSection(
+            doc,
+            presupuesto,
+            items,
+            currentY,
+            {
+                primaryColor,
+                secondaryColor,
+            },
+            drawPageHeader
+        );
+    }
 
     currentY = drawTimeAndPaymentSection(
         doc,

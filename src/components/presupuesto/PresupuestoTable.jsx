@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Calendar, User, Edit, Trash2, Copy, Eye, Download } from "lucide-react";
+import { Calendar, User, Edit, Trash2, Copy, Eye, Download, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -14,7 +14,7 @@ function formatDate(dateString) {
     return new Intl.DateTimeFormat("es-AR").format(date);
 }
 
-function PresupuestoTable({ presupuestos, onEdit, onDelete, onDuplicate, onPreview, onDownload }) {
+function PresupuestoTable({ presupuestos, onEdit, onDelete, onDuplicate, onPreview, onDownload, pdfGeneratingId = null, }) {
     return (
         <Table>
             <TableHeader>
@@ -28,93 +28,104 @@ function PresupuestoTable({ presupuestos, onEdit, onDelete, onDuplicate, onPrevi
             </TableHeader>
 
             <TableBody>
-                {presupuestos.map((presupuesto) => (
-                    <TableRow key={presupuesto.idPresupuesto}>
-                        <TableCell>
-                            <div className="min-w-0">
-                                <p className="font-medium text-[#111111]">
-                                    {presupuesto.title || "Sin título"}
-                                </p>
+                {presupuestos.map((presupuesto) => {
+                    const isPdfGenerating = pdfGeneratingId === presupuesto.idPresupuesto;
 
-                                <p className="text-sm text-[#6b7280]">
-                                    {presupuesto.budgetNumber || "Sin número"}
-                                </p>
-
-                                {presupuesto.workAddress && (
-                                    <p className="max-w-xs truncate text-sm text-[#6b7280]">
-                                        {presupuesto.workAddress}
+                    return (
+                        <TableRow key={presupuesto.idPresupuesto}>
+                            <TableCell>
+                                <div className="min-w-0">
+                                    <p className="font-medium text-foreground">
+                                        {presupuesto.title || "Sin título"}
                                     </p>
-                                )}
-                            </div>
-                        </TableCell>
 
-                        <TableCell>
-                            <div className="flex items-center gap-2">
-                                <User className="h-4 w-4 text-[#6b7280]" />
-                                <span>{presupuesto.clientName || "Sin cliente"}</span>
-                            </div>
-                        </TableCell>
+                                    <p className="text-sm text-muted-foreground">
+                                        {presupuesto.budgetNumber || "Sin número"}
+                                    </p>
 
-                        <TableCell>
-                            <div className="flex items-center gap-2">
-                                <Calendar className="h-4 w-4 text-[#6b7280]" />
-                                <span className="text-sm">
-                                    {formatDate(presupuesto.fechaPresupuesto)}
+                                    {presupuesto.workAddress && (
+                                        <p className="max-w-xs truncate text-sm text-muted-foreground">
+                                            {presupuesto.workAddress}
+                                        </p>
+                                    )}
+                                </div>
+                            </TableCell>
+
+                            <TableCell>
+                                <div className="flex items-center gap-2">
+                                    <User className="h-4 w-4 text-muted-foreground" />
+                                    <span>{presupuesto.clientName || "Sin cliente"}</span>
+                                </div>
+                            </TableCell>
+
+                            <TableCell>
+                                <div className="flex items-center gap-2">
+                                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                                    <span className="text-sm">
+                                        {formatDate(presupuesto.fechaPresupuesto)}
+                                    </span>
+                                </div>
+                            </TableCell>
+
+                            <TableCell className="text-right">
+                                <span className="text-lg font-semibold text-red-500">
+                                    {Number(presupuesto.total) > 0
+                                        ? formatCurrency(presupuesto.total)
+                                        : "━"}
                                 </span>
-                            </div>
-                        </TableCell>
+                            </TableCell>
 
-                        <TableCell className="text-right">
-                            <span className="text-lg font-semibold text-red-500">
-                                {formatCurrency(presupuesto.total || 0)}
-                            </span>
-                        </TableCell>
+                            <TableCell className="text-right">
+                                <div className="flex justify-end gap-1">
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => onPreview(presupuesto)}
+                                    >
+                                        <Eye className="h-4 w-4" />
+                                    </Button>
 
-                        <TableCell className="text-right">
-                            <div className="flex justify-end gap-1">
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => onPreview(presupuesto)}
-                                >
-                                    <Eye className="h-4 w-4" />
-                                </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => onEdit(presupuesto)}
+                                    >
+                                        <Edit className="h-4 w-4" />
+                                    </Button>
 
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => onEdit(presupuesto)}
-                                >
-                                    <Edit className="h-4 w-4" />
-                                </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => onDownload(presupuesto)}
+                                        disabled={isPdfGenerating}
+                                    >
+                                        {isPdfGenerating ? (
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <Download className="h-4 w-4" />
+                                        )}
+                                    </Button>
+                                    
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => onDuplicate(presupuesto)}
+                                    >
+                                        <Copy className="h-4 w-4" />
+                                    </Button>
 
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => onDownload(presupuesto)}
-                                >
-                                    <Download className="h-4 w-4" />
-                                </Button>
-                                
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => onDuplicate(presupuesto)}
-                                >
-                                    <Copy className="h-4 w-4" />
-                                </Button>
-
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => onDelete(presupuesto)}
-                                >
-                                    <Trash2 className="h-4 w-4 text-red-500" />
-                                </Button>
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                ))}
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => onDelete(presupuesto)}
+                                    >
+                                        <Trash2 className="h-4 w-4 text-red-500" />
+                                    </Button>
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    );
+                })}
             </TableBody>
         </Table>
     );
@@ -137,6 +148,7 @@ PresupuestoTable.propTypes = {
     onDuplicate: PropTypes.func.isRequired,
     onPreview: PropTypes.func.isRequired,
     onDownload: PropTypes.func.isRequired,
+    pdfGeneratingId: PropTypes.number,
 };
 
 export default PresupuestoTable;

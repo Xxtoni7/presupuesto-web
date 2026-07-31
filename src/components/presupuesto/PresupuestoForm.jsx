@@ -75,11 +75,6 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             try {
                 const data = await getItemsByPresupuesto(presupuesto.idPresupuesto);
 
-                if (data.length === 0) {
-                    setItems([{ ...emptyPresupuestoItem }]);
-                    return;
-                }
-
                 setItems(
                     data.map((item) => ({
                         idItem: item.idItem,
@@ -148,11 +143,6 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
 
         const validItems = items.filter((item) => item.description.trim());
 
-        if (validItems.length === 0) {
-            setError("Debe agregar al menos un ítem al presupuesto.");
-            return;
-        }
-
         try {
             setLoading(true);
 
@@ -201,7 +191,7 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
                     {error}
                 </div>
             )}
@@ -273,7 +263,7 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             <div>
                 <Label htmlFor="workAddress">
                     Dirección de la obra{" "}
-                    <span className="ml-1 text-xs font-normal text-gray-400">
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
                         (Opcional)
                     </span>
                 </Label>
@@ -290,7 +280,7 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             <div>
                 <Label htmlFor="jobDescription">
                     Descripción del trabajo{" "}
-                    <span className="ml-1 text-xs font-normal text-gray-400">
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
                         (Opcional)
                     </span>
                 </Label>
@@ -315,16 +305,18 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 setDeletedItemIds={setDeletedItemIds}
             />
 
-            <div className="flex items-center justify-between rounded-xl border border-[#e5e7eb] bg-white p-5">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-5">
                 <div className="flex items-center gap-2">
                     <Calculator className="h-5 w-5 text-red-500" />
-                    <span className="text-lg font-semibold text-[#111111]">
+                    <span className="text-lg font-semibold text-foreground">
                         Total del presupuesto
                     </span>
                 </div>
 
                 <span className="text-2xl font-bold text-red-500">
-                    {formatCurrency(visualTotal)}
+                    {items.length === 0
+                        ? "━"
+                        : formatCurrency(visualTotal)}
                 </span>
             </div>
 
@@ -332,7 +324,7 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 <div>
                     <Label htmlFor="estimatedTime">
                         Tiempo estimado{" "}
-                        <span className="ml-1 text-xs font-normal text-gray-400">
+                        <span className="ml-1 text-xs font-normal text-muted-foreground">
                             (Opcional)
                         </span>
                     </Label>
@@ -350,7 +342,7 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 <div>
                     <Label htmlFor="paymentTerms">
                         Condiciones de pago{" "}
-                        <span className="ml-1 text-xs font-normal text-gray-400">
+                        <span className="ml-1 text-xs font-normal text-muted-foreground">
                             (Opcional)
                         </span>
                     </Label>
@@ -369,7 +361,7 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             <div>
                 <Label htmlFor="observations">
                     Aclaraciones finales{" "}
-                    <span className="ml-1 text-xs font-normal text-gray-400">
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
                         (Opcional)
                     </span>
                 </Label>
@@ -388,7 +380,7 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
                 </div>
             </div>
 
-            <div className="flex gap-3 border-t border-[#e5e7eb] pt-4">
+            <div className="flex gap-3 border-t border-border pt-4">
                 <Button
                     type="button"
                     variant="outline"

@@ -1,4 +1,4 @@
-import autoTable from "jspdf-autotable";
+import autoTable, { __createTable } from "jspdf-autotable";
 import { formatCurrency } from "../../formatCurrency";
 import { pdfTheme } from "./pdfTheme";
 import { formatPdfDate, parseRichTextHtml, hasRichTextContent } from "./pdfHelpers";
@@ -64,29 +64,31 @@ export function drawHeader(doc, company, presupuesto, primaryColor, logoImage, h
     const logoBoxX = marginX;
     const logoBoxY = 14;
 
-    const logoBoxSize = getLogoBoxSize(logoImage);
-    const logoBoxWidth = logoBoxSize.width;
-    const logoBoxHeight = logoBoxSize.height;
-
-    const logoPadding = 0.8;
-    const logoMaxWidth = logoBoxWidth - logoPadding * 2;
-    const logoMaxHeight = logoBoxHeight - logoPadding * 2;
-
-    doc.setFillColor(255, 255, 255);
-    doc.setDrawColor(229, 231, 235);
-    doc.setLineWidth(0.4);
-
-    doc.roundedRect(
-        logoBoxX,
-        logoBoxY,
-        logoBoxWidth,
-        logoBoxHeight,
-        2.5,
-        2.5,
-        "FD"
-    );
+    let companyTextX = marginX;
 
     if (logoImage) {
+        const logoBoxSize = getLogoBoxSize(logoImage);
+        const logoBoxWidth = logoBoxSize.width;
+        const logoBoxHeight = logoBoxSize.height;
+
+        const logoPadding = 0.8;
+        const logoMaxWidth = logoBoxWidth - logoPadding * 2;
+        const logoMaxHeight = logoBoxHeight - logoPadding * 2;
+
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(229, 231, 235);
+        doc.setLineWidth(0.4);
+
+        doc.roundedRect(
+            logoBoxX,
+            logoBoxY,
+            logoBoxWidth,
+            logoBoxHeight,
+            2.5,
+            2.5,
+            "FD"
+        );
+
         const imageFormat =
             logoImage.src?.toLowerCase().includes(".jpg") ||
             logoImage.src?.toLowerCase().includes(".jpeg")
@@ -110,9 +112,9 @@ export function drawHeader(doc, company, presupuesto, primaryColor, logoImage, h
             containedSize.width,
             containedSize.height
         );
-    }
 
-    const companyTextX = logoBoxX + logoBoxWidth + 6;
+        companyTextX = logoBoxX + logoBoxWidth + 6;
+    }
 
     // Company Name
     doc.setFont("Inter", "semibold");
@@ -401,24 +403,66 @@ function drawTextWithStyle(doc, text, x, y, segment) {
     }
 }
 
-function drawInlineSegments(doc, segments, startX, startY, maxWidth) {
+function getFittingCharacterCount(doc, characters, maxWidth) {
+    if (!characters.length || maxWidth <= 0) {
+        return 0;
+    }
+
+    let lowerBound = 1;
+    let upperBound = characters.length;
+    let fittingCount = 0;
+
+    while (lowerBound <= upperBound) {
+        const middle = Math.floor((lowerBound + upperBound) / 2);
+        const candidate = characters.slice(0, middle).join("");
+
+        if (doc.getTextWidth(candidate) <= maxWidth) {
+            fittingCount = middle;
+            lowerBound = middle + 1;
+        } else {
+            upperBound = middle - 1;
+        }
+    }
+
+    return fittingCount;
+}
+
+function drawInlineSegments(
+    doc,
+    segments,
+    startX,
+    startY,
+    maxWidth,
+    onNewPage
+) {
     let currentX = startX;
     let currentY = startY;
 
     const lineHeight = pdfTheme.main.lineHeight;
     const endX = startX + maxWidth;
 
+    const moveToNextLine = () => {
+        currentX = startX;
+        currentY += lineHeight;
+        currentY = ensurePageSpace(
+            doc,
+            currentY,
+            lineHeight,
+            onNewPage
+        );
+    };
+
     segments.forEach((segment) => {
         const parts = segment.text
-            .replaceAll("\n", " \n ")
-            .split(/(\s+)/);
+            .replaceAll("\r\n", "\n")
+            .replaceAll("\r", "\n")
+            .split(/(\n|[^\S\n]+)/);
 
         parts.forEach((part) => {
             if (!part) return;
 
             if (part === "\n") {
-                currentX = startX;
-                currentY += lineHeight;
+                moveToNextLine();
                 return;
             }
 
@@ -428,27 +472,87 @@ function drawInlineSegments(doc, segments, startX, startY, maxWidth) {
             const partWidth = doc.getTextWidth(part);
             const isOnlySpace = part.trim() === "";
 
-            if (!isOnlySpace && currentX + partWidth > endX) {
-                currentX = startX;
-                currentY += lineHeight;
+            if (isOnlySpace) {
+                drawTextWithStyle(
+                    doc,
+                    part,
+                    currentX,
+                    currentY,
+                    segment
+                );
+
+                currentX += partWidth;
+                return;
             }
 
-            drawTextWithStyle(
-                doc,
-                part,
-                currentX,
-                currentY,
-                segment
-            );
+            if (partWidth <= maxWidth) {
+                if (currentX + partWidth > endX) {
+                    moveToNextLine();
+                }
 
-            currentX += partWidth;
+                drawTextWithStyle(
+                    doc,
+                    part,
+                    currentX,
+                    currentY,
+                    segment
+                );
+
+                currentX += partWidth;
+                return;
+            }
+
+            const remainingCharacters = Array.from(part);
+
+            while (remainingCharacters.length > 0) {
+                const availableWidth = endX - currentX;
+                let fittingCount = getFittingCharacterCount(
+                    doc,
+                    remainingCharacters,
+                    availableWidth
+                );
+
+                if (fittingCount === 0 && currentX > startX) {
+                    moveToNextLine();
+                    continue;
+                }
+
+                if (fittingCount === 0) {
+                    fittingCount = 1;
+                }
+
+                const chunk = remainingCharacters
+                    .splice(0, fittingCount)
+                    .join("");
+
+                drawTextWithStyle(
+                    doc,
+                    chunk,
+                    currentX,
+                    currentY,
+                    segment
+                );
+
+                currentX += doc.getTextWidth(chunk);
+
+                if (remainingCharacters.length > 0) {
+                    moveToNextLine();
+                }
+            }
         });
     });
 
     return currentY + lineHeight;
 }
 
-function drawRichTextBlock(doc, block, startX, startY, maxWidth) {
+function drawRichTextBlock(
+    doc,
+    block,
+    startX,
+    startY,
+    maxWidth,
+    onNewPage
+) {
     if (block.type === "empty") {
         return startY + pdfTheme.main.lineHeight;
     }
@@ -481,7 +585,8 @@ function drawRichTextBlock(doc, block, startX, startY, maxWidth) {
         block.segments,
         contentX,
         startY,
-        contentWidth
+        contentWidth,
+        onNewPage
     );
 }
 
@@ -528,14 +633,31 @@ function splitPlainTextToLines(doc, text, maxWidth) {
     return lines;
 }
 
-function drawPlainTextLines(doc, lines, startX, startY, lineHeight, onNewPage) {
+function drawPlainTextColumns(
+    doc,
+    columns,
+    startY,
+    reservedLineHeight,
+    onNewPage
+) {
     let currentY = startY;
+    let lastLineY = startY;
+    const maxLines = Math.max(
+        ...columns.map((column) => column.lines.length),
+        0
+    );
 
-    lines.forEach((line) => {
+    doc.setFont("Inter", "normal");
+    doc.setFontSize(pdfTheme.main.valueSize);
+
+    const textLineHeight =
+        doc.getLineHeight() / doc.internal.scaleFactor;
+
+    for (let lineIndex = 0; lineIndex < maxLines; lineIndex += 1) {
         currentY = ensurePageSpace(
             doc,
             currentY,
-            lineHeight,
+            reservedLineHeight,
             onNewPage
         );
 
@@ -543,18 +665,25 @@ function drawPlainTextLines(doc, lines, startX, startY, lineHeight, onNewPage) {
         doc.setFontSize(pdfTheme.main.valueSize);
         doc.setTextColor(...pdfTheme.main.valueColor);
 
-        if (line !== "") {
-            doc.text(
-                line,
-                startX,
-                currentY
-            );
-        }
+        columns.forEach((column) => {
+            const line = column.lines[lineIndex];
 
-        currentY += lineHeight;
-    });
+            if (line !== undefined && line !== "") {
+                doc.text(
+                    line,
+                    column.x,
+                    currentY
+                );
+            }
+        });
 
-    return currentY;
+        lastLineY = currentY;
+        currentY += textLineHeight;
+    }
+
+    return maxLines > 0
+        ? lastLineY + reservedLineHeight
+        : startY;
 }
 
 export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
@@ -598,7 +727,8 @@ export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
             block,
             marginX,
             currentY,
-            maxWidth
+            maxWidth,
+            onNewPage
         );
 
         currentY += 2;
@@ -607,12 +737,117 @@ export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
     return currentY;
 }
 
+function hasItemCost(items, field) {
+    return items.some((item) => {
+        const value = Number(item[field]);
+
+        return Number.isFinite(value) && value !== 0;
+    });
+}
+
+function getBudgetTableColumns(items) {
+    const showMaterials = hasItemCost(items, "materials");
+    const showLabor = hasItemCost(items, "labor");
+    const descriptionWidth =
+        55 + (showMaterials ? 0 : 30) + (showLabor ? 0 : 32);
+    const columns = [
+        {
+            key: "description",
+            header: "Descripción",
+            width: descriptionWidth,
+            formatValue: (item) => item.description || "-",
+            styles: {
+                halign: "left",
+                fontSize: 11,
+                textColor: [31, 41, 55],
+            },
+        },
+    ];
+
+    if (showMaterials) {
+        columns.push({
+            key: "materials",
+            header: "Materiales",
+            width: 30,
+            formatValue: (item) =>
+                formatCurrency(item.materials || 0),
+            styles: {
+                halign: "right",
+                valign: "middle",
+                fontSize: 9.5,
+                textColor: [107, 114, 128],
+            },
+        });
+    }
+
+    if (showLabor) {
+        columns.push({
+            key: "labor",
+            header: "Mano de obra",
+            width: 32,
+            formatValue: (item) =>
+                formatCurrency(item.labor || 0),
+            styles: {
+                halign: "right",
+                valign: "middle",
+                fontSize: 9.5,
+                textColor: [107, 114, 128],
+            },
+        });
+    }
+
+    columns.push(
+        {
+            key: "quantity",
+            header: "Cant",
+            width: 19,
+            formatValue: (item) => item.quantity || 0,
+            styles: {
+                halign: "center",
+                valign: "middle",
+                fontSize: 9.5,
+                fontStyle: "medium",
+                textColor: [75, 85, 99],
+            },
+        },
+        {
+            key: "subtotal",
+            header: "Subtotal",
+            width: 34,
+            formatValue: (item) =>
+                formatCurrency(item.subtotal || 0),
+            styles: {
+                halign: "right",
+                valign: "middle",
+                fontSize: 9.5,
+                fontStyle: "semibold",
+                textColor: [17, 24, 39],
+            },
+        }
+    );
+
+    return columns;
+}
+
+function getBudgetTableColumnStyles(columns) {
+    return Object.fromEntries(
+        columns.map((column, index) => [
+            index,
+            {
+                cellWidth: column.width,
+                ...column.styles,
+            },
+        ])
+    );
+}
+
 export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, onNewPage) {
     const pageWidth = doc.internal.pageSize.getWidth();
     const marginX = pdfTheme.page.marginX;
     const tableX = marginX;
     const tableWidth = pageWidth - marginX * 2;
     const tableRadius = 3;
+    const tableTitleGap = 7;
 
     const primaryColor = colors.primaryColor;
     const secondaryColor = colors.secondaryColor;
@@ -629,64 +864,44 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
         tableHeaderTextColor[1] === 255 &&
         tableHeaderTextColor[2] === 255;
 
-    let currentY = startY + pdfTheme.main.sectionGap;
-
-    const estimatedBudgetSectionHeight =
-        18 + // título
-        16 + // header tabla
-        items.length * 18 + // filas aproximadas
-        30; // total
-
-    currentY = ensurePageSpace(
-        doc,
-        currentY,
-        estimatedBudgetSectionHeight,
-        onNewPage
+    const currentY = startY + pdfTheme.main.sectionGap;
+    let tablePageStartY = currentY + tableTitleGap;
+    const tableColumns = getBudgetTableColumns(items);
+    const quantityColumnIndex = tableColumns.findIndex(
+        (column) => column.key === "quantity"
     );
+    const totalLabelColumnSpan = tableColumns.length - 2;
 
-    doc.setFont("Inter", "semibold");
-    doc.setFontSize(pdfTheme.main.titleSize);
-    doc.setTextColor(...pdfTheme.main.titleColor);
-
-    doc.text(
-        "Detalle del presupuesto",
-        marginX,
-        currentY
-    );
-
-    autoTable(doc, {
-        startY: currentY + 7,
+    const tableOptions = {
+        startY: currentY + tableTitleGap,
 
         pageBreak: "avoid",
         rowPageBreak: "avoid",
+        showFoot: "lastPage",
 
         margin: {
             left: marginX,
             right: marginX,
-            top: pdfTheme.page.contentTopAfterHeader,
+            top:
+                pdfTheme.page.contentTopAfterHeader +
+                tableTitleGap,
             bottom: pdfTheme.page.footerReservedSpace,
         },
 
         head: [[
-            "Descripción",
-            "Materiales",
-            "Mano de obra",
-            "Cant",
-            "Subtotal",
+            ...tableColumns.map((column) => column.header),
         ]],
 
-        body: items.map((item) => [
-            item.description || "-",
-            formatCurrency(item.materials || 0),
-            formatCurrency(item.labor || 0),
-            item.quantity || 0,
-            formatCurrency(item.subtotal || 0),
-        ]),
+        body: items.map((item) =>
+            tableColumns.map((column) =>
+                column.formatValue(item)
+            )
+        ),
 
         foot: [[
             {
                 content: "TOTAL",
-                colSpan: 3,
+                colSpan: totalLabelColumnSpan,
                 styles: {
                     halign: "right",
                     font: "Inter",
@@ -759,44 +974,8 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
             lineWidth: 0,
         },
 
-        columnStyles: {
-            0: {
-                cellWidth: 55,
-                halign: "left",
-                fontSize: 11,
-                textColor: [31, 41, 55],
-            },
-            1: {
-                cellWidth: 30,
-                halign: "right",
-                valign: "middle",
-                fontSize: 9.5,
-                textColor: [107, 114, 128],
-            },
-            2: {
-                cellWidth: 32,
-                halign: "right",
-                valign: "middle",
-                fontSize: 9.5,
-                textColor: [107, 114, 128],
-            },
-            3: {
-                cellWidth: 19,
-                halign: "center",
-                valign: "middle",
-                fontSize: 9.5,
-                fontStyle: "medium",
-                textColor: [75, 85, 99],
-            },
-            4: {
-                cellWidth: 34,
-                halign: "right",
-                valign: "middle",
-                fontSize: 9.5,
-                fontStyle: "semibold",
-                textColor: [17, 24, 39],
-            },
-        },
+        columnStyles:
+            getBudgetTableColumnStyles(tableColumns),
 
         willDrawCell: (data) => {
             if (data.section === "head" && data.column.index === 0) {
@@ -854,7 +1033,10 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
                     data.cell.styles.halign = "left";
                 }
 
-                if (data.column.index === 3) {
+                if (
+                    data.column.index ===
+                    quantityColumnIndex
+                ) {
                     data.cell.styles.halign = "center";
                 }
             }
@@ -893,26 +1075,69 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
             }
         },
 
-        didDrawPage: () => {
+        willDrawPage: (data) => {
+            const isFirstTablePage =
+                data.table.pageNumber === 1;
+
+            if (isFirstTablePage) {
+                doc.setFont("Inter", "semibold");
+                doc.setFontSize(pdfTheme.main.titleSize);
+                doc.setTextColor(...pdfTheme.main.titleColor);
+
+                doc.text(
+                    "Detalle del presupuesto",
+                    marginX,
+                    data.cursor.y - tableTitleGap
+                );
+            } else {
+                data.cursor.y =
+                    pdfTheme.page.contentTopAfterHeader;
+            }
+
+            tablePageStartY = data.cursor.y;
+        },
+
+        didDrawPage: (data) => {
+            const tablePageEndY = data.cursor.y;
+
+            if (tablePageEndY > tablePageStartY) {
+                doc.setDrawColor(229, 231, 235);
+                doc.setLineWidth(0.25);
+
+                doc.roundedRect(
+                    tableX,
+                    tablePageStartY,
+                    tableWidth,
+                    tablePageEndY - tablePageStartY,
+                    tableRadius,
+                    tableRadius,
+                    "S"
+                );
+            }
+
             onNewPage();
         },
-    });
+    };
 
-    const tableStartY = currentY + 7;
-    const tableEndY = doc.lastAutoTable.finalY;
+    const measuredTable = __createTable(doc, tableOptions);
+    const completeTableHeight =
+        measuredTable.getHeadHeight(measuredTable.columns) +
+        measuredTable.body.reduce(
+            (height, row) => height + row.height,
+            0
+        ) +
+        measuredTable.getFootHeight(measuredTable.columns);
+    const fullPageAvailableHeight =
+        doc.internal.pageSize.getHeight() -
+        (pdfTheme.page.contentTopAfterHeader + tableTitleGap) -
+        pdfTheme.page.footerReservedSpace;
 
-    doc.setDrawColor(229, 231, 235);
-    doc.setLineWidth(0.25);
+    tableOptions.pageBreak =
+        completeTableHeight <= fullPageAvailableHeight
+            ? "avoid"
+            : "auto";
 
-    doc.roundedRect(
-        tableX,
-        tableStartY,
-        tableWidth,
-        tableEndY - tableStartY,
-        tableRadius,
-        tableRadius,
-        "S"
-    );
+    autoTable(doc, tableOptions);
 
     return doc.lastAutoTable.finalY + pdfTheme.main.sectionGap;
 }
@@ -939,75 +1164,88 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
     const isTwoColumns = hasEstimatedTime && hasPaymentTerms;
 
     const estimatedTimeLines = hasEstimatedTime
-        ? doc.splitTextToSize(presupuesto.estimatedTime, columnWidth)
+        ? splitPlainTextToLines(
+            doc,
+            presupuesto.estimatedTime,
+            columnWidth
+        )
         : [];
 
     const paymentTermsLines = hasPaymentTerms
-        ? doc.splitTextToSize(presupuesto.paymentTerms, columnWidth)
+        ? splitPlainTextToLines(
+            doc,
+            presupuesto.paymentTerms,
+            columnWidth
+        )
         : [];
 
-    const singleColumnLength = hasEstimatedTime ? estimatedTimeLines.length : paymentTermsLines.length;
+    const sectionItems = [
+        hasEstimatedTime && {
+            title: "Tiempo estimado:",
+            lines: estimatedTimeLines,
+            x: leftX,
+        },
+        hasPaymentTerms && {
+            title: "Condiciones de pago:",
+            lines: paymentTermsLines,
+            x: isTwoColumns ? rightX : leftX,
+        },
+    ].filter(Boolean);
 
-    const maxLines = isTwoColumns
-        ? Math.max(estimatedTimeLines.length, paymentTermsLines.length, 1)
-        : Math.max(singleColumnLength, 1);
+    const maxLines = Math.max(
+        ...sectionItems.map((item) => item.lines.length),
+        1
+    );
 
     const sectionHeight = 8 + maxLines * valueLineHeight + 4;
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const maxContentY =
+        pageHeight - pdfTheme.page.footerReservedSpace;
+    const maxSectionHeight =
+        maxContentY - pdfTheme.page.contentTopAfterHeader;
+    const needsLinePagination =
+        sectionHeight > maxSectionHeight;
 
     let currentY = ensurePageSpace(
         doc,
         titleY,
-        sectionHeight,
+        needsLinePagination
+            ? 8 + valueLineHeight
+            : sectionHeight,
         onNewPage
     );
 
     const currentValueY = currentY + 8;
 
-    const drawTextBlock = (title, lines, x) => {
+    const drawTextBlock = (title, lines, x, drawValues = true) => {
         doc.setFont("Inter", "semibold");
         doc.setFontSize(pdfTheme.main.titleSize);
         doc.setTextColor(...pdfTheme.main.titleColor);
 
-        doc.text(
-            title,
-            x,
-            currentY
-        );
+        doc.text(title, x, currentY);
 
         doc.setFont("Inter", "normal");
         doc.setFontSize(pdfTheme.main.valueSize);
         doc.setTextColor(...pdfTheme.main.valueColor);
 
-        doc.text(
-            lines,
-            x,
-            currentValueY
-        );
+        if (drawValues) {
+            doc.text(lines, x, currentValueY);
+        }
     };
 
-    if (isTwoColumns) {
-        drawTextBlock(
-            "Tiempo estimado:",
-            estimatedTimeLines,
-            leftX
-        );
+    sectionItems.forEach(({ title, lines, x }) =>
+        drawTextBlock(title, lines, x, !needsLinePagination)
+    );
 
-        drawTextBlock(
-            "Condiciones de pago:",
-            paymentTermsLines,
-            rightX
-        );
-    } else if (hasEstimatedTime) {
-        drawTextBlock(
-            "Tiempo estimado:",
-            estimatedTimeLines,
-            leftX
-        );
-    } else if (hasPaymentTerms) {
-        drawTextBlock(
-            "Condiciones de pago:",
-            paymentTermsLines,
-            leftX
+    if (needsLinePagination) {
+        const columns = sectionItems.map(({ lines, x }) => ({ lines, x }));
+
+        return drawPlainTextColumns(
+            doc,
+            columns,
+            currentValueY,
+            valueLineHeight,
+            onNewPage
         );
     }
 
@@ -1055,7 +1293,8 @@ export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {
             block,
             marginX,
             currentY,
-            maxWidth
+            maxWidth,
+            onNewPage
         );
 
         currentY += 2;

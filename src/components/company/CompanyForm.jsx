@@ -4,8 +4,20 @@ import { createCompany, updateCompany } from "../../api/companyApi";
 import { uploadCompanyLogo } from "../../api/uploadApi";
 import { Upload } from "lucide-react";
 
+function emptyToNull(value) {
+    const trimmedValue = value?.trim();
+
+    return trimmedValue || null;
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function CompanyForm({ company, onSuccess, onCancel }) {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [fieldErrors, setFieldErrors] = useState({});
     const fileInputRef = useRef(null);
     const [logoPreview, setLogoPreview] = useState("");
 
@@ -18,7 +30,6 @@ function CompanyForm({ company, onSuccess, onCancel }) {
         phone: "",
         email: "",
         address: "",
-        idUser: 1,
     });
 
     const isEdit = Boolean(company);
@@ -38,7 +49,6 @@ function CompanyForm({ company, onSuccess, onCancel }) {
             phone: company.phone || "",
             email: company.email || "",
             address: company.address || "",
-            idUser: company.idUser ?? 1,
         });
 
         setLogoPreview(company.logoUrl || "");
@@ -50,6 +60,11 @@ function CompanyForm({ company, onSuccess, onCancel }) {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
+        }));
+
+        setFieldErrors((prev) => ({
+            ...prev,
+            [name]: "",
         }));
     };
 
@@ -69,33 +84,58 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
             setLogoPreview(URL.createObjectURL(file));
         } catch (err) {
-            alert(err.message || "Error al subir el logo");
+            setError(err.message || "Error al subir el logo");
         } finally {
             setLoading(false);
         }
     };
 
+    const buildCompanyPayload = () => ({
+        name: formData.name.trim(),
+        logoUrl: emptyToNull(formData.logoUrl),
+        colorMain: formData.colorMain || "#c90000",
+        colorSecondary: formData.colorSecondary || "#000000",
+        industry: emptyToNull(formData.industry),
+        phone: emptyToNull(formData.phone),
+        email: emptyToNull(formData.email),
+        address: emptyToNull(formData.address),
+    });
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        setFieldErrors({});
 
         if (!formData.name.trim()) {
-            alert("El nombre es obligatorio");
+            setError("El nombre de la empresa es obligatorio.");
+            return;
+        }
+
+        const email = formData.email.trim();
+
+        if (email && !isValidEmail(email)) {
+            setFieldErrors((prev) => ({
+                ...prev,
+                email: "Ingresá un email válido para la empresa.",
+            }));
             return;
         }
 
         try {
             setLoading(true);
 
+            const payload = buildCompanyPayload();
+
             if (isEdit) {
                 const id = company.idCompany ?? company.id;
-                await updateCompany(id, formData);
+                await updateCompany(id, payload);
             } else {
-                await createCompany(formData);
+                await createCompany(payload);
             }
 
             onSuccess();
         } catch (err) {
-            alert(err.message || "Error al guardar");
+            setError(err.message || "Error al guardar la empresa.");
         } finally {
             setLoading(false);
         }
@@ -112,9 +152,15 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
+                    {error}
+                </div>
+            )}
+
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-[#111111]">
+                    <label htmlFor="name" className="block text-sm font-medium text-foreground">
                         Nombre de la empresa{" "}
                         <span className="ml-1 text-red-500">*</span>
                     </label>
@@ -125,12 +171,12 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                         onChange={handleChange}
                         placeholder="Ej: Construcciones del Sur"
                         required
-                        className="mt-1.5 flex h-9 w-full rounded-lg border border-[#d1d5db] bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
+                        className="mt-1.5 flex h-9 w-full rounded-lg border border-input bg-background px-3 py-1 text-base text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="logoInput" className="block text-sm font-medium text-[#111111]">
+                    <label htmlFor="logoInput" className="block text-sm font-medium text-foreground">
                         Logo de la empresa
                     </label>
 
@@ -140,7 +186,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                                 <img
                                 src={logoPreview}
                                 alt="Preview del logo"
-                                className="w-32 h-32 object-contain border border-gray-200 rounded-lg"
+                                className="h-32 w-32 rounded-lg border border-border bg-white object-contain"
                                 />
 
                                 <button
@@ -175,7 +221,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                         <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="inline-flex h-9 items-center justify-center rounded-lg border border-[#d1d5db] bg-white px-4 text-sm font-medium text-[#111111] shadow-sm hover:bg-gray-50"
+                        className="inline-flex h-9 items-center justify-center rounded-lg border border-input bg-background px-4 text-sm font-medium text-foreground shadow-sm hover:bg-accent"
                         >
                             <Upload className="mr-2 h-4 w-4" />
                             {logoPreview ? "Cambiar logo" : "Subir logo"}
@@ -185,7 +231,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                        <label htmlFor="colorMain" className="block text-sm font-medium text-[#111111]">
+                        <label htmlFor="colorMain" className="block text-sm font-medium text-foreground">
                             Color principal
                         </label>
                         <div className="relative mt-1.5">
@@ -200,19 +246,19 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                             <button
                                 type="button"
-                                className="flex h-10 w-full items-center gap-3 rounded-lg border border-[#d1d5db] bg-white px-3 shadow-sm hover:bg-gray-50"
+                                className="flex h-10 w-full items-center gap-3 rounded-lg border border-input bg-background px-3 shadow-sm hover:bg-accent"
                             >
                                 <div
                                 className="h-6 w-6 rounded-md border"
-                                style={{ backgroundColor: formData.colorMain || "#000000" }}
+                                style={{ backgroundColor: formData.colorMain || "#c90000" }}
                                 />
-                                <span className="text-sm text-[#111111]">Elegir color</span>
+                                <span className="text-sm text-foreground">Elegir color</span>
                             </button>
                         </div>
                     </div>
 
                     <div>
-                        <label htmlFor="colorSecondary" className="block text-sm font-medium text-[#111111]">
+                        <label htmlFor="colorSecondary" className="block text-sm font-medium text-foreground">
                             Color secundario
                         </label>
                         <div className="relative mt-1.5">
@@ -227,22 +273,22 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                             <button
                                 type="button"
-                                className="flex h-10 w-full items-center gap-3 rounded-lg border border-[#d1d5db] bg-white px-3 shadow-sm hover:bg-gray-50"
+                                className="flex h-10 w-full items-center gap-3 rounded-lg border border-input bg-background px-3 shadow-sm hover:bg-accent"
                             >
                                 <div
                                 className="h-6 w-6 rounded-md border"
                                 style={{ backgroundColor: formData.colorSecondary || "#000000" }}
                                 />
-                                <span className="text-sm text-[#111111]">Elegir color</span>
+                                <span className="text-sm text-foreground">Elegir color</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label htmlFor="industry" className="block text-sm font-medium text-[#111111]">
+                    <label htmlFor="industry" className="block text-sm font-medium text-foreground">
                         Rubro / Industria{" "}
-                        <span className="ml-1 text-xs font-normal text-gray-400">
+                        <span className="ml-1 text-xs font-normal text-muted-foreground">
                             (Opcional)
                         </span>
                     </label>
@@ -251,7 +297,7 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                         name="industry"
                         value={formData.industry}
                         onChange={handleChange}
-                        className="mt-1.5 flex h-9 w-full rounded-lg border border-[#d1d5db] bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
+                        className="mt-1.5 flex h-9 w-full rounded-lg border border-input bg-background px-3 py-1 text-base text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
                     >
                         <option value="">Seleccionar rubro</option>
                         <option value="Tecnología">Tecnología</option>
@@ -271,9 +317,9 @@ function CompanyForm({ company, onSuccess, onCancel }) {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-[#111111]">
+                        <label htmlFor="phone" className="block text-sm font-medium text-foreground">
                             Teléfono empresa{" "}
-                            <span className="ml-1 text-xs font-normal text-gray-400">
+                            <span className="ml-1 text-xs font-normal text-muted-foreground">
                                 (Opcional)
                             </span>
                         </label>
@@ -283,32 +329,37 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="+54 11 1234-5678"
-                        className="mt-1.5 flex h-9 w-full rounded-lg border border-[#d1d5db] bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
+                        className="mt-1.5 flex h-9 w-full rounded-lg border border-input bg-background px-3 py-1 text-base text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
                         />
                     </div>
 
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-[#111111]">
-                        Email empresa{" "}
-                        <span className="ml-1 text-xs font-normal text-gray-400">
-                            (Opcional)
-                        </span>
-                    </label>
-                    <input
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="contacto@empresa.com"
-                    className="mt-1.5 flex h-9 w-full rounded-lg border border-[#d1d5db] bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
-                    />
-                </div>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-foreground">
+                            Email empresa{" "}
+                            <span className="ml-1 text-xs font-normal text-muted-foreground">
+                                (Opcional)
+                            </span>
+                        </label>
+                        <input
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="contacto@empresa.com"
+                            className="mt-1.5 flex h-9 w-full rounded-lg border border-input bg-background px-3 py-1 text-base text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
+                        />
+                        {fieldErrors.email && (
+                            <p className="mt-1 text-xs text-red-500">
+                                {fieldErrors.email}
+                            </p>
+                        )}
+                    </div>
                 </div>
 
                 <div>
-                    <label htmlFor="address" className="block text-sm font-medium text-[#111111]">
+                    <label htmlFor="address" className="block text-sm font-medium text-foreground">
                         Dirección empresa{" "}
-                        <span className="ml-1 text-xs font-normal text-gray-400">
+                        <span className="ml-1 text-xs font-normal text-muted-foreground">
                             (Opcional)
                         </span>
                     </label>
@@ -318,16 +369,16 @@ function CompanyForm({ company, onSuccess, onCancel }) {
                         value={formData.address}
                         onChange={handleChange}
                         placeholder="Calle, número, ciudad"
-                        className="mt-1.5 flex h-9 w-full rounded-lg border border-[#d1d5db] bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
+                        className="mt-1.5 flex h-9 w-full rounded-lg border border-input bg-background px-3 py-1 text-base text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 md:text-sm"
                     />
                 </div>
             </div>
 
-            <div className="flex gap-3 border-t border-[#e5e7eb] pt-4">
+            <div className="flex gap-3 border-t border-border pt-4">
                 <button
                 type="button"
                 onClick={onCancel}
-                className="inline-flex h-9 items-center justify-center rounded-lg border border-[#d1d5db] bg-white px-4 text-sm font-medium text-[#111111] shadow-sm hover:bg-gray-50"
+                className="inline-flex h-9 items-center justify-center rounded-lg border border-input bg-background px-4 text-sm font-medium text-foreground shadow-sm hover:bg-accent"
                 >
                     Cancelar
                 </button>

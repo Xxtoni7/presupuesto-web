@@ -1,33 +1,121 @@
-import { createContext, useContext, useState, useMemo } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { getCurrentUser, loginUser, loginWithGoogle as loginWithGoogleRequest, logoutUser, refreshToken, registerUser } from "../api/authApi";
+import { clearAccessToken, clearHasSession, hasStoredSession } from "../utils/authTokenStore";
+import { setSessionRestoreFailedMessage } from "../utils/authSessionMessageStore";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        return localStorage.getItem("isAuthenticated") === "true";
-    });
+    const [user, setUser] = useState(null);
+    const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+    const hasRestoredSessionRef = useRef(false);
 
-    const login = async (email, password) => {
-        // TODO: Simulacion de autenticación (reemplazar con lógica real)
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simula un retraso de 1 segundos
-        if (email === "test@test.com" && password === "1234") {
-            setIsAuthenticated(true);
-            localStorage.setItem("isAuthenticated", "true");
-            return true;
+    const isAuthenticated = Boolean(user);
+
+    const clearSession = useCallback(() => {
+        clearAccessToken();
+        clearHasSession();
+        setUser(null);
+    }, []);
+
+    const loadCurrentUser = useCallback(async () => {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+        return currentUser;
+    }, []);
+
+    const restoreSession = useCallback(async () => {
+        try {
+            setIsLoadingAuth(true);
+
+            if (!hasStoredSession()) {
+                clearSession();
+                return;
+            }
+
+            await refreshToken();
+            await loadCurrentUser();
+        } catch {
+            setSessionRestoreFailedMessage();
+            clearSession();
+        } finally {
+            setIsLoadingAuth(false);
         }
+    }, [clearSession, loadCurrentUser]);
 
-        throw new Error("Credenciales inválidas");
-    };
+    useEffect(() => {
+        if (hasRestoredSessionRef.current) return;
 
-    const logout = () => {
-        setIsAuthenticated(false);
-        localStorage.removeItem("isAuthenticated");
-    };
+        hasRestoredSessionRef.current = true;
+        restoreSession();
+    }, [restoreSession]);
 
-    const value = useMemo(() => {
-        return { isAuthenticated, login, logout };
-    }, [isAuthenticated]);
+    useEffect(() => {
+        const handleSessionExpired = () => {
+            setSessionRestoreFailedMessage();
+            clearSession();
+        };
+
+        globalThis.addEventListener("auth:session-expired", handleSessionExpired);
+
+        return () => {
+            globalThis.removeEventListener("auth:session-expired", handleSessionExpired);
+        };
+    }, [clearSession]);
+
+    const login = useCallback(
+        async (email, password) => {
+            await loginUser({ email, password });
+            return loadCurrentUser();
+        },
+        [loadCurrentUser]
+    );
+
+    const register = useCallback(async ({ email, password, confirmPassword }) => {
+        return registerUser({ email, password, confirmPassword });
+    }, []);
+
+    const loginWithGoogle = useCallback(
+        async (idToken) => {
+            if (!idToken) {
+                throw new Error("No se pudo obtener la credencial de Google.");
+            }
+
+            await loginWithGoogleRequest(idToken);
+
+            return loadCurrentUser();
+        },
+        [loadCurrentUser]
+    );
+
+    const logout = useCallback(async () => {
+        await logoutUser();
+        clearSession();
+    }, [clearSession]);
+
+    const value = useMemo(
+        () => ({
+            user,
+            isAuthenticated,
+            isLoadingAuth,
+            login,
+            register,
+            loginWithGoogle,
+            logout,
+            restoreSession,
+        }),
+        [
+            user, 
+            isAuthenticated, 
+            isLoadingAuth, 
+            login, 
+            register, 
+            loginWithGoogle, 
+            logout, 
+            restoreSession
+        ]
+    );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
@@ -37,5 +125,11 @@ AuthProvider.propTypes = {
 };
 
 export function useAuth() {
-    return useContext(AuthContext);
+    const context = useContext(AuthContext);
+
+    if (!context) {
+        throw new Error("useAuth debe usarse dentro de AuthProvider");
+    }
+
+    return context;
 }
