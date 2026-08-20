@@ -12,7 +12,7 @@ export const PDF_LAYOUT = {
     richBlockExtraMm: 4,
     jobStartReserveMm: 16,
     observationsStartReserveMm: 8 + 6.2,
-    tableAfterGapMm: 10,
+    tableAfterGapMm: 0,
     timeTitleHeightMm: 8,
     timeLineHeightMm: 6,
     timeExtraMm: 4,

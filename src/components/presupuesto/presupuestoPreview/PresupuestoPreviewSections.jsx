@@ -508,6 +508,8 @@ function TimeAndPaymentSegment({
     const hasPaymentTerms = hasText(
         presupuesto.paymentTerms,
     );
+    const isTwoColumns =
+        hasEstimatedTime && hasPaymentTerms;
 
     const renderColumn = (title, lines) => (
         <div>
@@ -536,7 +538,11 @@ function TimeAndPaymentSegment({
     );
 
     return (
-        <div className="grid grid-cols-1 gap-[14mm] md:grid-cols-2">
+        <div
+            className={`grid grid-cols-1 gap-[14mm] ${
+                isTwoColumns ? "md:grid-cols-2" : ""
+            }`}
+        >
             {hasEstimatedTime &&
                 renderColumn(
                     "Tiempo estimado:",
@@ -563,6 +569,14 @@ export function MeasurementContent({
     primaryColor,
 }) {
     const allRowIndexes = items.map((_, index) => index);
+    const hasEstimatedTime = hasText(
+        presupuesto.estimatedTime,
+    );
+    const hasPaymentTerms = hasText(
+        presupuesto.paymentTerms,
+    );
+    const isTwoColumns =
+        hasEstimatedTime && hasPaymentTerms;
 
     return (
         <div
@@ -610,9 +624,11 @@ export function MeasurementContent({
 
             <div
                 data-measure="time"
-                className="grid grid-cols-1 gap-[14mm] md:grid-cols-2"
+                className={`grid grid-cols-1 gap-[14mm] ${
+                    isTwoColumns ? "md:grid-cols-2" : ""
+                }`}
             >
-                {hasText(presupuesto.estimatedTime) && (
+                {hasEstimatedTime && (
                     <div data-time-column="estimated">
                         <div
                             data-measure="time-title"
@@ -629,7 +645,7 @@ export function MeasurementContent({
                     </div>
                 )}
 
-                {hasText(presupuesto.paymentTerms) && (
+                {hasPaymentTerms && (
                     <div data-time-column="payment">
                         <div
                             data-measure="time-title"

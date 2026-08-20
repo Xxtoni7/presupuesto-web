@@ -682,7 +682,7 @@ function drawPlainTextColumns(
     }
 
     return maxLines > 0
-        ? lastLineY + reservedLineHeight
+        ? lastLineY + pdfTheme.main.textEndReserve
         : startY;
 }
 
@@ -713,6 +713,7 @@ export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
     currentY += 8;
 
     const blocks = parseRichTextHtml(presupuesto.jobDescription);
+    let sectionEndY = currentY;
 
     blocks.forEach((block) => {
         currentY = ensurePageSpace(
@@ -731,10 +732,14 @@ export function drawJobDescription(doc, presupuesto, startY, onNewPage) {
             onNewPage
         );
 
+        sectionEndY =
+            currentY -
+            pdfTheme.main.lineHeight +
+            pdfTheme.main.textEndReserve;
         currentY += 2;
     });
 
-    return currentY;
+    return sectionEndY;
 }
 
 function hasItemCost(items, field) {
@@ -1139,7 +1144,10 @@ export function drawBudgetItemsSection(doc, presupuesto, items, startY, colors, 
 
     autoTable(doc, tableOptions);
 
-    return doc.lastAutoTable.finalY + pdfTheme.main.sectionGap;
+    return (
+        doc.lastAutoTable.finalY +
+        pdfTheme.main.tableEndReserve
+    );
 }
 
 export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
@@ -1153,7 +1161,8 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
     const pageWidth = doc.internal.pageSize.getWidth();
     const marginX = pdfTheme.page.marginX;
     const columnGap = 14;
-    const columnWidth = (pageWidth - marginX * 2 - columnGap) / 2;
+    const fullContentWidth = pageWidth - marginX * 2;
+    const columnWidth = (fullContentWidth - columnGap) / 2;
 
     const leftX = marginX;
     const rightX = marginX + columnWidth + columnGap;
@@ -1162,12 +1171,15 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
     const valueLineHeight = 6;
 
     const isTwoColumns = hasEstimatedTime && hasPaymentTerms;
+    const textWidth = isTwoColumns
+        ? columnWidth
+        : fullContentWidth;
 
     const estimatedTimeLines = hasEstimatedTime
         ? splitPlainTextToLines(
             doc,
             presupuesto.estimatedTime,
-            columnWidth
+            textWidth
         )
         : [];
 
@@ -1175,7 +1187,7 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
         ? splitPlainTextToLines(
             doc,
             presupuesto.paymentTerms,
-            columnWidth
+            textWidth
         )
         : [];
 
@@ -1197,7 +1209,7 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
         1
     );
 
-    const sectionHeight = 8 + maxLines * valueLineHeight + 4;
+    const sectionHeight = 8 + maxLines * valueLineHeight;
     const pageHeight = doc.internal.pageSize.getHeight();
     const maxContentY =
         pageHeight - pdfTheme.page.footerReservedSpace;
@@ -1249,7 +1261,13 @@ export function drawTimeAndPaymentSection(doc, presupuesto, startY, onNewPage) {
         );
     }
 
-    return currentValueY + maxLines * valueLineHeight;
+    const textLineHeight =
+        doc.getLineHeight() / doc.internal.scaleFactor;
+    const lastValueY =
+        currentValueY +
+        (maxLines - 1) * textLineHeight;
+
+    return lastValueY + pdfTheme.main.textEndReserve;
 }
 
 export function drawObservationsSection(doc, presupuesto, startY, onNewPage) {

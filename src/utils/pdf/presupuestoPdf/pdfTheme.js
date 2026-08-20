@@ -24,6 +24,8 @@ export const pdfTheme = {
 
     main: {
         sectionGap: 10,
+        textEndReserve: 5,
+        tableEndReserve: 4,
         titleSize: 13,
         valueSize: 12.3,
         lineHeight: 6.2,
