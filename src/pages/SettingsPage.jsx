@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAvailablePlans, getCurrentPlan } from "../api/planApi";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 import AppearanceSection from "../components/settings/AppearanceSection";
 import PlansSection from "../components/settings/PlansSection";
 import ProfileSection from "../components/settings/ProfileSection";

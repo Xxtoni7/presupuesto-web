@@ -301,7 +301,6 @@ function PresupuestoForm({ presupuesto = null, companyId, onSuccess, onCancel })
             <PresupuestoItemsTable
                 items={items}
                 setItems={setItems}
-                deletedItemIds={deletedItemIds}
                 setDeletedItemIds={setDeletedItemIds}
             />
 

@@ -1,7 +1,6 @@
-import { createContext, useContext, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
-
-const SearchContext = createContext();
+import { SearchContext } from "./searchStateContext";
 
 export function SearchProvider({ children }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -21,7 +20,3 @@ export function SearchProvider({ children }) {
 SearchProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
-
-export function useSearch() {
-    return useContext(SearchContext);
-}

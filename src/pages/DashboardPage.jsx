@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { getDashboardSummary } from "../api/dashboardApi";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 import DashboardLoading from "../components/dashboard/DashboardLoading";
 import DashboardTopPanel from "../components/dashboard/DashboardTopPanel";
 import DashboardContentBlock from "../components/dashboard/DashboardContentBlock";

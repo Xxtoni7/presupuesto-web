@@ -5,7 +5,7 @@ import { ArrowLeft, FileText, Grid, List, Plus, Trash2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import PresupuestoCard from "../components/presupuesto/PresupuestoCard";
 import PresupuestoTable from "../components/presupuesto/PresupuestoTable";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../context/useSearch";
 import { useCompanyPresupuestos } from "../hooks/useCompanyPresupuestos";
 import PresupuestoPreview from "../components/presupuesto/presupuestoPreview/PresupuestoPreview";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";

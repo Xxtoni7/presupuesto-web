@@ -6,7 +6,7 @@ import CompanyTable from "../components/company/CompanyTable";
 import { useCompanies } from "../hooks/useCompanies";
 import CompanyForm from "../components/company/CompanyForm";
 import { createPortal } from "react-dom";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../context/useSearch";
 import { toast } from "sonner";
 import SectionLoading from "../components/ui/SectionLoading";
 

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { Plus, Grid, List, FileText, Trash2 } from "lucide-react";
 import { Button } from "../components/ui/button";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../context/useSearch";
 import { usePresupuestos } from "../hooks/usePresupuestos";
 import PresupuestoCard from "../components/presupuesto/PresupuestoCard";
 import PresupuestoTable from "../components/presupuesto/PresupuestoTable";

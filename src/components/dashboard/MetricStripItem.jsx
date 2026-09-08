@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 
-function MetricStripItem({ title, value, description, icon: Icon, isMoney = false }) {
+function MetricStripItem({ title, value, description, icon, isMoney = false }) {
+    const Icon = icon;
     return (
         <div className="min-w-0 px-5 py-4">
             <div className="mb-3 flex items-center gap-3">

@@ -1,22 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import {
-    Home,
-    Building2,
-    FileText,
-    Settings,
-    Search,
-    User,
-    LogOut,
-    Menu,
-    X,
-    Sun,
-    Moon,
-} from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { Home, Building2, FileText, Settings, Search, User, LogOut, Menu, X, Sun, Moon } from "lucide-react";
+import { useAuth } from "../context/useAuth";
 import logo from "../assets/logo.webp";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../context/useSearch";
 import { useTheme } from "../context/useTheme";
 
 function MainLayout({ children }) {

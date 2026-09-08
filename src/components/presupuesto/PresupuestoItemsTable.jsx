@@ -6,7 +6,7 @@ import { Label } from "../ui/label";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { emptyPresupuestoItem } from "../../types/presupuestoItem";
 
-function PresupuestoItemsTable({ items, setItems, deletedItemIds, setDeletedItemIds }) {
+function PresupuestoItemsTable({ items, setItems, setDeletedItemIds }) {
     const handleItemChange = (index, field, value) => {
         setItems((prevItems) => {
             const updatedItems = [...prevItems];
@@ -170,7 +170,6 @@ PresupuestoItemsTable.propTypes = {
         })
     ).isRequired,
     setItems: PropTypes.func.isRequired,
-    deletedItemIds: PropTypes.arrayOf(PropTypes.number).isRequired,
     setDeletedItemIds: PropTypes.func.isRequired,
 };
 
