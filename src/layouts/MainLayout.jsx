@@ -123,7 +123,7 @@ function MainLayout({ children }) {
                     </nav>
                 </aside>
 
-                <div className="flex-1 flex flex-col md:ml-[260px]">
+                <div className="min-w-0 flex-1 flex flex-col md:ml-[260px]">
                     <header className="flex h-[64px] items-center justify-between border-b border-border bg-card px-4 md:px-6">
                         <div className="flex w-10 items-center justify-start md:hidden">
                             <button

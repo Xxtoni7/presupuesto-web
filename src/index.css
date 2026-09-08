@@ -64,6 +64,86 @@
     }
 }
 
+@layer components {
+    .settings-section {
+        @apply scroll-mt-24 rounded-2xl border border-border/70 bg-card p-5 text-card-foreground sm:p-6;
+    }
+
+    /* Fixed palettes let each theme preview remain recognizable in either app theme. */
+    .settings-theme-preview {
+        --preview-paper: 255 255 255;
+        --preview-canvas: 243 244 246;
+        --preview-ink: 107 114 128;
+        --preview-line: 229 231 235;
+        display: flex;
+        height: 100px;
+        overflow: hidden;
+        border: 1px solid rgb(var(--preview-line));
+        border-radius: 6px;
+        background: rgb(var(--preview-canvas));
+    }
+
+    .settings-theme-preview--dark {
+        --preview-paper: 21 26 34;
+        --preview-canvas: 11 15 20;
+        --preview-ink: 156 163 175;
+        --preview-line: 43 52 66;
+    }
+
+    .settings-theme-preview--system {
+        background: linear-gradient(90deg, rgb(var(--preview-canvas)) 50%, rgb(11 15 20) 50%);
+    }
+
+    .settings-preview-sidebar {
+        display: flex;
+        width: 22%;
+        flex-direction: column;
+        gap: 7px;
+        border-right: 1px solid rgb(var(--preview-line));
+        padding: 16px 8px;
+    }
+
+    .settings-preview-sidebar i {
+        height: 4px;
+        border-radius: 2px;
+        background: rgb(var(--preview-ink) / 0.25);
+    }
+
+    .settings-preview-sidebar i:first-child {
+        background: rgb(var(--primary) / 0.7);
+    }
+
+    .settings-preview-document {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 8px;
+        margin: 12px;
+        padding: 10px;
+        border: 1px solid rgb(var(--preview-line));
+        border-radius: 3px;
+        background: rgb(var(--preview-paper));
+    }
+
+    .settings-preview-title {
+        color: rgb(var(--preview-ink));
+        font-size: 8px;
+        font-weight: 600;
+    }
+
+    .settings-preview-line {
+        height: 3px;
+        background: rgb(var(--preview-line));
+    }
+
+    .settings-preview-total {
+        width: 35%;
+        height: 4px;
+        align-self: flex-end;
+        background: rgb(var(--primary) / 0.65);
+    }
+}
+
 @media (prefers-reduced-motion: no-preference) {
     html[data-app-theme] body,
     html[data-app-theme] header,

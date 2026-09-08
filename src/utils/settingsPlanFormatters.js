@@ -19,11 +19,12 @@ export function getUsageLabel(used, max) {
 }
 
 export function getPlanFeatures(plan) {
+    const maxPresupuestosLabel = plan.maxPresupuestos === 1 ? "presupuesto" : "presupuestos";
+    const maxCompaniesLabel = plan.maxCompanies === 1 ? "empresa" : "empresas";
+
     return [
-        `${formatLimit(plan.maxCompanies)} ${plan.maxCompanies === 1 ? "empresa" : "empresas"}`,
-        `${formatLimit(plan.maxPresupuestos)} ${
-            plan.maxPresupuestos === 1 ? "presupuesto" : "presupuestos"
-        }`,
-        `${formatLimit(plan.maxPdfExports)} exportaciones PDF`,
+        plan.maxCompanies === -1 ? "Empresas ilimitadas" : `${formatLimit(plan.maxCompanies)} ${maxCompaniesLabel}`,
+        plan.maxPresupuestos === -1 ? "Presupuestos ilimitados" : `${formatLimit(plan.maxPresupuestos)} ${maxPresupuestosLabel}`,
+        plan.maxPdfExports === -1 ? "Exportaciones PDF ilimitadas" : `${formatLimit(plan.maxPdfExports)} exportaciones PDF`,
     ];
 }

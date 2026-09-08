@@ -1,22 +1,21 @@
 import PropTypes from "prop-types";
 
 function SettingsSectionHeader({
-    icon: Icon,
+    icon,
     title,
     description,
-    iconClassName = "",
-    iconContainerClassName = "",
 }) {
+    const Icon = icon;
     return (
-        <div className="mb-5 flex items-center gap-3">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${iconContainerClassName}`}>
-                <Icon className={`h-5 w-5 ${iconClassName}`} />
+        <div className="mb-6 flex items-start gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/70 bg-background text-muted-foreground">
+                <Icon aria-hidden="true" className="h-4 w-4" />
             </div>
             <div>
-                <h2 className="text-lg font-semibold text-foreground">
+                <h2 className="text-base font-semibold tracking-tight text-foreground">
                     {title}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     {description}
                 </p>
             </div>
@@ -28,8 +27,6 @@ SettingsSectionHeader.propTypes = {
     icon: PropTypes.elementType.isRequired,
     title: PropTypes.node.isRequired,
     description: PropTypes.node.isRequired,
-    iconClassName: PropTypes.string,
-    iconContainerClassName: PropTypes.string,
 };
 
 export default SettingsSectionHeader;

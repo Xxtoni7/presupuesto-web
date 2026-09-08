@@ -4,21 +4,19 @@ import SettingsSectionHeader from "./SettingsSectionHeader";
 
 function ProfileSection({ user, currentPlanName }) {
     return (
-        <section id="perfil" className="scroll-mt-24">
+        <section id="perfil" className="settings-section">
             <SettingsSectionHeader
                 icon={User}
                 title="Perfil"
                 description="Información de tu cuenta"
-                iconClassName="text-blue-600 dark:text-blue-300"
-                iconContainerClassName="bg-blue-50 dark:bg-blue-500/15"
             />
 
-            <div className="grid gap-5 border-t border-border pt-5 sm:grid-cols-2">
+            <div className="grid gap-6 rounded-lg bg-background p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-5">
                 <div>
                     <p className="text-sm font-medium text-muted-foreground">
                         Email
                     </p>
-                    <p className="mt-2 flex items-center gap-2 break-all text-base font-semibold text-foreground">
+                    <p className="mt-2 flex items-center gap-2 break-all text-sm font-medium text-foreground">
                         <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
                         {user?.email || "Sin email disponible"}
                     </p>
@@ -27,7 +25,7 @@ function ProfileSection({ user, currentPlanName }) {
                     <p className="text-sm font-medium text-muted-foreground">
                         Plan actual
                     </p>
-                    <p className="mt-2 text-base font-semibold text-red-500">
+                    <p className="mt-2 inline-flex rounded-md border border-border bg-card px-2.5 py-1 text-xs font-semibold text-foreground">
                         Plan {currentPlanName}
                     </p>
                 </div>
