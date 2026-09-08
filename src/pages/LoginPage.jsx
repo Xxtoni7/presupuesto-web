@@ -6,7 +6,7 @@ import { Label } from "../components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import GoogleLoginButton from "../components/auth/GoogleLoginButton";
 import PasswordInput from "../components/auth/PasswordInput";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 import { resendEmailConfirmation } from "../api/authApi";
 import { consumeSessionMessage } from "../utils/authSessionMessageStore";
 import { toast } from "sonner";

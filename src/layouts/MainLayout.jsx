@@ -1,22 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import {
-    Home,
-    Building2,
-    FileText,
-    Settings,
-    Search,
-    User,
-    LogOut,
-    Menu,
-    X,
-    Sun,
-    Moon,
-} from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { Home, Building2, FileText, Settings, Search, User, LogOut, Menu, X, Sun, Moon } from "lucide-react";
+import { useAuth } from "../context/useAuth";
 import logo from "../assets/logo.webp";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../context/useSearch";
 import { useTheme } from "../context/useTheme";
 
 function MainLayout({ children }) {
@@ -123,7 +111,7 @@ function MainLayout({ children }) {
                     </nav>
                 </aside>
 
-                <div className="flex-1 flex flex-col md:ml-[260px]">
+                <div className="min-w-0 flex-1 flex flex-col md:ml-[260px]">
                     <header className="flex h-[64px] items-center justify-between border-b border-border bg-card px-4 md:px-6">
                         <div className="flex w-10 items-center justify-start md:hidden">
                             <button

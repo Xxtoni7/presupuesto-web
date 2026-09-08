@@ -5,7 +5,7 @@ import { ArrowLeft, FileText, Grid, List, Plus, Trash2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import PresupuestoCard from "../components/presupuesto/PresupuestoCard";
 import PresupuestoTable from "../components/presupuesto/PresupuestoTable";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../context/useSearch";
 import { useCompanyPresupuestos } from "../hooks/useCompanyPresupuestos";
 import PresupuestoPreview from "../components/presupuesto/presupuestoPreview/PresupuestoPreview";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "../components/ui/dialog";
@@ -14,6 +14,7 @@ import { getCompanyById } from "../api/companyApi";
 import { authorizePresupuestoPdfExport } from "../api/presupuestoApi";
 import { duplicatePresupuesto } from "../services/presupuestoService";
 import { toast } from "sonner";
+import SectionLoading from "../components/ui/SectionLoading";
 
 
 function normalizeText(text) {
@@ -194,12 +195,7 @@ function CompanyPresupuestosPage() {
     let content;
 
     if (loading) {
-        content = (
-            <div className="py-12 text-center">
-                <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-red-500 border-t-transparent"></div>
-                <p className="text-muted-foreground">Cargando presupuestos...</p>
-            </div>
-        );
+        content = <SectionLoading message="Cargando presupuestos..." />;
     } else if (error) {
         content = (
             <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">

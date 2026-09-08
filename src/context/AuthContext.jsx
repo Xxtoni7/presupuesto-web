@@ -1,10 +1,9 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { getCurrentUser, loginUser, loginWithGoogle as loginWithGoogleRequest, logoutUser, refreshToken, registerUser } from "../api/authApi";
 import { clearAccessToken, clearHasSession, hasStoredSession } from "../utils/authTokenStore";
 import { setSessionRestoreFailedMessage } from "../utils/authSessionMessageStore";
-
-const AuthContext = createContext(null);
+import { AuthContext } from "./authStateContext";
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
@@ -123,13 +122,3 @@ export function AuthProvider({ children }) {
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
-
-export function useAuth() {
-    const context = useContext(AuthContext);
-
-    if (!context) {
-        throw new Error("useAuth debe usarse dentro de AuthProvider");
-    }
-
-    return context;
-}

@@ -14,6 +14,7 @@ function ConfirmEmailPage() {
 
     const userId = searchParams.get("userId") || searchParams.get("userid");
     const token = searchParams.get("token");
+    const hasCompleteVerificationLink = Boolean(userId && token);
 
     const hasRequestedRef = useRef(false);
 
@@ -25,11 +26,7 @@ function ConfirmEmailPage() {
 
         hasRequestedRef.current = true;
 
-        if (!userId || !token) {
-            setStatus("error");
-            setMessage(INCOMPLETE_LINK_MESSAGE);
-            return;
-        }
+        if (!hasCompleteVerificationLink) return;
 
         const verifyEmail = async () => {
             try {
@@ -44,11 +41,14 @@ function ConfirmEmailPage() {
         };
 
         verifyEmail();
-    }, [userId, token]);
+    }, [hasCompleteVerificationLink, userId, token]);
 
-    const isLoading = status === "loading";
+    const isLoading = hasCompleteVerificationLink && status === "loading";
     const isSuccess = status === "success";
-    const isError = status === "error";
+    const isError = !hasCompleteVerificationLink || status === "error";
+    const displayedMessage = hasCompleteVerificationLink
+        ? message
+        : INCOMPLETE_LINK_MESSAGE;
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4">
@@ -81,14 +81,14 @@ function ConfirmEmailPage() {
                     </CardTitle>
 
                     <p className="text-gray-500 mt-2">
-                        {isLoading ? "Estamos activando tu cuenta." : message}
+                        {isLoading ? "Estamos activando tu cuenta." : displayedMessage}
                     </p>
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                    {isError && message && (
+                    {isError && displayedMessage && (
                         <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-                            {message}
+                            {displayedMessage}
                         </div>
                     )}
 

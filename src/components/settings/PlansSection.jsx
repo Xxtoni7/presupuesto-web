@@ -5,16 +5,15 @@ import SettingsSectionHeader from "./SettingsSectionHeader";
 
 function PlansSection({ availablePlans, currentPlanName }) {
     return (
-        <section id="planes" className="scroll-mt-24 border-t border-border pt-10">
+        <section id="planes" className="settings-section">
             <SettingsSectionHeader
                 icon={Sparkles}
                 title="Planes disponibles"
-                description="Compará todas las opciones y elegí el que mejor se adapte a ti"
-                iconClassName="text-amber-600 dark:text-amber-300"
-                iconContainerClassName="bg-amber-50 dark:bg-amber-500/15"
+                description="Compará los recursos de cada plan. Los cambios estarán disponibles próximamente."
             />
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {availablePlans.length === 0 && <p className="rounded-lg bg-background p-4 text-sm text-muted-foreground">No hay planes disponibles para mostrar en este momento.</p>}
+            <div className="settings-plan-grid grid gap-3 min-[1100px]:grid-cols-3">
                 {availablePlans.map((plan) => (
                     <PlanOptionCard
                         key={plan.idPlan}

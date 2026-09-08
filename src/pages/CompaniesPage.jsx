@@ -6,8 +6,9 @@ import CompanyTable from "../components/company/CompanyTable";
 import { useCompanies } from "../hooks/useCompanies";
 import CompanyForm from "../components/company/CompanyForm";
 import { createPortal } from "react-dom";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../context/useSearch";
 import { toast } from "sonner";
+import SectionLoading from "../components/ui/SectionLoading";
 
 function CompaniesPage() {
     const navigate = useNavigate();
@@ -89,12 +90,7 @@ function CompaniesPage() {
     let content;
 
     if (loading) {
-        content = (
-        <div className="py-12 text-center">
-            <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-red-500 border-t-transparent"></div>
-            <p className="text-muted-foreground">Cargando empresas...</p>
-        </div>
-        );
+        content = <SectionLoading message="Cargando empresas..." />;
     } else if (filteredCompanies.length === 0) {
         content = (
         <div className="py-20 text-center">

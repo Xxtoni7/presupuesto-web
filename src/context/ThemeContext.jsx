@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "./useAuth";
 import { ThemeContext } from "./themeStateContext";
 
 const THEME_STORAGE_KEY = "mt-presupuestos-theme";

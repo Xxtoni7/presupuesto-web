@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import { clampPercentage, formatPercent, isUnlimited } from "../../utils/dashboardFormatters";
 
-function UsageProgress({ title, used, max, percentage, icon: Icon }) {
+function UsageProgress({ title, used, max, percentage, icon }) {
+    const Icon = icon;
     const unlimited = isUnlimited(max, percentage);
     const safePercentage = clampPercentage(percentage);
 

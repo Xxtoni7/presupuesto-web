@@ -2,14 +2,8 @@ import PropTypes from "prop-types";
 
 function SettingsDesktopAside({ sections, activeSection, onSectionChange }) {
     return (
-        <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[240px] lg:shrink-0 lg:flex-col lg:border-r lg:border-border lg:bg-card lg:px-5 lg:py-8">
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold text-foreground">
-                    Configuración
-                </h1>
-            </div>
-
-            <nav className="flex flex-col gap-1">
+        <aside className="settings-mobile-navigation min-w-0 xl:sticky xl:top-24 xl:w-44 xl:shrink-0 xl:self-start">
+            <nav aria-label="Secciones de configuración" className="settings-mobile-navigation-list grid grid-cols-2 gap-1 sm:flex xl:flex-col">
                 {sections.map((section) => {
                     const Icon = section.icon;
 
@@ -18,13 +12,14 @@ function SettingsDesktopAside({ sections, activeSection, onSectionChange }) {
                             key={section.id}
                             href={`#${section.id}`}
                             onClick={() => onSectionChange(section.id)}
-                            className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                            aria-current={activeSection === section.id ? "location" : undefined}
+                            className={`flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-3 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
                                 activeSection === section.id
-                                    ? "bg-red-500 text-white shadow-sm"
-                                    : "text-muted-foreground hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10"
+                                    ? "bg-primary/10 font-semibold text-foreground"
+                                    : "font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                             }`}
                         >
-                            <Icon className="h-4 w-4" />
+                            <Icon aria-hidden="true" className={`h-4 w-4 ${activeSection === section.id ? "text-primary" : ""}`} />
                             <span>{section.label}</span>
                         </a>
                     );

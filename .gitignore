@@ -27,3 +27,7 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Project-local interface-design skill
+/.agents/skills/interface-design/
+/skills-lock.json

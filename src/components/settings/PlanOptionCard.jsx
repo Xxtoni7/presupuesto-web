@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { CheckCircle } from "lucide-react";
+import { Button } from "../ui/button";
 import { formatPrice, getPlanFeatures } from "../../utils/settingsPlanFormatters";
 
 function PlanOptionCard({ plan, isCurrent, currentPlanName }) {
@@ -7,10 +8,10 @@ function PlanOptionCard({ plan, isCurrent, currentPlanName }) {
 
     return (
         <article
-            className={`relative rounded-2xl border bg-card transition ${
+            className={`relative flex min-w-0 flex-col rounded-xl border bg-card ${
                 isCurrent
-                    ? "border-red-300 shadow-lg ring-2 ring-red-100 dark:border-red-500/50 dark:ring-red-500/15"
-                    : "border-border shadow-sm hover:border-muted-foreground/40 hover:shadow-md"
+                    ? "border-primary/40"
+                    : "border-border/80"
             }`}
         >
             {isPopular && !isCurrent && (
@@ -21,30 +22,30 @@ function PlanOptionCard({ plan, isCurrent, currentPlanName }) {
                 </div>
             )}
 
-            <div className="flex flex-col p-6">
-                <div className="mb-6 min-h-[76px]">
-                    <div className="flex items-start justify-between gap-3">
-                        <h3 className="text-xl font-bold text-foreground">
+            <div className="flex h-full flex-col p-4 sm:p-5">
+                <div className="mb-5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <h3 className="text-base font-semibold text-foreground">
                             {plan.name}
                         </h3>
 
                         {isCurrent && (
-                            <span className="shrink-0 rounded-lg bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600 dark:bg-red-500/15 dark:text-red-300">
+                            <span className="rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-foreground">
                                 Actual
                             </span>
                         )}
                     </div>
 
-                    <p className="mt-1 min-h-[40px] text-sm leading-5 text-muted-foreground">
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                         {plan.description}
                     </p>
                 </div>
 
-                <div className="mb-6 border-y border-border py-6">
-                    <p className="text-4xl font-bold text-foreground">
+                <div className="mb-5 mt-auto border-b border-border/60 pb-5">
+                    <p className="flex flex-wrap items-baseline gap-x-1 text-2xl font-semibold tracking-tight tabular-nums text-foreground">
                         {formatPrice(plan.price)}
                         {plan.price > 0 && (
-                            <span className="text-lg font-semibold text-muted-foreground">
+                            <span className="text-xs font-normal tracking-normal text-muted-foreground">
                                 {" "}
                                 / mes
                             </span>
@@ -52,29 +53,26 @@ function PlanOptionCard({ plan, isCurrent, currentPlanName }) {
                     </p>
                 </div>
 
-                <div className="mb-6 flex-1 space-y-3">
+                <div className="mb-6 space-y-3">
                     {getPlanFeatures(plan).map((feature) => (
                         <div
                             key={feature}
-                            className="flex items-start gap-3 text-sm text-foreground/85"
+                            className="flex items-start gap-2 text-sm text-foreground/85"
                         >
-                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
+                            <CheckCircle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                             <span>{feature}</span>
                         </div>
                     ))}
                 </div>
 
-                <button
+                <Button
                     type="button"
                     disabled
-                    className={`w-full rounded-lg py-2.5 text-sm font-semibold transition ${
-                        isCurrent
-                            ? "cursor-not-allowed bg-muted text-muted-foreground"
-                            : "border border-input bg-background text-muted-foreground hover:bg-accent"
-                    }`}
+                    variant="secondary"
+                    className="w-full text-xs disabled:opacity-70"
                 >
-                    {isCurrent ? "Tu plan actual" : "Proximamente"}
-                </button>
+                    {isCurrent ? "Tu plan actual" : "Próximamente"}
+                </Button>
             </div>
         </article>
     );
