@@ -35,7 +35,7 @@ function SubscriptionSection({ currentPlan, currentPlanName }) {
                                         <span className="font-medium tabular-nums text-foreground">{getUsageLabel(currentPlan[used], currentPlan[max])}</span>
                                     </div>
                                     {unlimited ? (
-                                        <p className="mt-2 text-xs text-muted-foreground">{currentPlan[used]} utilizados · Sin límite en tu plan</p>
+                                        <p className="mt-2 text-xs text-muted-foreground"> Sin límite en tu plan</p>
                                     ) : (
                                         <div role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={Math.max(1, currentPlan[max])} aria-valuenow={Math.min(Math.max(0, currentPlan[used]), Math.max(0, currentPlan[max]))} aria-valuetext={getUsageLabel(currentPlan[used], currentPlan[max])} className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
                                             <div className="h-full rounded-full bg-primary/75" style={{ width: `${percentage}%` }} />
