@@ -13,7 +13,7 @@ function PlansSection({ availablePlans, currentPlanName }) {
             />
 
             {availablePlans.length === 0 && <p className="rounded-lg bg-background p-4 text-sm text-muted-foreground">No hay planes disponibles para mostrar en este momento.</p>}
-            <div className="grid gap-3 min-[1100px]:grid-cols-3">
+            <div className="settings-plan-grid grid gap-3 min-[1100px]:grid-cols-3">
                 {availablePlans.map((plan) => (
                     <PlanOptionCard
                         key={plan.idPlan}

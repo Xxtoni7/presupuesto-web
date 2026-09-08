@@ -99,7 +99,7 @@ function SettingsPage() {
     const currentPlanName = currentPlan?.planName || user?.planName || "Free";
 
     return (
-        <div className="mx-auto w-full max-w-6xl">
+        <div className="settings-page mx-auto w-full max-w-6xl">
             <SettingsMobileHeader />
 
             {error && (

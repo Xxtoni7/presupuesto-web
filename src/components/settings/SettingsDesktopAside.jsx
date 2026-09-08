@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 
 function SettingsDesktopAside({ sections, activeSection, onSectionChange }) {
     return (
-        <aside className="min-w-0 xl:sticky xl:top-24 xl:w-44 xl:shrink-0 xl:self-start">
-            <nav aria-label="Secciones de configuración" className="grid grid-cols-2 gap-1 sm:flex xl:flex-col">
+        <aside className="settings-mobile-navigation min-w-0 xl:sticky xl:top-24 xl:w-44 xl:shrink-0 xl:self-start">
+            <nav aria-label="Secciones de configuración" className="settings-mobile-navigation-list grid grid-cols-2 gap-1 sm:flex xl:flex-col">
                 {sections.map((section) => {
                     const Icon = section.icon;
 

@@ -7,7 +7,7 @@ function SettingsSectionHeader({
 }) {
     const Icon = icon;
     return (
-        <div className="mb-6 flex items-start gap-3">
+        <div className="settings-section-header mb-6 flex items-start gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/70 bg-background text-muted-foreground">
                 <Icon aria-hidden="true" className="h-4 w-4" />
             </div>

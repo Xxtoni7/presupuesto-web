@@ -16,13 +16,13 @@ function AppearanceSection() {
             <SettingsSectionHeader icon={MonitorCog} title="Apariencia" description="Elegí cómo querés ver tu espacio de trabajo." />
             <fieldset>
                 <legend className="sr-only">Tema de la aplicación</legend>
-                <div className="grid gap-3 sm:grid-cols-3">
+                <div className="settings-theme-options grid gap-3 sm:grid-cols-3">
                     {THEME_OPTIONS.map((option) => {
                         const Icon = option.icon;
                         return (
-                            <label key={option.value} aria-label={option.label} className="relative cursor-pointer">
+                            <label key={option.value} aria-label={option.label} className="settings-theme-option relative cursor-pointer">
                                 <input type="radio" name="app-theme" value={option.value} checked={theme === option.value} onChange={() => setTheme(option.value)} className="peer sr-only" />
-                                <span className="block h-full rounded-xl border border-border p-3 transition-colors hover:border-muted-foreground/50 peer-checked:border-primary/60 peer-checked:bg-primary/5 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring">
+                                <span className="settings-theme-option-content block h-full rounded-xl border border-border p-3 transition-colors hover:border-muted-foreground/50 peer-checked:border-primary/60 peer-checked:bg-primary/5 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring">
                                     <span aria-hidden="true" className={`settings-theme-preview ${option.previewClassName}`}>
                                         <span className="settings-preview-sidebar"><i /><i /><i /></span>
                                         <span className="settings-preview-document">

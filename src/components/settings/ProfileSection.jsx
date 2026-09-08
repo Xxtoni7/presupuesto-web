@@ -11,7 +11,7 @@ function ProfileSection({ user, currentPlanName }) {
                 description="Información de tu cuenta"
             />
 
-            <div className="grid gap-6 rounded-lg bg-background p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-5">
+            <div className="settings-profile-details grid gap-6 rounded-lg bg-background p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-5">
                 <div>
                     <p className="text-sm font-medium text-muted-foreground">
                         Email
@@ -21,7 +21,7 @@ function ProfileSection({ user, currentPlanName }) {
                         {user?.email || "Sin email disponible"}
                     </p>
                 </div>
-                <div>
+                <div className="settings-profile-plan">
                     <p className="text-sm font-medium text-muted-foreground">
                         Plan actual
                     </p>

@@ -13,8 +13,8 @@ function SubscriptionSection({ currentPlan, currentPlanName }) {
     return (
         <section id="suscripcion" className="settings-section">
             <SettingsSectionHeader icon={Crown} title="Suscripción y uso" description="Los recursos de tu espacio de trabajo, en un vistazo." />
-            <div className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-                <div className="flex flex-col items-start rounded-xl border border-primary/10 bg-primary/5 p-5 dark:border-primary/20 dark:bg-primary/10">
+            <div className="settings-subscription-content grid gap-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+                <div className="settings-plan-summary flex flex-col items-start rounded-xl border border-primary/10 bg-primary/5 p-5 dark:border-primary/20 dark:bg-primary/10">
                     <span className="text-xs font-medium text-muted-foreground">Tu plan actual</span>
                     <h3 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">{currentPlanName}</h3>
                     <p className="mb-6 mt-3 text-sm leading-relaxed text-muted-foreground">Tus recursos para organizar empresas y preparar presupuestos.</p>
@@ -23,7 +23,7 @@ function SubscriptionSection({ currentPlan, currentPlanName }) {
                     </a>
                 </div>
                 {currentPlan ? (
-                    <div className="divide-y divide-border/60">
+                    <div className="settings-usage-list divide-y divide-border/60">
                         {RESOURCES.map(({ label, icon, used, max }) => {
                             const Icon = icon;
                             const unlimited = currentPlan[max] === -1;
